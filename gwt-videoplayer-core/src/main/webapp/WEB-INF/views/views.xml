@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd"
+[
+ <!ENTITY baseDir "/WEB-INF/views">
+ <!ENTITY incDir "/WEB-INF/views/inc">
+]>
+
+<tiles-definitions>
+	<definition name="dataAccessFailure" extends="baseLayout">
+		<put-attribute name="body" value="&incDir;/incDataAccessFailure.jsp" />
+		<put-attribute name="bodyId" value="dataAccessFailure" />
+		<put-attribute name="title" value="Data Access Failure" />
+		<put-attribute name="h1" value="Error accessing data" />
+	</definition>
+
+	<!-- Resource Not Found -->
+	<definition name="resourceNotFound" extends="baseLayout">
+		<put-attribute name="body" value="&incDir;/incResourceNotFound.jsp" />
+		<put-attribute name="bodyId" value="resourceNotFound" />
+		<put-attribute name="title" value="Resource Not Found" />
+		<put-attribute name="h1" value="Could not find resource" />
+	</definition>
+
+	<definition name="uncaughtException" extends="baseLayout">
+		<put-attribute name="body" value="&incDir;/incUncaughtException.jsp" />
+		<put-attribute name="bodyId" value="uncaughtException" />
+		<put-attribute name="title" value="Unexpected Error" />
+		<put-attribute name="h1" value="Unexpected error occurred" />
+	</definition>
+	
+	<definition name="home" extends="baseLayout">
+		<put-attribute name="body" value="&incDir;/incHome.jsp" />
+		<put-attribute name="bodyId" value="home" />
+		<put-attribute name="title" value="Hotel Confidential" />
+		<put-attribute name="h1" value="Hello World!" />
+	</definition>
+	
+</tiles-definitions>
