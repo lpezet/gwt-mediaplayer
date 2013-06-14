@@ -91,6 +91,7 @@ public class VideoPlayerMidRollDemo implements EntryPoint {
 					//videoContainer.clear();
 					oVideoPlayer.setVisible(false);
 					final VideoWidget oMidRollPlayer = new VideoWidget();
+					oMidRollPlayer.setPixelSize(500, 400);
 					oMidRollPlayer.setControls(false);
 					oMidRollPlayer.setAutoPlay(false);
 					oMidRollPlayer.setSrc(MID_ROLL);
