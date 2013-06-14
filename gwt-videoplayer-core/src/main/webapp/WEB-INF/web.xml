@@ -77,9 +77,13 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-		<session-config>
+	<session-config>
 		<session-timeout>20</session-timeout>
 	</session-config>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 
 	<servlet-mapping>
 		<servlet-name>GWTVideoPlayer</servlet-name>
