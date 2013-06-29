@@ -50,6 +50,13 @@ public class VideoPlayerDemo implements EntryPoint {
 				mLogger.log(Level.INFO, "Time update!" + event.getCurrentTime());
 			}
 		});
-        RootPanel.get().add(videoPlayer);
+        videoPlayer.addTimeUpdateHandler(new VideoTimeUpdateHandler() {
+			
+			@Override
+			public void onTimeUpdated(VideoTimeUpdateEvent event) {
+				mLogger.log(Level.INFO, "Time update (2)!" + event.getCurrentTime());
+			}
+		});
+        RootPanel.get("player").add(videoPlayer);
 	}
 }
