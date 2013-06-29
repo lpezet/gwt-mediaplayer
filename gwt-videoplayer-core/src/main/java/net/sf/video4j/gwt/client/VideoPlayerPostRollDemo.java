@@ -77,6 +77,6 @@ public class VideoPlayerPostRollDemo implements EntryPoint {
 				
 			}
 		});
-        RootPanel.get().add(oVideoPlayer);
+        RootPanel.get("player").add(oVideoPlayer);
 	}
 }
