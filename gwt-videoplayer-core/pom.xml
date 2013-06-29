@@ -5,17 +5,15 @@
 	<artifactId>gwt-videoplayer-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<tiles.version>2.2.2</tiles.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<gwt.version>2.5.1</gwt.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
-<!-- 		<finalName>${project.artifactId}-${project.version}.${buildNumber}</finalName> -->
-		<!-- <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory> -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -41,8 +39,8 @@
 				<configuration>
 					<draftCompile>true</draftCompile>
 					<mode>htmlunit</mode>
-					<runTarget>gwt_test/index.html</runTarget>
-<!-- 					<hostedWebapp>${webappDirectory}</hostedWebapp> -->
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<localWorkers>4</localWorkers>
 					<extraJvmArgs>-Dspring.profiles.active=dev</extraJvmArgs>
 				</configuration>
@@ -59,16 +57,37 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
-				<dependencies>
+				<!-- <dependencies>
 					<dependency>
 						<groupId>com.tripfilms</groupId>
 						<artifactId>container-session-manager</artifactId>
 						<version>${container-session-manager.version}</version>
 					</dependency>
-				</dependencies>
+				</dependencies> -->
 				<configuration>
 					<contextFile>${basedir}/etc/tomcat7/dev.xml</contextFile>
 					<path>/</path>
