@@ -1,7 +1,11 @@
 package fr.hd3d.html5.video.client;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -14,6 +18,7 @@ import fr.hd3d.html5.video.client.dom.VideoSourceElement;
 import fr.hd3d.html5.video.client.events.VideoAbortEvent;
 import fr.hd3d.html5.video.client.events.VideoCanPlayEvent;
 import fr.hd3d.html5.video.client.events.VideoCanPlayThroughEvent;
+import fr.hd3d.html5.video.client.events.VideoCuePointEvent;
 import fr.hd3d.html5.video.client.events.VideoDurationChangeEvent;
 import fr.hd3d.html5.video.client.events.VideoEmptyEvent;
 import fr.hd3d.html5.video.client.events.VideoEndedEvent;
@@ -33,10 +38,10 @@ import fr.hd3d.html5.video.client.events.VideoSuspendEvent;
 import fr.hd3d.html5.video.client.events.VideoTimeUpdateEvent;
 import fr.hd3d.html5.video.client.events.VideoVolumeChangeEvent;
 import fr.hd3d.html5.video.client.events.VideoWaitingEvent;
-import fr.hd3d.html5.video.client.handlers.HasVideoHandlers;
 import fr.hd3d.html5.video.client.handlers.VideoAbortHandler;
 import fr.hd3d.html5.video.client.handlers.VideoCanPlayHandler;
 import fr.hd3d.html5.video.client.handlers.VideoCanPlayThroughHandler;
+import fr.hd3d.html5.video.client.handlers.VideoCuePointHandler;
 import fr.hd3d.html5.video.client.handlers.VideoDurationChangeHandler;
 import fr.hd3d.html5.video.client.handlers.VideoEmptyHandler;
 import fr.hd3d.html5.video.client.handlers.VideoEndedHandler;
@@ -64,7 +69,7 @@ import fr.hd3d.html5.video.client.handlers.VideoWaitingHandler;
  * @author michael.guiral
  * 
  */
-public class VideoWidget extends Widget implements HasVideoHandlers
+public class VideoWidget extends Widget implements IVideoPlayer
 {
     // private static final String UNSUPPORTED_VIDEO_TAG =
     // "Sorry, your browser does not support the &lt;video&gt; element.";
@@ -76,6 +81,8 @@ public class VideoWidget extends Widget implements HasVideoHandlers
     {
         NO, PROBABLY, MAYBE;
     }
+    
+    private Map<String, Boolean> mRegisteredHandlers = new HashMap<String, Boolean>();
 
     /**
      * Create a default video HTML tag <br/>
@@ -111,11 +118,11 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         setPoster(poster);
     }
 
-    /**
-     * @param poster
-     *            represent the address of an image file that the user agent can show while no video data is available
-     */
-    public void setPoster(String poster)
+	/* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setPoster(java.lang.String)
+	 */
+    @Override
+	public void setPoster(String poster)
     {
         if (poster != null)
         {
@@ -123,25 +130,20 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         }
     }
 
-    /**
-     * @return <li><b>The image file address</b> that the user agent can show while no video data is available</li> <br/>
-     *         <li><b>null</b> if no image has been set</li>
-     * 
-     */
-    public String getPoster()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getPoster()
+	 */
+    @Override
+	public String getPoster()
     {
         return videoElement.getPoster();
     }
 
-    /**
-     * @param autoPlay
-     *            <b>true</b> if you want the user agent automatically begin playback of the media resource as soon as
-     *            it can do so without stopping. <br/>
-     *            <b>false</b> otherwise
-     * @throws IllegalArgumentException
-     *             if autoPlay is <b>null</b>
-     */
-    public void setAutoPlay(Boolean autoPlay)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setAutoPlay(java.lang.Boolean)
+	 */
+    @Override
+	public void setAutoPlay(Boolean autoPlay)
     {
         if (autoPlay == null)
         {
@@ -150,14 +152,11 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         videoElement.setAutoPlay(autoPlay);
     }
 
-    /**
-     * @param controls
-     *            <b>false</b> if you want to have custom scripted controller, <br/>
-     *            <b>true</b> if you would like the user agent to provide its own set of controls.
-     * @throws IllegalArgumentException
-     *             if controls is <b>null</b>
-     */
-    public void setControls(Boolean controls)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setControls(java.lang.Boolean)
+	 */
+    @Override
+	public void setControls(Boolean controls)
     {
         if (controls == null)
         {
@@ -166,43 +165,54 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         videoElement.setControls(controls);
     }
 
-    /**
-     * @return <b>true</b> if the user agent automatically begin playback. <br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isAutoPlay()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isAutoPlay()
+	 */
+    @Override
+	public boolean isAutoPlay()
     {
         return videoElement.isAutoPlay();
     }
 
-    /**
-     * @return <b>false</b> if you want to have custom scripted controller <br/>
-     *         <b>true</b> if you would like the user agent to provide its own set of controls.
-     */
-    public boolean isControls()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isControls()
+	 */
+    @Override
+	public boolean isControls()
     {
         return videoElement.isControls();
     }
 
-    /**
-     * @param sources
-     *            list of {@link VideoSource} that represent all the available sources for the video element
-     */
-    public void setSources(List<VideoSource> sources)
-    {
-        for (VideoSource videoSource : sources)
-        {
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setSources(java.util.List)
+	 */
+    @Override
+	public void setSources(List<VideoSource> sources) {
+    	NodeList<Node> oChildren = videoElement.getChildNodes();
+    	for (int i = 0; i < oChildren.getLength(); i++) {
+    		Node n = oChildren.getItem(i);
+    		if (VideoSourceElement.TAG.equalsIgnoreCase(n.getNodeName())) videoElement.removeChild(n); 
+    	}
+    	
+    	for (VideoSource videoSource : sources) {
             addSource(videoSource);
         }
     }
 
-    public void addSource(String src)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addSource(java.lang.String)
+	 */
+    @Override
+	public void addSource(String src)
     {
         addSource(new VideoSource(src));
     }
 
-    public void addSource(VideoSource videoSource)
-    {
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addSource(fr.hd3d.html5.video.client.VideoSource)
+	 */
+    @Override
+	public void addSource(VideoSource videoSource) {
         VideoSourceElement sourceElement = VideoSourceElement.as(DOM.createElement(VideoSourceElement.TAG));
         if (videoSource.getSrc() == null)
         {
@@ -233,88 +243,84 @@ public class VideoWidget extends Widget implements HasVideoHandlers
     // videoElement.appendChild(unsupportedElement);
     // }
 
-    /**
-     * Switch the playback status between paused and played
-     */
-    public void playPause()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#playPause()
+	 */
+    @Override
+	public void playPause()
     {
         videoElement.playPause();
     }
 
-    /**
-     * @return <b>true</b> if playback is paused<br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isPaused()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isPaused()
+	 */
+    @Override
+	public boolean isPaused()
     {
         return videoElement.isPaused();
     }
 
-    /**
-     * @return <b>true</b> if playback is played <br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isPlayed()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isPlayed()
+	 */
+    @Override
+	public boolean isPlayed()
     {
         return videoElement.isPlayed();
     }
 
-    /**
-     * @return <b>true</b> if the user agent is currently seeking. <br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isSeeking()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isSeeking()
+	 */
+    @Override
+	public boolean isSeeking()
     {
         return videoElement.isSeeking();
     }
 
-    /**
-     * @param time
-     *            the time where user agent want to seek
-     * @return <b>true</b> if it is possible for the user agent to seek. <br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isSeekable(double time)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isSeekable(double)
+	 */
+    @Override
+	public boolean isSeekable(double time)
     {
         return videoElement.isSeekable(time);
     }
 
-    /**
-     * @param currentTime
-     *            the current playback position, expressed in seconds
-     */
-    public void setCurrentTime(double currentTime)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setCurrentTime(double)
+	 */
+    @Override
+	public void setCurrentTime(double currentTime)
     {
         videoElement.setCurrentTime(currentTime);
     }
 
-    /**
-     * @return the current playback position, expressed in seconds
-     */
-    public double getCurrentTime()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getCurrentTime()
+	 */
+    @Override
+	public double getCurrentTime()
     {
         Object object = videoElement.getCurrentTime();
         return videoElement.getCurrentTime();
     }
 
-    /**
-     * @return <b>the initial playback position</b>, that is, time to which the media resource was automatically seeked
-     *         when it was loaded. <br/>
-     *         <b>0</b> if the initial playback position is still unknown.
-     */
-    public double getInitialTime()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getInitialTime()
+	 */
+    @Override
+	public double getInitialTime()
     {
         return videoElement.getInitialTime();
     }
 
-    /**
-     * @return <li><b>the length of the media resource, in seconds, </b>assuming that the start of the media resource is
-     *         at time zero.</li> <br/>
-     *         <li><b>-1</b> for unbounded streams.</li>
-     * @throws NumberFormatException
-     *             if duration is NaN
-     */
-    public double getDuration()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getDuration()
+	 */
+    @Override
+	public double getDuration()
     {
         double duration = videoElement.getDuration();
         if (Double.isNaN(duration))
@@ -328,88 +334,74 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         return duration;
     }
 
-    /**
-     * @return <b>true</b> if playback has reached the end of the media resource. <br/>
-     *         <b>false</b> otherwise
-     */
-    public boolean isEnded()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#isEnded()
+	 */
+    @Override
+	public boolean isEnded()
     {
         return videoElement.isEnded();
     }
 
-    /**
-     * The default rate has no direct effect on playback, but if the user switches to a fast-forward mode, when they
-     * return to the normal playback mode, it is expected that the rate of playback will be returned to the default rate
-     * of playback.
-     * 
-     * @param defaultPlaybackRate
-     *            the desired speed at which the media resource is to play. <br/>
-     *            if value < 1.0 the playback is slower <br/>
-     *            if value > 1.0 the playback is faster
-     */
-    public void setDefaultPlaybackRate(double defaultPlaybackRate)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setDefaultPlaybackRate(double)
+	 */
+    @Override
+	public void setDefaultPlaybackRate(double defaultPlaybackRate)
     {
         videoElement.setDefaultPlaybackRate(defaultPlaybackRate);
     }
 
-    /**
-     * The default rate has no direct effect on playback, but if the user switches to a fast-forward mode, when they
-     * return to the normal playback mode, it is expected that the rate of playback will be returned to the default rate
-     * of playback.
-     * 
-     * @return the default rate of playback, for when the user is not fast-forwarding or reversing through the media
-     *         resource.
-     */
-    public double getDefaultPlaybackRate()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getDefaultPlaybackRate()
+	 */
+    @Override
+	public double getDefaultPlaybackRate()
     {
         return videoElement.getDefaultPlaybackRate();
     }
 
-    /**
-     * @param playbackRate
-     *            the current rate playback, where 1.0 is normal speed.
-     */
-    public void setPlaybackRate(double playbackRate)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setPlaybackRate(double)
+	 */
+    @Override
+	public void setPlaybackRate(double playbackRate)
     {
         videoElement.setPlaybackRate(playbackRate);
     }
 
-    /**
-     * @return the current rate playback, where 1.0 is normal speed.
-     */
-    public double getPlaybackRate()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getPlaybackRate()
+	 */
+    @Override
+	public double getPlaybackRate()
     {
         return videoElement.getPlaybackRate();
     }
 
-    /**
-     * @return the current buffer position end time, in second
-     */
-    public double getBufferedEndTime()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getBufferedEndTime()
+	 */
+    @Override
+	public double getBufferedEndTime()
     {
         return videoElement.getBufferedEndTime();
     }
 
-    /**
-     * @return <b>the address</b> of the current media resource. <br/>
-     *         <b>""</b> when there is no media resource.
-     */
-    public String getCurrentSrc()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#getCurrentSrc()
+	 */
+    @Override
+	public String getCurrentSrc()
     {
         return videoElement.getCurrentSrc();
     }
 
-    /**
-     * Use this function to test if the media could be play by the video tag
-     * 
-     * @param videoType
-     *            the videoType to check
-     * @return <b>TypeSupport.NO</b> if videoType is a type that the user agent knows it cannot render <br/>
-     *         <b>TypeSupport.PROBABLY</b> if if the user agent is confident that the type represents a media resource that it
-     *         can render if used in with this audio or video element <br/>
-     *         <b>TypeSupport.MAYBE</b> otherwise
-     */
-    public TypeSupport canPlayType(String videoType)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#canPlayType(java.lang.String)
+	 */
+    @Override
+	public TypeSupport canPlayType(String videoType)
     {
         String canPlayType = videoElement.canPlayType(videoType);
         TypeSupport typeSupport = TypeSupport.NO;
@@ -422,12 +414,11 @@ public class VideoWidget extends Widget implements HasVideoHandlers
         return typeSupport;
     }
 
-    /**
-     * This function is call in JNI code to dispatch {@link GwtEvent}
-     * 
-     * @param event
-     */
-    public void fireEvent(Object event)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#fireEvent(java.lang.Object)
+	 */
+    @Override
+	public void fireEvent(Object event)
     {
         if (event instanceof GwtEvent<?>)
         {
@@ -442,320 +433,339 @@ public class VideoWidget extends Widget implements HasVideoHandlers
     /**
      * Handlers
      */
-    /**
-     * The user agent stops fetching the media data before it is completely downloaded, but not due to an error.
-     * 
-     * @param abortHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addAbortHandler(fr.hd3d.html5.video.client.handlers.VideoAbortHandler)
+	 */
     @Override
     public HandlerRegistration addAbortHandler(VideoAbortHandler abortHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoAbortEvent.getType(),
                 abortHandler);
-        addAbortEventHandler();
+        if (mRegisteredHandlers.get("abortHandler") == null) {
+        	addAbortEventHandler();
+        	mRegisteredHandlers.put("abortHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent can resume playback of the media data, but estimates that if playback were to be started now, the
-     * media resource could not be rendered at the current playback rate up to its end without having to stop for
-     * further buffering of content.
-     * 
-     * @param canPlayHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addCanPlayHandler(fr.hd3d.html5.video.client.handlers.VideoCanPlayHandler)
+	 */
     @Override
     public HandlerRegistration addCanPlayHandler(VideoCanPlayHandler canPlayHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoCanPlayEvent.getType(),
                 canPlayHandler);
-        addCanPlayEventHandler();
+        if (mRegisteredHandlers.get("canPlayHandler") == null) {
+        	addCanPlayEventHandler();
+        	mRegisteredHandlers.put("canPlayHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent estimates that if playback were to be started now, the media resource could be rendered at the
-     * current playback rate all the way to its end without having to stop for further buffering.
-     * 
-     * @param canPlayThroughHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addCanPlayThroughHandler(fr.hd3d.html5.video.client.handlers.VideoCanPlayThroughHandler)
+	 */
     @Override
     public HandlerRegistration addCanPlayThroughHandler(VideoCanPlayThroughHandler canPlayThroughHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoCanPlayThroughEvent.getType(),
                 canPlayThroughHandler);
-        addCanPlayThroughEventHandler();
+        if (mRegisteredHandlers.get("canPlayThroughHandler") == null) {
+        	addCanPlayThroughEventHandler();
+        	mRegisteredHandlers.put("canPlayThroughHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The duration attribute has just been updated.
-     * 
-     * @param durationChangeHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addDurationChangeHandler(fr.hd3d.html5.video.client.handlers.VideoDurationChangeHandler)
+	 */
     @Override
     public HandlerRegistration addDurationChangeHandler(VideoDurationChangeHandler durationChangeHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoDurationChangeEvent.getType(),
                 durationChangeHandler);
-        addDurationChangeEventHandler();
+        if (mRegisteredHandlers.get("durationChangeHandler") == null) {
+        	addDurationChangeEventHandler();
+        	mRegisteredHandlers.put("durationChangeHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The media element has not yet been initialized. All attributes are in their initial states.
-     * 
-     * @param emptyHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addEmptyHandler(fr.hd3d.html5.video.client.handlers.VideoEmptyHandler)
+	 */
     @Override
     public HandlerRegistration addEmptyHandler(VideoEmptyHandler emptyHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoEmptyEvent.getType(),
                 emptyHandler);
-        addEmptyEventHandler();
+        if (mRegisteredHandlers.get("emptyHandler") == null) {
+        	addEmptyEventHandler();
+        	mRegisteredHandlers.put("emptyHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Playback has stopped because the end of the media resource was reached.
-     * 
-     * @param endedHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addEndedHandler(fr.hd3d.html5.video.client.handlers.VideoEndedHandler)
+	 */
     @Override
     public HandlerRegistration addEndedHandler(VideoEndedHandler endedHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoEndedEvent.getType(),
                 endedHandler);
-        addEndedEventHandler();
+        if (mRegisteredHandlers.get("endedHandler") == null) {
+        	addEndedEventHandler();
+        	mRegisteredHandlers.put("endedHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * An error occurs while fetching the media data.
-     * 
-     * @param errorHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addErrorHandler(fr.hd3d.html5.video.client.handlers.VideoErrorHandler)
+	 */
     @Override
     public HandlerRegistration addErrorHandler(VideoErrorHandler errorHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoErrorEvent.getType(),
                 errorHandler);
-        addErrorEventHandler();
+        if (mRegisteredHandlers.get("errorHandler") == null) {
+        	addErrorEventHandler();
+        	mRegisteredHandlers.put("errorHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent can render the media data at the current playback position for the first time.
-     * 
-     * @param loadDataHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addLoadDataHandler(fr.hd3d.html5.video.client.handlers.VideoLoadDataHandler)
+	 */
     @Override
     public HandlerRegistration addLoadDataHandler(VideoLoadDataHandler loadDataHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoLoadDataEvent.getType(),
                 loadDataHandler);
-        addLoadDataEventHandler();
+        if (mRegisteredHandlers.get("loadDataHandler") == null) {
+        	addLoadDataEventHandler();
+        	mRegisteredHandlers.put("loadDataHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent has just determined the duration and dimensions of the media resource
-     * 
-     * @param loadMetadataHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addLoadMetadataHandler(fr.hd3d.html5.video.client.handlers.VideoLoadMetadataHandler)
+	 */
     @Override
     public HandlerRegistration addLoadMetadataHandler(VideoLoadMetadataHandler loadMetadataHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoLoadMetadataEvent.getType(),
                 loadMetadataHandler);
-        addLoadMetadataEventHandler();
+        if (mRegisteredHandlers.get("loadMetadataHandler") == null) {
+        	addLoadMetadataEventHandler();
+        	mRegisteredHandlers.put("loadMetadataHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent begins looking for media data, as part of the resource selection algorithm.
-     * 
-     * @param loadStartHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addLoadStartHandler(fr.hd3d.html5.video.client.handlers.VideoLoadStartHandler)
+	 */
     @Override
     public HandlerRegistration addLoadStartHandler(VideoLoadStartHandler loadStartHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoLoadStartEvent.getType(),
                 loadStartHandler);
-        addLoadStartEventHandler();
+        if (mRegisteredHandlers.get("loadStartHandler") == null) {
+        	addLoadStartEventHandler();
+        	mRegisteredHandlers.put("loadStartHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Playback has been paused. Fired after the pause() method has returned.
-     * 
-     * @param pauseHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addPauseHanlder(fr.hd3d.html5.video.client.handlers.VideoPauseHandler)
+	 */
     @Override
     public HandlerRegistration addPauseHanlder(VideoPauseHandler pauseHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoPauseEvent.getType(),
                 pauseHandler);
-        addPauseEventHandler();
+        if (mRegisteredHandlers.get("pauseHandler") == null) {
+        	addPauseEventHandler();
+        	mRegisteredHandlers.put("pauseHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Playback has begun. Fired after the play() method has returned, or when the autoplay attribute has caused
-     * playback to begin
-     * 
-     * @param playHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addPlayHandler(fr.hd3d.html5.video.client.handlers.VideoPlayHandler)
+	 */
     @Override
     public HandlerRegistration addPlayHandler(VideoPlayHandler playHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoPlayEvent.getType(), playHandler);
-        addPlayEventHandler();
+        if (mRegisteredHandlers.get("playHandler") == null) {
+        	addPlayEventHandler();
+        	mRegisteredHandlers.put("playHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Playback has started.
-     * 
-     * @param playingHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addPlayingHandler(fr.hd3d.html5.video.client.handlers.VideoPlayingHandler)
+	 */
     @Override
     public HandlerRegistration addPlayingHandler(VideoPlayingHandler playingHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoPlayingEvent.getType(),
                 playingHandler);
-        addPlayingEventHandler();
+        if (mRegisteredHandlers.get("playingHandler") == null) {
+        	addPlayingEventHandler();
+        	mRegisteredHandlers.put("playingHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent is fetching media data
-     * 
-     * @param progressHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addProgressHandler(fr.hd3d.html5.video.client.handlers.VideoProgressHandler)
+	 */
     @Override
     public HandlerRegistration addProgressHandler(VideoProgressHandler progressHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoProgressEvent.getType(),
                 progressHandler);
-        addProgressEventHandler();
+        if (mRegisteredHandlers.get("progressHandler") == null) {
+        	addProgressEventHandler();
+        	mRegisteredHandlers.put("progressHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Either the defaultPlaybackRate or the playbackRate attribute has just been updated
-     * 
-     * @param rateChangeHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addRateChangeHandler(fr.hd3d.html5.video.client.handlers.VideoRateChangeHandler)
+	 */
     @Override
     public HandlerRegistration addRateChangeHandler(VideoRateChangeHandler rateChangeHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoRateChangeEvent.getType(),
                 rateChangeHandler);
-        addRateChangeEventHandler();
+        if (mRegisteredHandlers.get("rateChangeHandler") == null) {
+        	addRateChangeEventHandler();
+        	mRegisteredHandlers.put("rateChangeHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The seeking attribute changed to false
-     * 
-     * @param seekedHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addSeekedHandler(fr.hd3d.html5.video.client.handlers.VideoSeekedHandler)
+	 */
     @Override
     public HandlerRegistration addSeekedHandler(VideoSeekedHandler seekedHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoSeekedEvent.getType(),
                 seekedHandler);
-        addSeekedEventHandler();
+        if (mRegisteredHandlers.get("seekedHandler") == null) {
+        	addSeekedEventHandler();
+        	mRegisteredHandlers.put("seekedHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The seeking attribute changed to true and the seek operation is taking long enough that the user agent has time
-     * to fire the event
-     * 
-     * @param seekingHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addSeekingHandler(fr.hd3d.html5.video.client.handlers.VideoSeekingHandler)
+	 */
     @Override
     public HandlerRegistration addSeekingHandler(VideoSeekingHandler seekingHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoSeekingEvent.getType(),
                 seekingHandler);
-        addSeekingEventHandler();
+        if (mRegisteredHandlers.get("seekingHandler") == null) {
+        	addSeekingEventHandler();
+        	mRegisteredHandlers.put("seekingHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent is trying to fetch media data, but data is unexpectedly not forthcoming
-     * 
-     * @param stalledHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addStalledHandler(fr.hd3d.html5.video.client.handlers.VideoStalledHandler)
+	 */
     @Override
     public HandlerRegistration addStalledHandler(VideoStalledHandler stalledHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoStalledEvent.getType(),
                 stalledHandler);
-        addStalledEventHandler();
+        if (mRegisteredHandlers.get("stalledHandler") == null) {
+        	addStalledEventHandler();
+        	mRegisteredHandlers.put("stalledHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * The user agent is intentionally not currently fetching media data, but does not have the entire media resource
-     * downloaded
-     * 
-     * @param suspendHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addSuspendHandler(fr.hd3d.html5.video.client.handlers.VideoSuspendHandler)
+	 */
     @Override
     public HandlerRegistration addSuspendHandler(VideoSuspendHandler suspendHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoSuspendEvent.getType(),
                 suspendHandler);
-        addSuspendEventHandler();
+        if (mRegisteredHandlers.get("suspendHandler") == null) {
+        	addSuspendEventHandler();
+        	mRegisteredHandlers.put("suspendHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Add a listener when the current playback position changed as part of normal playback or in an especially
-     * interesting way, for example discontinuously.
-     * 
-     * @param timeUpdateHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addTimeUpdateHandler(fr.hd3d.html5.video.client.handlers.VideoTimeUpdateHandler)
+	 */
     @Override
     public HandlerRegistration addTimeUpdateHandler(VideoTimeUpdateHandler timeUpdateHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoTimeUpdateEvent.getType(),
                 timeUpdateHandler);
-        addTimeUpdateEventHandler();
+        if (mRegisteredHandlers.get("timeUpdateHandler") == null) {
+        	addTimeUpdateEventHandler();
+        	mRegisteredHandlers.put("timeUpdateHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Either the volume attribute or the muted attribute has changed. Fired after the relevant attribute's setter has
-     * returned
-     * 
-     * @param volumeChangeHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addVolumeChangeHandler(fr.hd3d.html5.video.client.handlers.VideoVolumeChangeHandler)
+	 */
     @Override
     public HandlerRegistration addVolumeChangeHandler(VideoVolumeChangeHandler volumeChangeHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoVolumeChangeEvent.getType(),
                 volumeChangeHandler);
-        addVolumeChangeEventHandler();
+        if (mRegisteredHandlers.get("volumeChangeHandler") == null) {
+        	addVolumeChangeEventHandler();
+        	mRegisteredHandlers.put("volumeChangeHandler", true);
+        }
         return handlerRegistration;
     }
 
-    /**
-     * Playback has stopped because the next frame is not available, but the user agent expects that frame to become
-     * available in due course
-     * 
-     * @param waitingHandler
-     */
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#addWaitingHandler(fr.hd3d.html5.video.client.handlers.VideoWaitingHandler)
+	 */
     @Override
     public HandlerRegistration addWaitingHandler(VideoWaitingHandler waitingHandler)
     {
         HandlerRegistration handlerRegistration = videoHandlerManager.addHandler(VideoWaitingEvent.getType(),
                 waitingHandler);
-        addWaitingEventHandler();
+        if (mRegisteredHandlers.get("waitingHandler") == null) {
+        	addWaitingEventHandler();
+        	mRegisteredHandlers.put("waitingHandler", true);
+        }
         return handlerRegistration;
+    }
+    
+    @Override
+    public HandlerRegistration addCuePointHandler(VideoCuePointHandler pHandler) {
+    	HandlerRegistration oRegistration = videoHandlerManager.addHandler(VideoCuePointEvent.getType(), pHandler);
+    	return oRegistration;
     }
 
     /**
@@ -1029,12 +1039,20 @@ public class VideoWidget extends Widget implements HasVideoHandlers
 						}, true);
     }-*/;
     
-    public void load()
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#load()
+	 */
+    @Override
+	public void load()
     {
         this.videoElement.load();
     }
 
-    public void setSrc(String src)
+    /* (non-Javadoc)
+	 * @see fr.hd3d.html5.video.client.IVideoPlayer#setSrc(java.lang.String)
+	 */
+    @Override
+	public void setSrc(String src)
     {
         this.videoElement.setSrc(src);
     }
