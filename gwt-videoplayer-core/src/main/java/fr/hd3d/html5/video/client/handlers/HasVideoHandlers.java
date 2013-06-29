@@ -48,4 +48,7 @@ public interface HasVideoHandlers
     HandlerRegistration addVolumeChangeHandler(VideoVolumeChangeHandler volumeChangeHandler);
 
     HandlerRegistration addWaitingHandler(VideoWaitingHandler waitingHandler);
+    
+    HandlerRegistration addCuePointHandler(VideoCuePointHandler pHandler);
+    
 }
