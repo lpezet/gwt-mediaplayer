@@ -46,8 +46,7 @@ public class VideoTimeUpdateEvent extends DomEvent<VideoTimeUpdateHandler>
         return TYPE;
     }
 
-    protected VideoTimeUpdateEvent()
-    {}
+    public VideoTimeUpdateEvent() {}
 
     @Override
     public com.google.gwt.event.dom.client.DomEvent.Type<VideoTimeUpdateHandler> getAssociatedType()
