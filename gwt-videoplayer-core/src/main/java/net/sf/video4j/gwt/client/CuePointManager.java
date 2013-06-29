@@ -158,7 +158,7 @@ public class CuePointManager implements VideoTimeUpdateHandler {
 	}
 
 	private int cuePointCompare(int pTimeInMillis, String pName, CuePoint pCuePoint) {
-		int oResult = Long.compare(pTimeInMillis, pCuePoint.getTimeInMillis());
+		int oResult = Long.valueOf(pTimeInMillis).compareTo(pCuePoint.getTimeInMillis());
 		if (oResult == 0 && pName != null) {
 			return pName.compareTo(pCuePoint.getName());
 		}
