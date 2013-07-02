@@ -146,4 +146,27 @@ public class VideoElement extends Element {
 	public final native void setSrc(String src)/*-{
 		this.src = src;
 	}-*/;
+	
+	public final native void mute() /*-{
+		this.muted = true;
+	}-*/;
+	
+	public final native void unmute() /*-{
+		this.muted = false;
+	}-*/;
+	
+	public final native boolean isMuted() /*-{
+		return this.muted;
+	}-*/;
+	
+	public final native void fullScreen() /*-{
+		if (this.requestFullscreen) {
+			this.requestFullscreen();
+	  	} else if (this.mozRequestFullScreen) {
+	    	this.mozRequestFullScreen(); // Firefox
+	  	} else if (this.webkitRequestFullscreen) {
+	    	this.webkitRequestFullscreen(); // Chrome and Safari
+	  	}
+	}-*/;
+	
 }

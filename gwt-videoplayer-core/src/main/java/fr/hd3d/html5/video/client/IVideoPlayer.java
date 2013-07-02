@@ -193,5 +193,13 @@ public interface IVideoPlayer extends HasVideoHandlers {
 	public void load();
 
 	public void setSrc(String src);
+	
+	public void mute();
+	
+	public void unmute();
+	
+	public boolean isMuted();
+	
+	public void fullScreen();
 
 }

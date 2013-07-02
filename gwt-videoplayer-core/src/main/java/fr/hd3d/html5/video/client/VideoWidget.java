@@ -1056,4 +1056,25 @@ public class VideoWidget extends Widget implements IVideoPlayer
     {
         this.videoElement.setSrc(src);
     }
+
+	@Override
+	public void mute() {
+		this.videoElement.mute();
+	}
+
+	@Override
+	public void unmute() {
+		this.videoElement.unmute();
+	}
+	
+	@Override
+	public boolean isMuted() {
+		return this.videoElement.isMuted();
+	}
+
+	@Override
+	public void fullScreen() {
+		this.videoElement.fullScreen();
+	}
+	
 }
