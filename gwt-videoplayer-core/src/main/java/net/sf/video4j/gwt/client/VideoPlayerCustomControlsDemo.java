@@ -50,34 +50,42 @@ public class VideoPlayerCustomControlsDemo implements EntryPoint {
 	@UiField
 	Button fullScreenButton;
 
-	VideoWidget videoPlayer;
+	private VideoWidget mVideoPlayer;
+	private boolean mIsPlaying;
 	
 	@Override
 	public void onModuleLoad() {
 		HTMLPanel outer = binder.createAndBindUi(this);
 		RootPanel.get("player").add(outer);
-		videoPlayer = new VideoWidget();
-		videoPlayer.setControls(false);
-		videoPlayer.setAutoPlay(true);
-		videoPlayer.addSource(new VideoSource(VIDEO, VideoType.MP4));
-		videoPlayer.setPixelSize(500, 400);
-		videoContainer.add(videoPlayer);
+		mVideoPlayer = new VideoWidget();
+		mVideoPlayer.setControls(false);
+		mVideoPlayer.addSource(new VideoSource(VIDEO, VideoType.MP4));
+		mVideoPlayer.setPixelSize(500, 400);
+		videoContainer.add(mVideoPlayer);
 	}
 	
 	@UiHandler("playPauseButton")
 	public void onPlayPauseClickEvent(ClickEvent pEvent) {
-		videoPlayer.playPause();
+		mVideoPlayer.playPause();
+		mIsPlaying = !mIsPlaying;
+		if (mIsPlaying) playPauseButton.setText("Pause");
+		else playPauseButton.setText("Play"); 
 	}
 	
 	@UiHandler("muteButton")
 	public void onMuteClickEvent(ClickEvent pEvent) {
-		if (videoPlayer.isMuted()) videoPlayer.unmute(); 
-		else videoPlayer.mute();
+		if (mVideoPlayer.isMuted()) {
+			muteButton.setText("Mute");
+			mVideoPlayer.unmute(); 
+		} else {
+			muteButton.setText("Unmute");
+			mVideoPlayer.mute();
+		}
 	}
 	
 	@UiHandler("fullScreenButton")
 	public void onFullScreenClickEvent(ClickEvent pEvent) {
-		videoPlayer.fullScreen();
+		mVideoPlayer.fullScreen();
 	}
 
 }
