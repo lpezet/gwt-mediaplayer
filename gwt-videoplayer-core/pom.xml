@@ -146,6 +146,32 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${basedir}/src/site/resources">
+									<dirset dir="${basedir}/src/main/webapp">
+									  <include name="gwt_*/**"/>
+									</dirset>
+								</copy>
+								<!-- 
+								<mkdir dir="${basedir}/src/site/resources/achievementnetwork.datawarehouse.core.db"/>
+								<copy todir="${basedir}/src/main/resources/org/achievementnetwork/datawarehouse/core/db">
+									<fileset dir="${basedir}/src/main/db/migrations" />
+								</copy>
+								-->
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
