@@ -81,13 +81,8 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
-				<!-- <dependencies>
-					<dependency>
-						<groupId>com.tripfilms</groupId>
-						<artifactId>container-session-manager</artifactId>
-						<version>${container-session-manager.version}</version>
-					</dependency>
-				</dependencies> -->
+				<!-- <dependencies> <dependency> <groupId>com.tripfilms</groupId> <artifactId>container-session-manager</artifactId> 
+					<version>${container-session-manager.version}</version> </dependency> </dependencies> -->
 				<configuration>
 					<contextFile>${basedir}/etc/tomcat7/dev.xml</contextFile>
 					<path>/</path>
@@ -121,15 +116,9 @@
 							<port>8080</port>
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
-						<!-- 
-						<connector implementation="org.mortbay.jetty.security.SslSocketConnector">
-							<port>8443</port>
-							<maxIdleTime>60000</maxIdleTime>
-							<keystore>${basedir}/etc/ssl.keystore</keystore>
-							<password>c3rt1f1c@t3</password>
-							<keyPassword>c3rt1f1c@t3</keyPassword>
-						</connector>
-						-->
+						<!-- <connector implementation="org.mortbay.jetty.security.SslSocketConnector"> 
+							<port>8443</port> <maxIdleTime>60000</maxIdleTime> <keystore>${basedir}/etc/ssl.keystore</keystore> 
+							<password>c3rt1f1c@t3</password> <keyPassword>c3rt1f1c@t3</keyPassword> </connector> -->
 					</connectors>
 					<!-- <scanIntervalSeconds>30</scanIntervalSeconds> <scanTargets> <scanTarget>src/main/webapp/WEB-INF/tiles-def.xml</scanTarget> 
 						<scanTarget>src/main/webapp/WEB-INF/spring-servlet.xml</scanTarget> <scanTarget>src/main/webapp/WEB-INF/applicationContext.xml</scanTarget> 
@@ -155,15 +144,12 @@
 							<tasks>
 								<copy todir="${basedir}/src/site/resources">
 									<dirset dir="${basedir}/src/main/webapp">
-									  <include name="gwt_*/**"/>
+										<include name="gwt_*/**" />
 									</dirset>
 								</copy>
-								<!-- 
-								<mkdir dir="${basedir}/src/site/resources/achievementnetwork.datawarehouse.core.db"/>
-								<copy todir="${basedir}/src/main/resources/org/achievementnetwork/datawarehouse/core/db">
-									<fileset dir="${basedir}/src/main/db/migrations" />
-								</copy>
-								-->
+								<!-- <mkdir dir="${basedir}/src/site/resources/achievementnetwork.datawarehouse.core.db"/> 
+									<copy todir="${basedir}/src/main/resources/org/achievementnetwork/datawarehouse/core/db"> 
+									<fileset dir="${basedir}/src/main/db/migrations" /> </copy> -->
 							</tasks>
 						</configuration>
 						<goals>
@@ -174,6 +160,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<site>
+			<id>sourceforge</id>
+			<url>scp://shell.sourceforge.net/home/project-web/video4j/htdocs</url>
+		</site>
+	</distributionManagement>
 	<repositories>
 		<repository>
 			<id>com.springsource.repository.bundles.release</id>
