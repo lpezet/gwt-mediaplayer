@@ -1076,5 +1076,15 @@ public class VideoWidget extends Widget implements IVideoPlayer
 	public void fullScreen() {
 		this.videoElement.fullScreen();
 	}
+
+	@Override
+	public double getVolume() {
+		return this.videoElement.getVolume();
+	}
+
+	@Override
+	public void setVolume(double value) {
+		this.videoElement.setVolume(value);
+	}
 	
 }

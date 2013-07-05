@@ -201,5 +201,9 @@ public interface IVideoPlayer extends HasVideoHandlers {
 	public boolean isMuted();
 	
 	public void fullScreen();
+	
+	public double getVolume();
+	
+	public void setVolume(double value);
 
 }

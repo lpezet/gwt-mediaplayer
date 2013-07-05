@@ -15,10 +15,16 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.kiouri.sliderbar.client.event.BarValueChangedEvent;
+import com.kiouri.sliderbar.client.event.BarValueChangedHandler;
+import com.kiouri.sliderbar.client.solution.adv.AdvancedSliderBar;
+import com.kiouri.sliderbar.client.solution.adv.BasicSliderBar;
 
 import fr.hd3d.html5.video.client.VideoSource;
 import fr.hd3d.html5.video.client.VideoSource.VideoType;
 import fr.hd3d.html5.video.client.VideoWidget;
+import fr.hd3d.html5.video.client.events.VideoTimeUpdateEvent;
+import fr.hd3d.html5.video.client.handlers.VideoTimeUpdateHandler;
 
 /**
  * 
@@ -44,11 +50,17 @@ public class VideoPlayerCustomControlsDemo implements EntryPoint {
 	@UiField
 	Panel overlayContainer;
 	@UiField
+	Panel controlContainer;
+	@UiField
 	Button playPauseButton;
 	@UiField
 	Button muteButton;
 	@UiField
 	Button fullScreenButton;
+	@UiField
+	AdvancedSliderBar volumeSlider;
+	@UiField
+	BasicSliderBar timelineSlider;
 
 	private VideoWidget mVideoPlayer;
 	private boolean mIsPlaying;
@@ -62,6 +74,31 @@ public class VideoPlayerCustomControlsDemo implements EntryPoint {
 		mVideoPlayer.addSource(new VideoSource(VIDEO, VideoType.MP4));
 		mVideoPlayer.setPixelSize(500, 400);
 		videoContainer.add(mVideoPlayer);
+		setUpTimelineSlider();
+		setUpVolumeSlider();
+		mVideoPlayer.addTimeUpdateHandler(new VideoTimeUpdateHandler() {
+			@Override
+			public void onTimeUpdated(VideoTimeUpdateEvent event) {
+				timelineSlider.setValue((int)((event.getCurrentTime() / mVideoPlayer.getDuration()) * 100));
+			}
+		});
+	}
+
+	private void setUpTimelineSlider() {
+		timelineSlider.setMaxValue(100);
+		timelineSlider.setValue(0);
+	}
+
+	private void setUpVolumeSlider() {
+		volumeSlider.drawMarks("black", 2);
+		volumeSlider.setMaxValue(10);
+		volumeSlider.setValue(10); 
+		volumeSlider.addBarValueChangedHandler(new BarValueChangedHandler() {
+			@Override
+			public void onBarValueChanged(BarValueChangedEvent event) {
+				mVideoPlayer.setVolume((double)event.getValue() / 10);
+			}
+		});
 	}
 	
 	@UiHandler("playPauseButton")
@@ -76,7 +113,7 @@ public class VideoPlayerCustomControlsDemo implements EntryPoint {
 	public void onMuteClickEvent(ClickEvent pEvent) {
 		if (mVideoPlayer.isMuted()) {
 			muteButton.setText("Mute");
-			mVideoPlayer.unmute(); 
+			mVideoPlayer.unmute();
 		} else {
 			muteButton.setText("Unmute");
 			mVideoPlayer.mute();
@@ -87,5 +124,5 @@ public class VideoPlayerCustomControlsDemo implements EntryPoint {
 	public void onFullScreenClickEvent(ClickEvent pEvent) {
 		mVideoPlayer.fullScreen();
 	}
-
+	
 }

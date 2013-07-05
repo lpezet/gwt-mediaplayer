@@ -169,4 +169,12 @@ public class VideoElement extends Element {
 	  	}
 	}-*/;
 	
+	public final native double getVolume() /*-{
+		return this.volume;
+	}-*/;
+	
+	public final native void setVolume(double value) /*-{
+		this.volume = value;
+	}-*/;
+	
 }

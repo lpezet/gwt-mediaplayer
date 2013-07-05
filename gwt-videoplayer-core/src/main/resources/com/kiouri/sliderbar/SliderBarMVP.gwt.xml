@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='gwt_video_player_custom_controls_demo'>
+<module rename-to='sliderbarmvp'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-  <!-- <inherits name="com.google.gwt.logging.Logging"/> -->
+
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-  <inherits name='fr.hd3d.html5.video.HTML5Video'/>
-  <inherits name='com.kiouri.sliderbar.SliderBarMVP'/>
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-
+  <stylesheet src='/c/slide_bar_style.css'/> 
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='net.sf.video4j.gwt.client.VideoPlayerCustomControlsDemo'/>
+  <!-- <entry-point class='com.kiouri.sliderbar.client.SliderBarMVP'/> -->
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
