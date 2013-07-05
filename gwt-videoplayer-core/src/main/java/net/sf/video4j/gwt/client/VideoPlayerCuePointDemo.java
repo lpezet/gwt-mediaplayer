@@ -29,7 +29,7 @@ public class VideoPlayerCuePointDemo implements EntryPoint {
 	private Logger mLogger = Logger.getLogger(VideoPlayerOverlayDemo.class.getName());
 
 	private static final String OVERLAY = "http://openx.openvideoads.org/openx-2.8.2/www/images/fa5b35e2e16d4b2a922e4169c9fcea97.gif";
-	private static final String VIDEO = "http://videos.tripfilms.com/720p/D93A130B1BC3E02EB7AB99812EFB8C00.mp4";
+	private static final String VIDEO = "http://videos.tripfilms.com/720p/0D933B4160C30D1A18CCFA2AB86EDE23.mp4";
 	
 	interface Binder extends UiBinder<HTMLPanel, VideoPlayerCuePointDemo> { }
 	private static final Binder binder = GWT.create(Binder.class);
