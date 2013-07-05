@@ -9,7 +9,7 @@
 	<!-- Optional HEAD element, which is copied as is into the XHTML <head> 
 		element -->
 	<head>
-		<title>Test</title>
+		<title>Test 2</title>
 		<script type="text/javascript" src="/gwt_video_player_overlay_demo/gwt_video_player_overlay_demo.nocache.js"></script>
 	</head>
 
