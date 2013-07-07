@@ -27,10 +27,12 @@ public class VASTParser implements IVASTParser {
 
 			Node n = oDoc.getFirstChild();
 			if (n.getNodeName().indexOf("VAST") >= 0) {
+				System.out.println("Parsing VAST 2.0...");
 				Node oVN = n.getAttributes().getNamedItem("version");
 				String oVersion = oVN.getNodeValue();
 				if (oVersion.startsWith("2.")) return parse2x(n);
 			} else {
+				System.out.println("Parsing VAST 1.0...");
 				return parse1x(n);
 			}
 
@@ -63,12 +65,7 @@ public class VASTParser implements IVASTParser {
 	}
 
 	private VAST parse2x(Node pVASTNode) {
-		VAST oVAST = new VAST();
-		NodeList oChildren = pVASTNode.getChildNodes();
-		for (int i = 0; i < oChildren.getLength(); i++) {
-			Node n = oChildren.item(i);
-			System.out.println("Found node : " + n.getNodeName());
-		}
-		return oVAST;
+		VAST20Parser oParser = new VAST20Parser();
+		return oParser.parse(pVASTNode);
 	}
 }
