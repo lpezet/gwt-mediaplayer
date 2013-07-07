@@ -12,6 +12,10 @@
 		<tiles.version>2.2.2</tiles.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<gwt.version>2.5.1</gwt.version>
+		<gwt-test-utils.version>0.44</gwt-test-utils.version>
+		
+		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
+		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 	</properties>
 	<build>
 		<plugins>
@@ -158,6 +162,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx512M -XX:MaxPermSize=128M</argLine>
+					<additionalClasspathElements>
+			         	<additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+			            <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+			        </additionalClasspathElements>
+			        <useManifestOnlyJar>false</useManifestOnlyJar>
+      				<forkMode>always</forkMode>
+					<systemProperties>
+			            <property>
+			                <name>gwt.args</name>
+			                <value>-out target/gwt-test</value>
+			            </property>
+			            <property>
+			                <name>gwt.persistentunitcache</name>
+			                <value>false</value>
+			            </property>
+			        </systemProperties>
+				</configuration>
+			</plugin>	
 		</plugins>
 	</build>
 	<distributionManagement>
@@ -424,6 +450,11 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.gwt-test-utils</groupId>
+			<artifactId>gwt-test-utils</artifactId>
+			<version>${gwt-test-utils.version}</version>
 		</dependency>
 	</dependencies>
 </project>
