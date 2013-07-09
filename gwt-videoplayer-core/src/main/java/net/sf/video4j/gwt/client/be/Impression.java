@@ -3,7 +3,7 @@
  */
 package net.sf.video4j.gwt.client.be;
 
-import java.net.URI;
+import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
@@ -12,7 +12,7 @@ import java.net.URI;
 public class Impression {
 
 	private String mId;
-	private URI mURI;
+	private SafeUri mURI;
 	
 	public String getId() {
 		return mId;
@@ -20,10 +20,10 @@ public class Impression {
 	public void setId(String pId) {
 		mId = pId;
 	}
-	public URI getURI() {
+	public SafeUri getURI() {
 		return mURI;
 	}
-	public void setURI(URI pURI) {
+	public void setURI(SafeUri pURI) {
 		mURI = pURI;
 	}
 }

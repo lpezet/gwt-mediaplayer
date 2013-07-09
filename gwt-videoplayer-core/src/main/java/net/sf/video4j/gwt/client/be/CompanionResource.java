@@ -3,6 +3,8 @@
  */
 package net.sf.video4j.gwt.client.be;
 
+import com.google.gwt.safehtml.shared.SafeUri;
+
 /**
  * @author luc
  *
@@ -10,8 +12,32 @@ package net.sf.video4j.gwt.client.be;
 public class CompanionResource {
 	
 	private CompanionResourceType mType;
-	
 	private String mContent; // HTML
-	private String mURI; // Static and IFrame
+	private SafeUri mURI; // Static and IFrame
 	private String mCreativeType; // Static
+	
+	public CompanionResourceType getType() {
+		return mType;
+	}
+	public void setType(CompanionResourceType pType) {
+		mType = pType;
+	}
+	public String getContent() {
+		return mContent;
+	}
+	public void setContent(String pContent) {
+		mContent = pContent;
+	}
+	public SafeUri getURI() {
+		return mURI;
+	}
+	public void setURI(SafeUri pURI) {
+		mURI = pURI;
+	}
+	public String getCreativeType() {
+		return mCreativeType;
+	}
+	public void setCreativeType(String pCreativeType) {
+		mCreativeType = pCreativeType;
+	}
 }

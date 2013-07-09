@@ -3,9 +3,10 @@
  */
 package net.sf.video4j.gwt.client.be;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
@@ -37,7 +38,7 @@ public class CompanionAd {
 	private List<Tracking> mTrackingEvents = new ArrayList<Tracking>();
 	
 	// URL to open as destination page when user clicks on the the companion banner ad.
-	private URI mClickThrough;
+	private SafeUri mClickThrough;
 	
 	// Alt text to be displayed when companion is rendered in HTML environment.
 	private String mAltText;
@@ -91,5 +92,45 @@ public class CompanionAd {
 
 	public void setApiFramework(String pApiFramework) {
 		mApiFramework = pApiFramework;
+	}
+
+	public CompanionResource getResource() {
+		return mResource;
+	}
+
+	public void setResource(CompanionResource pResource) {
+		mResource = pResource;
+	}
+
+	public List<Tracking> getTrackingEvents() {
+		return mTrackingEvents;
+	}
+
+	public void setTrackingEvents(List<Tracking> pTrackingEvents) {
+		mTrackingEvents = pTrackingEvents;
+	}
+
+	public SafeUri getClickThrough() {
+		return mClickThrough;
+	}
+
+	public void setClickThrough(SafeUri pClickThrough) {
+		mClickThrough = pClickThrough;
+	}
+
+	public String getAltText() {
+		return mAltText;
+	}
+
+	public void setAltText(String pAltText) {
+		mAltText = pAltText;
+	}
+
+	public String getAdParameters() {
+		return mAdParameters;
+	}
+
+	public void setAdParameters(String pAdParameters) {
+		mAdParameters = pAdParameters;
 	}
 }

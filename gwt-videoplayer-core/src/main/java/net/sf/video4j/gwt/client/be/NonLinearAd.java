@@ -3,9 +3,7 @@
  */
 package net.sf.video4j.gwt.client.be;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
@@ -46,7 +44,7 @@ public class NonLinearAd {
 
 	// URL to open as destination page when user clicks on the the companion
 	// banner ad.
-	private URI mClickThrough;
+	private SafeUri mClickThrough;
 
 	// Data to be passed into the companion ads. The apiFramework defines the
 	// method to use for communication (e.g. "FlashVar")
@@ -132,11 +130,11 @@ public class NonLinearAd {
 		mResource = pResource;
 	}
 
-	public URI getClickThrough() {
+	public SafeUri getClickThrough() {
 		return mClickThrough;
 	}
 
-	public void setClickThrough(URI pClickThrough) {
+	public void setClickThrough(SafeUri pClickThrough) {
 		mClickThrough = pClickThrough;
 	}
 

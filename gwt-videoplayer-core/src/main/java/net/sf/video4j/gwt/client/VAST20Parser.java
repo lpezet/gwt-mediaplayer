@@ -4,19 +4,8 @@
 package net.sf.video4j.gwt.client;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.tools.ant.types.selectors.OrSelector;
-
-import com.google.gwt.xml.client.NamedNodeMap;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.ibm.icu.text.SimpleDateFormat;
 
 import net.sf.video4j.gwt.client.be.Ad;
 import net.sf.video4j.gwt.client.be.AdSystem;
@@ -34,6 +23,11 @@ import net.sf.video4j.gwt.client.be.TrackingEvent;
 import net.sf.video4j.gwt.client.be.VAST;
 import net.sf.video4j.gwt.client.be.VideoClicks;
 import net.sf.video4j.gwt.client.be.Wrapper;
+
+import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.safehtml.shared.UriUtils;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 
 /**
  * @author luc
@@ -245,12 +239,8 @@ public class VAST20Parser {
 		return oResult;
 	}
 
-	private URI newURI(String pValue) {
-		try {
-			return new URI(pValue);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
+	private SafeUri newURI(String pValue) {
+		return UriUtils.fromString(pValue);
 	}
 
 	private String getAttribute(Node pNode, String pName, String pDefault) {

@@ -3,7 +3,7 @@
  */
 package net.sf.video4j.gwt.client.be;
 
-import java.net.URI;
+import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
@@ -11,7 +11,7 @@ import java.net.URI;
  */
 public class MediaFile {
 
-	private URI mURI;
+	private SafeUri mURI;
 	
 	// Optional identifier
 	private String mId;
@@ -41,11 +41,11 @@ public class MediaFile {
 	// The apiFramework defines the method to use for communication if the MediaFile is interactive. Suggested values for this element are "VPAID", "FlashVars" (for Flash/Flex), "initParams" (for Silverlight) and "GetVariables" (variables placed in key/value pairs on the asset request).
 	private String mApiFramework;
 
-	public URI getURI() {
+	public SafeUri getURI() {
 		return mURI;
 	}
 
-	public void setURI(URI pURI) {
+	public void setURI(SafeUri pURI) {
 		mURI = pURI;
 	}
 
