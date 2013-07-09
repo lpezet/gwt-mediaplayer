@@ -31,7 +31,7 @@ public class InLine extends Ad {
 	
 	private List<Creative> mCreatives = new ArrayList<Creative>();
 	
-	private List<Object> mExtensions = new ArrayList<Object>();
+	private List<Extension> mExtensions = new ArrayList<Extension>();
 
 	public AdSystem getAdSystem() {
 		return mAdSystem;
@@ -89,11 +89,11 @@ public class InLine extends Ad {
 		mCreatives = pCreatives;
 	}
 
-	public List<Object> getExtensions() {
+	public List<Extension> getExtensions() {
 		return mExtensions;
 	}
 
-	public void setExtensions(List<Object> pExtensions) {
+	public void setExtensions(List<Extension> pExtensions) {
 		mExtensions = pExtensions;
 	}
 }
