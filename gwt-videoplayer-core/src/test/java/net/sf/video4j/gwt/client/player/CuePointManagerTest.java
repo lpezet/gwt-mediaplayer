@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client;
+package net.sf.video4j.gwt.client.player;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
@@ -14,6 +14,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+
+import net.sf.video4j.gwt.client.player.CuePoint;
+import net.sf.video4j.gwt.client.player.CuePointManager;
 
 import org.easymock.IAnswer;
 import org.junit.Test;
