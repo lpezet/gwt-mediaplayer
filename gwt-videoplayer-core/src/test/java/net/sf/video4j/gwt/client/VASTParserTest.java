@@ -3,6 +3,10 @@
  */
 package net.sf.video4j.gwt.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -13,7 +17,6 @@ import net.sf.video4j.gwt.client.be.VAST;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import com.googlecode.gwt.test.GwtModule;
 import com.googlecode.gwt.test.GwtTest;
