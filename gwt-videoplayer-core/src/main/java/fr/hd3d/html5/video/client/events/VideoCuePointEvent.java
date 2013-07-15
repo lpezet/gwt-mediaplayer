@@ -3,7 +3,7 @@
  */
 package fr.hd3d.html5.video.client.events;
 
-import net.sf.video4j.gwt.client.CuePoint;
+import net.sf.video4j.gwt.client.player.CuePoint;
 
 import com.google.gwt.event.shared.GwtEvent;
 
