@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Playlist {
 	
-	private static class TrackNodes {
+	private static class TrackPlayItems {
 		
 		private static class PlayItemComparator implements Comparator<PlayItem> {
 			@Override
@@ -45,7 +45,7 @@ public class Playlist {
 		private Track mTrack;
 		private Set<PlayItem> mNodes = new TreeSet<PlayItem>(new PlayItemComparator());
 		
-		public TrackNodes(Track pTrack) {
+		public TrackPlayItems(Track pTrack) {
 			mTrack = pTrack;
 		}
 		
@@ -63,7 +63,7 @@ public class Playlist {
 	private PlayItem mHead;
 	private PlayItem mTail;
 	private PlayItem mCursor;
-	private Map<Integer, TrackNodes> mTrackNodesById = new HashMap<Integer, Playlist.TrackNodes>();
+	private Map<Integer, TrackPlayItems> mTrackNodesById = new HashMap<Integer, Playlist.TrackPlayItems>();
 	
 	public void add(Track pTrack) {
 		pTrack.setId(mTrackIdGenerator.getAndIncrement());
@@ -80,9 +80,9 @@ public class Playlist {
 	}
 
 	private void addTrackNode(Track pTrack, PlayItem pNode) {
-		TrackNodes oTrackNodes = mTrackNodesById.get(pTrack.getId());
+		TrackPlayItems oTrackNodes = mTrackNodesById.get(pTrack.getId());
 		if (oTrackNodes == null) {
-			oTrackNodes = new TrackNodes(pTrack);
+			oTrackNodes = new TrackPlayItems(pTrack);
 			mTrackNodesById.put(pTrack.getId(), oTrackNodes);
 		}
 		oTrackNodes.getNodes().add(pNode);
@@ -90,7 +90,7 @@ public class Playlist {
 	
 	public void addChild(Track pTrack, Track pParentTrack, int pCutOffTime) {
 		PlayItem oNode = new PlayItem(pTrack);
-		TrackNodes oParentTrackNodes = mTrackNodesById.get(pParentTrack.getId());
+		TrackPlayItems oParentTrackNodes = mTrackNodesById.get(pParentTrack.getId());
 		if (oParentTrackNodes == null) throw new RuntimeException("Parent track must exist or have valid id.");
 		if (oParentTrackNodes.getNodes().isEmpty()) throw new RuntimeException("Invalid state: parent track has no more nodes.");
 		if (pCutOffTime == 0) {
