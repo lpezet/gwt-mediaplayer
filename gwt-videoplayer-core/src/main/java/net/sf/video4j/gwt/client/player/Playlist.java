@@ -43,14 +43,14 @@ public class Playlist {
 		}
 		
 		private Track mTrack;
-		private Set<PlayItem> mNodes = new TreeSet<PlayItem>(new PlayItemComparator());
+		private Set<PlayItem> mItems = new TreeSet<PlayItem>(new PlayItemComparator());
 		
 		public TrackPlayItems(Track pTrack) {
 			mTrack = pTrack;
 		}
 		
-		public Set<PlayItem> getNodes() {
-			return mNodes;
+		public Set<PlayItem> getItems() {
+			return mItems;
 		}
 		
 		public Track getTrack() {
@@ -63,59 +63,50 @@ public class Playlist {
 	private PlayItem mHead;
 	private PlayItem mTail;
 	private PlayItem mCursor;
-	private Map<Integer, TrackPlayItems> mTrackNodesById = new HashMap<Integer, Playlist.TrackPlayItems>();
+	private Map<Integer, TrackPlayItems> mTrackPlayItemsById = new HashMap<Integer, Playlist.TrackPlayItems>();
 	
 	public void add(Track pTrack) {
 		pTrack.setId(mTrackIdGenerator.getAndIncrement());
-		PlayItem oNode = new PlayItem(pTrack);
+		PlayItem oItem = new PlayItem(pTrack);
 		if (mHead == null) {
-			mHead = oNode;
-			mTail = oNode;
+			mHead = oItem;
+			mTail = oItem;
 		} else {
-			mTail.setNext(oNode);
-			oNode.setPrevious(mTail);
-			mTail = oNode;
+			mTail.setNext(oItem);
+			oItem.setPrevious(mTail);
+			mTail = oItem;
 		}
-		addTrackNode(pTrack, oNode);
-	}
-
-	private void addTrackNode(Track pTrack, PlayItem pNode) {
-		TrackPlayItems oTrackNodes = mTrackNodesById.get(pTrack.getId());
-		if (oTrackNodes == null) {
-			oTrackNodes = new TrackPlayItems(pTrack);
-			mTrackNodesById.put(pTrack.getId(), oTrackNodes);
-		}
-		oTrackNodes.getNodes().add(pNode);
+		addTrackPlayItem(pTrack, oItem);
 	}
 	
 	public void addChild(Track pTrack, Track pParentTrack, int pCutOffTime) {
-		PlayItem oNode = new PlayItem(pTrack);
-		TrackPlayItems oParentTrackNodes = mTrackNodesById.get(pParentTrack.getId());
-		if (oParentTrackNodes == null) throw new RuntimeException("Parent track must exist or have valid id.");
-		if (oParentTrackNodes.getNodes().isEmpty()) throw new RuntimeException("Invalid state: parent track has no more nodes.");
+		PlayItem oItem = new PlayItem(pTrack);
+		TrackPlayItems oParentTrackPlayItems = mTrackPlayItemsById.get(pParentTrack.getId());
+		if (oParentTrackPlayItems == null) throw new RuntimeException("Parent track must exist or have valid id.");
+		if (oParentTrackPlayItems.getItems().isEmpty()) throw new RuntimeException("Invalid state: parent track has no more nodes.");
 		if (pCutOffTime == 0) {
-			PlayItem oParentNode = oParentTrackNodes.getNodes().iterator().next();
-			insertBefore(oNode, oParentNode);			
+			PlayItem oParentPlayItem = oParentTrackPlayItems.getItems().iterator().next();
+			insertBefore(oItem, oParentPlayItem);			
 		} else if (pCutOffTime == -1) {
-			PlayItem oParentNode = oParentTrackNodes.getNodes().iterator().next();
-			insertAfter(oNode, oParentNode);
+			PlayItem oParentPlayItem = oParentTrackPlayItems.getItems().iterator().next();
+			insertAfter(oItem, oParentPlayItem);
 		} else {
 			// TODO: problem: if duration is not specified for parent track, how do I know to add this play node after the parent?
 			// TODO: 
 			PlayItem oPivot = null;
-			for (PlayItem oPNode : oParentTrackNodes.getNodes()) {
-				if (inBetween(pCutOffTime, oPNode.getStart(), oPNode.getEnd())) {
-					oPivot = oPNode;
+			for (PlayItem oPItem : oParentTrackPlayItems.getItems()) {
+				if (inBetween(pCutOffTime, oPItem.getStart(), oPItem.getEnd())) {
+					oPivot = oPItem;
 					break;
 				}
 			}
 			if (oPivot != null) {
 				if (oPivot.getStart() == pCutOffTime) {
 					// insert before
-					insertBefore(oNode, oPivot);
+					insertBefore(oItem, oPivot);
 				} else if (oPivot.getEnd() == pCutOffTime) {
 					// insert after
-					insertAfter(oNode, oPivot);
+					insertAfter(oItem, oPivot);
 				} else {
 					PlayItem oBefore = new PlayItem(oPivot.getTrack(), oPivot.getStart(), pCutOffTime);
 					PlayItem oAfter = new PlayItem(oPivot.getTrack(), pCutOffTime, oPivot.getEnd());
@@ -125,16 +116,25 @@ public class Playlist {
 					oAfter.setNext(oPivot.getNext());
 					oPivot.getNext().setPrevious(oAfter);
 					
-					oBefore.setNext(oNode);
-					oNode.setPrevious(oBefore);
-					oAfter.setPrevious(oNode);
-					oNode.setNext(oAfter);
+					oBefore.setNext(oItem);
+					oItem.setPrevious(oBefore);
+					oAfter.setPrevious(oItem);
+					oItem.setNext(oAfter);
 				}
 			} else {
 				throw new RuntimeException("How can this happen???");
 			}
 		}
-		addTrackNode(pTrack, oNode);
+		addTrackPlayItem(pTrack, oItem);
+	}
+	
+	private void addTrackPlayItem(Track pTrack, PlayItem pItem) {
+		TrackPlayItems oTrackPlayItems = mTrackPlayItemsById.get(pTrack.getId());
+		if (oTrackPlayItems == null) {
+			oTrackPlayItems = new TrackPlayItems(pTrack);
+			mTrackPlayItemsById.put(pTrack.getId(), oTrackPlayItems);
+		}
+		oTrackPlayItems.getItems().add(pItem);
 	}
 
 	private boolean inBetween(int pTime, int pStart, int pEnd) {
@@ -142,20 +142,20 @@ public class Playlist {
 				&& (pTime <= pEnd || pEnd == -1);
 	}
 
-	private void insertAfter(PlayItem pNode, PlayItem pParentNode) {
-		PlayItem oNext = pParentNode.getNext();
-		pNode.setPrevious(pParentNode);
-		pNode.setNext(oNext);
-		oNext.setPrevious(pNode);
-		pParentNode.setNext(pNode);
+	private void insertAfter(PlayItem pItem, PlayItem pParentItem) {
+		PlayItem oNext = pParentItem.getNext();
+		pItem.setPrevious(pParentItem);
+		pItem.setNext(oNext);
+		oNext.setPrevious(pItem);
+		pParentItem.setNext(pItem);
 	}
 	
-	private void insertBefore(PlayItem pNode, PlayItem pParentNode) {
-		PlayItem oPrevious = pParentNode.getPrevious();
-		pNode.setPrevious(oPrevious);
-		oPrevious.setNext(pNode);
-		pNode.setNext(pParentNode);
-		pParentNode.setPrevious(pNode);
+	private void insertBefore(PlayItem pItem, PlayItem pParentItem) {
+		PlayItem oPrevious = pParentItem.getPrevious();
+		pItem.setPrevious(oPrevious);
+		oPrevious.setNext(pItem);
+		pItem.setNext(pParentItem);
+		pParentItem.setPrevious(pItem);
 	}
 
 	public boolean hasNext() {
