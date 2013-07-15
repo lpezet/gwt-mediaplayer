@@ -5,6 +5,8 @@ package net.sf.video4j.gwt.client;
 
 import java.util.logging.Logger;
 
+import net.sf.video4j.gwt.client.player.CuePointManager;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
