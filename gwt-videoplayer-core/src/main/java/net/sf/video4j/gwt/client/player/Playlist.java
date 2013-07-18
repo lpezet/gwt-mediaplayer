@@ -6,11 +6,10 @@ package net.sf.video4j.gwt.client.player;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.sf.video4j.gwt.client.NumberUtils;
+import net.sf.video4j.gwt.client.util.NumberUtils;
 
 /**
  * Use "durationchange" event to load the duration information from a track.

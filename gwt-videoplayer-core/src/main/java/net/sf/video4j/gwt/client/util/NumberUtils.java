@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client;
+package net.sf.video4j.gwt.client.util;
 
 /**
  * @author luc

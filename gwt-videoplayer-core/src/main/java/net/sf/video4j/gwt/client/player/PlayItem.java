@@ -3,7 +3,7 @@
  */
 package net.sf.video4j.gwt.client.player;
 
-import net.sf.video4j.gwt.client.NumberUtils;
+import net.sf.video4j.gwt.client.util.NumberUtils;
 
 
 /**
