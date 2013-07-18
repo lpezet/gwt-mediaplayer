@@ -4,8 +4,12 @@
 	<groupId>net.sf.video4j</groupId>
 	<artifactId>gwt-videoplayer-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
+		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
+		
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
@@ -13,10 +17,8 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<gwt.version>2.5.1</gwt.version>
 		<gwt-test-utils.version>0.44</gwt-test-utils.version>
-		
-		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
-		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -85,8 +87,6 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
-				<!-- <dependencies> <dependency> <groupId>com.tripfilms</groupId> <artifactId>container-session-manager</artifactId> 
-					<version>${container-session-manager.version}</version> </dependency> </dependencies> -->
 				<configuration>
 					<contextFile>${basedir}/etc/tomcat7/dev.xml</contextFile>
 					<path>/</path>
@@ -151,9 +151,6 @@
 										<include name="gwt_*/**" />
 									</fileset>
 								</copy>
-								<!-- <mkdir dir="${basedir}/src/site/resources/achievementnetwork.datawarehouse.core.db"/> 
-									<copy todir="${basedir}/src/main/resources/org/achievementnetwork/datawarehouse/core/db"> 
-									<fileset dir="${basedir}/src/main/db/migrations" /> </copy> -->
 							</tasks>
 						</configuration>
 						<goals>
@@ -186,12 +183,14 @@
 			</plugin>	
 		</plugins>
 	</build>
+	
 	<distributionManagement>
 		<site>
 			<id>sourceforge</id>
 			<url>scp://shell.sourceforge.net/home/project-web/video4j/htdocs</url>
 		</site>
 	</distributionManagement>
+	
 	<repositories>
 		<repository>
 			<id>com.springsource.repository.bundles.release</id>
@@ -204,8 +203,8 @@
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 	</repositories>
+	
 	<dependencies>
-		<!-- GWT related dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -217,7 +216,6 @@
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Spring Stuff -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -457,4 +455,5 @@
 			<version>${gwt-test-utils.version}</version>
 		</dependency>
 	</dependencies>
+	
 </project>
