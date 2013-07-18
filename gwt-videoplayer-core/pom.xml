@@ -10,13 +10,17 @@
 		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
+		<gwt.version>2.5.1</gwt.version>
+		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<tiles.version>2.2.2</tiles.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<gwt.version>2.5.1</gwt.version>
-		<gwt-test-utils.version>0.44</gwt-test-utils.version>
+		<easymock.version>3.1</easymock.version>
+		<junit.version>4.11</junit.version>
+		<logback-classic.version>0.9.28</logback-classic.version>
+		<jackson-mapper-asl.version>1.7.1</jackson-mapper-asl.version>
 	</properties>
 
 	<build>
@@ -143,6 +147,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
@@ -153,40 +162,30 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>0.9.28</version>
+			<groupId>com.googlecode.gwt-test-utils</groupId>
+			<artifactId>gwt-test-utils</artifactId>
+			<version>${gwt-test-utils.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>1.6.2</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-classic.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.7.1</version>
+			<version>${jackson-mapper-asl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>2.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gwt-test-utils</groupId>
-			<artifactId>gwt-test-utils</artifactId>
-			<version>${gwt-test-utils.version}</version>
+			<version>${easymock.version}</version>
 		</dependency>
 	</dependencies>
 
