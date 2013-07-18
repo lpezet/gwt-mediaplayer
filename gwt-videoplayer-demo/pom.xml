@@ -13,7 +13,6 @@
 
 		<gwt-videoplayer-core.version>0.0.1-SNAPSHOT</gwt-videoplayer-core.version>						
 		<gwt.version>2.5.1</gwt.version>
-		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 	</properties>
 	
@@ -43,6 +42,9 @@
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<localWorkers>4</localWorkers>
+					<compileSourcesArtifacts>
+	                    <compileSourcesArtifact>net.sf.video4j:gwt-videoplayer-core</compileSourcesArtifact>
+	                </compileSourcesArtifacts>
 				</configuration>
 				<executions>
 					<execution>
@@ -128,11 +130,6 @@
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gwt-test-utils</groupId>
-			<artifactId>gwt-test-utils</artifactId>
-			<version>${gwt-test-utils.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
