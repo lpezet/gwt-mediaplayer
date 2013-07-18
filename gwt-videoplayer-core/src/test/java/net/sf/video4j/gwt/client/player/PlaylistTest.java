@@ -37,6 +37,8 @@ public class PlaylistTest extends GwtTest {
 		oList.add(oT2);
 		oList.add(oT3);
 		
+		assertEquals(3, oList.count());
+		
 		assertTrue(oList.hasNext());
 		PlayItem oActual = oList.next();
 		assertNotNull(oActual);
@@ -71,6 +73,8 @@ public class PlaylistTest extends GwtTest {
 		
 		Track oT21 = new Track();
 		oList.addChild(oT21, oT2, 10);
+		
+		assertEquals(4, oList.count(false));
 		
 		// T1
 		assertTrue(oList.hasNext());
@@ -160,5 +164,53 @@ public class PlaylistTest extends GwtTest {
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
 		assertEquals(oT3, oActual.getTrack());
+	}
+	
+	@Test
+	public void playItemDecision() {
+		Playlist oList = new Playlist();
+		IPlayItemDecisionManager oAdsOnceOnly = new IPlayItemDecisionManager() {
+			@Override
+			public boolean canPlay(Track pTrack) {
+				Integer oTimesAdPlayed = (Integer) pTrack.getMetaData().get("ad");
+				if (oTimesAdPlayed == null) return true; // not an ad
+				return (oTimesAdPlayed.intValue() == 0);
+			}
+		};
+		
+		oList.setPlayItemDecisionManager(oAdsOnceOnly);
+		
+		Track oPreRoll = new Track();
+		oPreRoll.getMetaData().put("ad", 0);
+		oPreRoll.setAd(true);
+		Track oT1 = new Track();
+		
+		oList.add(oPreRoll);
+		oList.add(oT1);
+		
+		assertEquals(1, oList.count()); // i.e. not counting preroll ad.
+		assertEquals(1, oList.count(false)); // i.e. not counting preroll ad.
+		assertEquals(2, oList.count(true));
+		
+		// PreRoll
+		assertTrue(oList.hasNext());
+		PlayItem oActual = oList.next();
+		assertNotNull(oActual);
+		assertEquals(oPreRoll, oActual.getTrack());
+		
+		// T1
+		assertTrue(oList.hasNext());
+		oActual = oList.next();
+		assertEquals(oT1, oActual.getTrack());
+		
+		// Reset
+		oList.reset();
+		oPreRoll.getMetaData().put("ad", 1);
+		
+		// T1
+		assertTrue(oList.hasNext());
+		oActual = oList.next();
+		assertEquals(oT1, oActual.getTrack());
+		
 	}
 }

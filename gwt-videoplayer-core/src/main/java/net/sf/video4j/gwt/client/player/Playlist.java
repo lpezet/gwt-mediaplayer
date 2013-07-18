@@ -6,9 +6,11 @@ package net.sf.video4j.gwt.client.player;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import net.sf.video4j.gwt.client.NumberUtils;
 
 /**
  * Use "durationchange" event to load the duration information from a track.
@@ -24,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Track 2.1 ------------------------[######]-------------------------
  * Track 3   ---------------------------------------[###########]-----
  * 
- * So Track 2 has 2 PlayNodes.
+ * So Track 2 has 2 PlayItems.
  * 
  * @author luc
  *
@@ -38,7 +40,7 @@ public class Playlist {
 			public int compare(PlayItem pO1, PlayItem pO2) {
 				if (pO1.getEnd() == -1) return -1;
 				if (pO2.getEnd() == -1) return 1;
-				return Integer.compare(pO1.getEnd(), pO2.getEnd());
+				return NumberUtils.compare(pO1.getEnd(), pO2.getEnd());
 			}
 		}
 		
@@ -59,14 +61,15 @@ public class Playlist {
 		
 	}
 	
-	private AtomicInteger mTrackIdGenerator = new AtomicInteger(1);
+	private int mTrackIdGenerator = 0;
 	private PlayItem mHead;
 	private PlayItem mTail;
 	private PlayItem mCursor;
 	private Map<Integer, TrackPlayItems> mTrackPlayItemsById = new HashMap<Integer, Playlist.TrackPlayItems>();
+	private IPlayItemDecisionManager mPlayItemDecisionManager = new PlayAllDecisionManager();
 	
 	public void add(Track pTrack) {
-		pTrack.setId(mTrackIdGenerator.getAndIncrement());
+		pTrack.setId(++mTrackIdGenerator);
 		PlayItem oItem = new PlayItem(pTrack);
 		if (mHead == null) {
 			mHead = oItem;
@@ -159,34 +162,80 @@ public class Playlist {
 	}
 
 	public boolean hasNext() {
-		return mCursor != mTail;
+		if (mCursor == mTail) return false;
+		PlayItem oCursor = mCursor;
+		while (oCursor != mTail) {
+			PlayItem oNext = oCursor == null ? mHead : oCursor.getNext();
+			if (mPlayItemDecisionManager.canPlay(oNext.getTrack())) return true;
+			oCursor = oNext;
+		}
+		return false;
 	}
 	
 	public PlayItem next() {
 		if (!hasNext()) return null;
+		PlayItem oCursor = mCursor == null ? mHead : mCursor.getNext();
+		while (oCursor != null && !mPlayItemDecisionManager.canPlay(oCursor.getTrack())) {
+			oCursor = oCursor.getNext();
+		}
+		/*
 		if (mCursor == null) {
 			mCursor = mHead;
 		} else {
 			mCursor = mCursor.getNext();
 		}
+		*/
+		mCursor = oCursor;
 		return mCursor;
 	}
 	
 	public PlayItem previous() {
 		if (!hasPrevious()) return null;
+		/*
 		mCursor = mCursor.getPrevious();
+		*/
+		PlayItem oCursor = mCursor.getPrevious();
+		while (oCursor != null && !mPlayItemDecisionManager.canPlay(oCursor.getTrack())) {
+			oCursor = oCursor.getPrevious();
+		}
+		mCursor = oCursor;
 		return mCursor;
 	}
 	
 	public boolean hasPrevious() {
-		return mCursor != mHead;
+		if (mCursor == mHead || mCursor == null) return false;
+		PlayItem oCursor = mCursor;
+		while (oCursor != mHead) {
+			PlayItem oPrevious = oCursor.getPrevious();
+			if (mPlayItemDecisionManager.canPlay(oPrevious.getTrack())) return true;
+			oCursor = oPrevious;
+		}
+		return false;
 	}
 	
-	/*
-	 * Do we need it?
-	 * 
-	public int size() {
-		return 
+	public void reset() {
+		mCursor = null;
 	}
-	*/
+
+	public IPlayItemDecisionManager getPlayItemDecisionManager() {
+		return mPlayItemDecisionManager;
+	}
+
+	public void setPlayItemDecisionManager(
+			IPlayItemDecisionManager pPlayItemDecisionManager) {
+		mPlayItemDecisionManager = pPlayItemDecisionManager;
+	}
+	
+	public int count() {
+		return count(false);
+	}
+	
+	public int count(boolean pIncludeAds) {
+		int oTracks = 0;
+		for (TrackPlayItems i : mTrackPlayItemsById.values()) {
+			if (!i.getTrack().isAd() || pIncludeAds) oTracks++;
+		}
+		return oTracks;
+	}
+	
 }

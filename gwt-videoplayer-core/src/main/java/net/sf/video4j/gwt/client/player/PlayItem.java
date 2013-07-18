@@ -3,6 +3,8 @@
  */
 package net.sf.video4j.gwt.client.player;
 
+import net.sf.video4j.gwt.client.NumberUtils;
+
 
 /**
  * @author luc
@@ -11,6 +13,7 @@ package net.sf.video4j.gwt.client.player;
 public class PlayItem implements Comparable<PlayItem> {
 
 	private Track mTrack;
+	private boolean mAutoPlay;
 	private int mStart = 0;
 	private int mEnd = -1;
 	private PlayItem mNext;
@@ -63,8 +66,16 @@ public class PlayItem implements Comparable<PlayItem> {
 		if (pOther == null) return 1;
 		Track oOtherTrack = pOther.getTrack();
 		Track oThisTrack = getTrack();
-		if (oOtherTrack.getId() != oThisTrack.getId()) return Integer.compare(oThisTrack.getId(), oOtherTrack.getId());
-		if (pOther.getStart() != getStart()) return Integer.compare(getStart(), pOther.getStart());
-		return Integer.compare(getEnd(), pOther.getEnd());
+		if (oOtherTrack.getId() != oThisTrack.getId()) return NumberUtils.compare(oThisTrack.getId(), oOtherTrack.getId());
+		if (pOther.getStart() != getStart()) return NumberUtils.compare(getStart(), pOther.getStart());
+		return NumberUtils.compare(getEnd(), pOther.getEnd());
+	}
+
+	public boolean isAutoPlay() {
+		return mAutoPlay;
+	}
+
+	public void setAutoPlay(boolean pAutoPlay) {
+		mAutoPlay = pAutoPlay;
 	}
 }

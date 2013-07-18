@@ -18,6 +18,8 @@ public class Track {
 	private String mURI;
 	private int mDurationInSeconds = -1;
 	private Map<String, Object> mMetaData = new HashMap<String, Object>(); // TODO: Should metadata and URL be part of a separate class: Resource??
+	private Map<String, Object> mProperties = new HashMap<String, Object>();
+	private boolean mAd = false;
 	
 	public String getTitle() {
 		return mTitle;
@@ -53,6 +55,18 @@ public class Track {
 	@Override
 	public String toString() {
 		return "Track #" + mId;
+	}
+	public Map<String, Object> getProperties() {
+		return mProperties;
+	}
+	public void setProperties(Map<String, Object> pProperties) {
+		mProperties = pProperties;
+	}
+	public boolean isAd() {
+		return mAd;
+	}
+	public void setAd(boolean pAd) {
+		mAd = pAd;
 	}
 	
 }
