@@ -10,12 +10,12 @@
 		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
+		<gwt-plugin-ads.version>0.0.1-SNAPSHOT</gwt-plugin-ads.version>
 		<gwt.version>2.5.1</gwt.version>
 		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
-		<tiles.version>2.2.2</tiles.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<easymock.version>3.1</easymock.version>
 		<junit.version>4.11</junit.version>
@@ -146,6 +146,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.sf.video4j</groupId>
+			<artifactId>gwt-plugin-ads</artifactId>
+			<version>${gwt-plugin-ads.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<version>${gwt.version}</version>
@@ -186,6 +191,7 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<version>${easymock.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
