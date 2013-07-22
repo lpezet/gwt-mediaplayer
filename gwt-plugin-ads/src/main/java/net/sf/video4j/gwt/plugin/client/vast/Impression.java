@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client.vast;
+package net.sf.video4j.gwt.plugin.client.vast;
 
 import com.google.gwt.safehtml.shared.SafeUri;
 
@@ -9,15 +9,16 @@ import com.google.gwt.safehtml.shared.SafeUri;
  * @author luc
  *
  */
-public class Tracking {
+public class Impression {
 
-	private TrackingEvent mEvent;
+	private String mId;
 	private SafeUri mURI;
-	public TrackingEvent getEvent() {
-		return mEvent;
+	
+	public String getId() {
+		return mId;
 	}
-	public void setEvent(TrackingEvent pEvent) {
-		mEvent = pEvent;
+	public void setId(String pId) {
+		mId = pId;
 	}
 	public SafeUri getURI() {
 		return mURI;

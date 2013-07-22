@@ -1,53 +1,49 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client.vast;
+package net.sf.video4j.gwt.plugin.client.vast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
- * 
+ *
  */
-public class NonLinearAd {
-
+public class CompanionAd {
+	
 	// Optional identifier
 	private String mId;
-
+	
 	// Pixel dimensions of companion
 	private int mWidth;
-
+	
 	// Pixel dimensions of companion
 	private int mHeight;
-
+	
 	// Pixel dimensions of expanding companion ad when in expanded state
 	private int mExpandedWidth;
-
+	
 	// Pixel dimensions of expanding companion ad when in expanded state
 	private int mExpandedHeight;
-
-	// Whether it is acceptable to scale the image.
-	private boolean mScalable;
-
-	// Whether the ad must have its aspect ratio maintained when scales
-	private boolean mMaintainAspectRatio;
-
-	// Suggested duration to display non-linear ad, typically for animation to
-	// complete. Expressed in seconds
-	private int mSuggestedDuration;
-
-	// The apiFramework defines the method to use for communication with the
-	// companion
+	
+	// The apiFramework defines the method to use for communication with the companion
 	private String mApiFramework;
-
+	
 	private CompanionResource mResource;
-
-	// URL to open as destination page when user clicks on the the companion
-	// banner ad.
+	
+	// The creativeView should always be requested when present. For Companions creativeView is the only supported event.
+	private List<Tracking> mTrackingEvents = new ArrayList<Tracking>();
+	
+	// URL to open as destination page when user clicks on the the companion banner ad.
 	private SafeUri mClickThrough;
-
-	// Data to be passed into the companion ads. The apiFramework defines the
-	// method to use for communication (e.g. "FlashVar")
+	
+	// Alt text to be displayed when companion is rendered in HTML environment.
+	private String mAltText;
+	
+	// Data to be passed into the companion ads. The apiFramework defines the method to use for communication (e.g. "FlashVar")
 	private String mAdParameters;
 
 	public String getId() {
@@ -90,30 +86,6 @@ public class NonLinearAd {
 		mExpandedHeight = pExpandedHeight;
 	}
 
-	public boolean isScalable() {
-		return mScalable;
-	}
-
-	public void setScalable(boolean pScalable) {
-		mScalable = pScalable;
-	}
-
-	public boolean isMaintainAspectRatio() {
-		return mMaintainAspectRatio;
-	}
-
-	public void setMaintainAspectRatio(boolean pMaintainAspectRatio) {
-		mMaintainAspectRatio = pMaintainAspectRatio;
-	}
-
-	public int getSuggestedDuration() {
-		return mSuggestedDuration;
-	}
-
-	public void setSuggestedDuration(int pSuggestedDuration) {
-		mSuggestedDuration = pSuggestedDuration;
-	}
-
 	public String getApiFramework() {
 		return mApiFramework;
 	}
@@ -130,12 +102,28 @@ public class NonLinearAd {
 		mResource = pResource;
 	}
 
+	public List<Tracking> getTrackingEvents() {
+		return mTrackingEvents;
+	}
+
+	public void setTrackingEvents(List<Tracking> pTrackingEvents) {
+		mTrackingEvents = pTrackingEvents;
+	}
+
 	public SafeUri getClickThrough() {
 		return mClickThrough;
 	}
 
 	public void setClickThrough(SafeUri pClickThrough) {
 		mClickThrough = pClickThrough;
+	}
+
+	public String getAltText() {
+		return mAltText;
+	}
+
+	public void setAltText(String pAltText) {
+		mAltText = pAltText;
 	}
 
 	public String getAdParameters() {

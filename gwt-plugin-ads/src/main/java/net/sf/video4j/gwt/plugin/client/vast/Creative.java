@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client.vast;
+package net.sf.video4j.gwt.plugin.client.vast;
 
 /**
  * Wraps each creative element within an InLine or Wrapper Ad

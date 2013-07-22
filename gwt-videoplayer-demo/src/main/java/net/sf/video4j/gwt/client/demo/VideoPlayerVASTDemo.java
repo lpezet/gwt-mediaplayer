@@ -6,8 +6,8 @@ package net.sf.video4j.gwt.client.demo;
 import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.demo.VideoPlayerVASTDemo;
-import net.sf.video4j.gwt.client.vast.VAST;
-import net.sf.video4j.gwt.client.vast.VASTParser;
+import net.sf.video4j.gwt.plugin.client.vast.VAST;
+import net.sf.video4j.gwt.plugin.client.vast.VASTParser;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.http.client.Request;

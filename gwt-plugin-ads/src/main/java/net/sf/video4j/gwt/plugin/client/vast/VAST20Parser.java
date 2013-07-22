@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client.vast;
+package net.sf.video4j.gwt.plugin.client.vast;
 
 
 import java.util.ArrayList;

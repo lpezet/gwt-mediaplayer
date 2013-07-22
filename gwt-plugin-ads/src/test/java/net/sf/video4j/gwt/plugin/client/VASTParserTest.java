@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.client;
+package net.sf.video4j.gwt.plugin.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import net.sf.video4j.gwt.client.vast.Ad;
-import net.sf.video4j.gwt.client.vast.InLine;
-import net.sf.video4j.gwt.client.vast.VAST;
-import net.sf.video4j.gwt.client.vast.VASTParser;
+import net.sf.video4j.gwt.plugin.client.vast.Ad;
+import net.sf.video4j.gwt.plugin.client.vast.InLine;
+import net.sf.video4j.gwt.plugin.client.vast.VAST;
+import net.sf.video4j.gwt.plugin.client.vast.VASTParser;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import com.googlecode.gwt.test.GwtTest;
 /**
  * @author luc
  */
-@GwtModule("net.sf.video4j.gwt.client.VASTParser")
+@GwtModule("net.sf.video4j.gwt.plugin.client.VASTParser")
 public class VASTParserTest extends GwtTest {
 
 	@Test
