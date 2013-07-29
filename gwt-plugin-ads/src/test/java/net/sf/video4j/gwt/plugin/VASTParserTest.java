@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.plugin.client;
+package net.sf.video4j.gwt.plugin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,7 +25,7 @@ import com.googlecode.gwt.test.GwtTest;
 /**
  * @author luc
  */
-@GwtModule("net.sf.video4j.gwt.plugin.client.VASTParser")
+@GwtModule("net.sf.video4j.gwt.plugin.VAST")
 public class VASTParserTest extends GwtTest {
 
 	@Test
