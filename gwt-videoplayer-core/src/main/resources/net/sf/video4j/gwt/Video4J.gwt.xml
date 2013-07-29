@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="net.sf.video4j.gwt.plugin.VAST"/>
 	<inherits name="fr.hd3d.html5.video.HTML5Video"/>
 	<inherits name="com.kiouri.sliderbar.SliderBarMVP"/>
 </module>
