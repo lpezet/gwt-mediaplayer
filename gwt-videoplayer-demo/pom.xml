@@ -11,11 +11,14 @@
 		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
-		<gwt-videoplayer-core.version>0.0.1-SNAPSHOT</gwt-videoplayer-core.version>						
+		<gwt-videoplayer-core.version>0.0.1-SNAPSHOT</gwt-videoplayer-core.version>
 		<gwt.version>2.5.1</gwt.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
+		<gwtp.version>1.0</gwtp.version>
+		<gin.version>2.1.0</gin.version>
+		<spring-webmvc.version>3.2.3.RELEASE</spring-webmvc.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -43,8 +46,9 @@
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<localWorkers>4</localWorkers>
 					<compileSourcesArtifacts>
-	                    <compileSourcesArtifact>net.sf.video4j:gwt-videoplayer-core</compileSourcesArtifact>
-	                </compileSourcesArtifacts>
+						<compileSourcesArtifact>net.sf.video4j:gwt-videoplayer-core</compileSourcesArtifact>
+						<compileSourcesArtifact>net.sf.video4j:gwt-plugin-ads</compileSourcesArtifact>
+					</compileSourcesArtifacts>
 				</configuration>
 				<executions>
 					<execution>
@@ -129,12 +133,26 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
-			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-mvp-client</artifactId>
+			<version>${gwtp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>${gin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
+			<version>${spring-webmvc.version}</version>
 		</dependency>
 	</dependencies>
 
