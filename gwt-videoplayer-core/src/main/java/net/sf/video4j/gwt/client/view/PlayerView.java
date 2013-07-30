@@ -22,10 +22,12 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     public interface Binder extends UiBinder<HTMLPanel, PlayerView> {
     }
 
-    @UiField VideoWidget mVideoWidget;
+    @UiField(provided = true)
+    VideoWidget mVideoWidget;
 	
     @Inject
-    public PlayerView(Binder pBinder) {
+    public PlayerView(Binder pBinder, VideoWidget pVideoWidget) {
+        mVideoWidget = pVideoWidget;
         initWidget(pBinder.createAndBindUi(this));
     }
 
@@ -34,8 +36,7 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
         mVideoWidget.setControls(pParams.hasControls());
         mVideoWidget.setAutoPlay(pParams.isAutoPlay());
         mVideoWidget.addSource(new VideoSource(pParams.getFileSource(), pParams.getVideoType()));
-        mVideoWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());        
+        mVideoWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
     }
-
-
+    
 }

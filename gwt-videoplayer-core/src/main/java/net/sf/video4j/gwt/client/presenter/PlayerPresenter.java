@@ -31,18 +31,11 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView> impl
         super.onBind();
         getView().startPlayer(getPlayerParameters());
     }
-
+    
     private PlayerParameters getPlayerParameters() {
         PlayerParameters oParams = new PlayerParameters()
-            /* 
-             *  FIXME   
-             *  remove after adding custom controls. need to pass the object among presenters, read more at: 
-             *  https://code.google.com/p/gwt-platform/wiki/GettingStarted#Setting_the_source_on_fireEvent_with_your_own_objects
-             *  https://code.google.com/p/gwt-platform/wiki/GettingStarted#Attaching_events_to_proxies
-             *  https://code.google.com/p/gwt-platform/wiki/BoilerplateGeneration#Generate_Event_and_Event_Handler 
-             */
-            .withControls(true)  
-            .withAutoPlay(true)
+            .withControls(false)  
+            .withAutoPlay(false)
             .withWidthInPixels(500).withHeightInPixels(400)
             .withVideoType(VideoType.MP4)
             .withFileSource("http://videos.tripfilms.com/720p/D93A130B1BC3E02EB7AB99812EFB8C00.mp4");
