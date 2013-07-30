@@ -5,7 +5,6 @@
 <module rename-to="gwt_video_player_mvp_demo">
     <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name="com.google.gwt.user.User" />
-    <inherits name="com.google.gwt.inject.Inject" />
 
     <!-- Inherit the default GWT style sheet. You can change -->
     <inherits name="com.google.gwt.user.theme.standard.Standard" />
@@ -13,7 +12,7 @@
     <!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/> -->
 
     <!-- Other module inherits                                      -->
-    
+    <inherits name="net.sf.video4j.gwt.Video4J"/>
     <inherits name="com.gwtplatform.mvp.MvpWithEntryPoint"/>
 
     <!-- Specify the paths for translatable code                    -->
