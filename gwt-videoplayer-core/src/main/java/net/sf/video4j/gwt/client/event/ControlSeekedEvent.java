@@ -9,12 +9,18 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author gumatias
  */
 public class ControlSeekedEvent extends GwtEvent<ControlSeekedEvent.ControlSeekedHandler> {
+	
+	private double mValue;
     
     protected ControlSeekedEvent() {
     }
+    
+    protected ControlSeekedEvent(double pValue) {
+    	mValue = pValue;
+    }
 
-    public static void fire(HasHandlers pSource) {
-        ControlSeekedEvent oEventInstance = new ControlSeekedEvent();
+    public static void fire(HasHandlers pSource, double pValue) {
+        ControlSeekedEvent oEventInstance = new ControlSeekedEvent(pValue);
         pSource.fireEvent(oEventInstance);
     }
 
@@ -45,5 +51,9 @@ public class ControlSeekedEvent extends GwtEvent<ControlSeekedEvent.ControlSeeke
     protected void dispatch(ControlSeekedHandler pHandler) {
         pHandler.onControlSeekedEvent(this);
     }
+    
+    public double getValue() {
+		return mValue;
+	}
     
 }
