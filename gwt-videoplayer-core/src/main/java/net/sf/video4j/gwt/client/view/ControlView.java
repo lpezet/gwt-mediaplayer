@@ -26,18 +26,19 @@ public class ControlView extends ViewWithUiHandlers<ControlUiHandlers> implement
     }
     
     @UiField
-    Button mPlayPauseButton;
+    Button mPlayButton;
+    @UiField
+    Button mPauseButton;
     @UiField
     Button mMuteButton;
+    @UiField
+    Button mUnmuteButton;
     @UiField
     Button mFullScreenButton;
     @UiField
     AdvancedSliderBar mVolumeSlider;
     @UiField
     BasicSliderBar mTimelineSlider;
-    
-    private boolean mIsPlaying;
-    private boolean mIsMuted;
     
     @Inject
     public ControlView(Binder pBinder) {
@@ -63,33 +64,37 @@ public class ControlView extends ViewWithUiHandlers<ControlUiHandlers> implement
         });
     }
     
-    @UiHandler("mPlayPauseButton")
-    public void onPlayPauseClickEvent(ClickEvent pEvent) {
-        mIsPlaying = !mIsPlaying;
-        if (mIsPlaying) {
-            getUiHandlers().onPlay();
-            mPlayPauseButton.setText("Pause");
-        } else {
-            getUiHandlers().onPause();
-            mPlayPauseButton.setText("Play"); 
-        }
+    @UiHandler("mPlayButton")
+    public void onPlayClickEvent(ClickEvent pEvent) {
+        mPlayButton.setVisible(false);
+        mPauseButton.setVisible(true);
+        getUiHandlers().onPlay();
+    }
+    
+    @UiHandler("mPauseButton")
+    public void onPauseClickEvent(ClickEvent pEvent) {
+        mPlayButton.setVisible(true);
+        mPauseButton.setVisible(false);
+        getUiHandlers().onPause();
     }
     
     @UiHandler("mMuteButton")
     public void onMuteClickEvent(ClickEvent pEvent) {
-        if (mIsMuted) {
-            mMuteButton.setText("Mute");
-            getUiHandlers().onUnmute();
-        } else {
-            mMuteButton.setText("Unmute");
-            getUiHandlers().onMute();
-        }
-        mIsMuted = !mIsMuted;
+        mMuteButton.setVisible(false);
+        mUnmuteButton.setVisible(true);
+        getUiHandlers().onMute();
+    }
+    
+    @UiHandler("mUnmuteButton")
+    public void onUnmuteClickEvent(ClickEvent pEvent) {
+        mMuteButton.setVisible(true);
+        mUnmuteButton.setVisible(false);
+        getUiHandlers().onUnmute();
     }
     
     @UiHandler("mFullScreenButton")
     public void onFullScreenClickEvent(ClickEvent pEvent) {
         getUiHandlers().onFullScreen();
     }
-    
+
 }
