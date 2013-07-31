@@ -22,12 +22,11 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     public interface Binder extends UiBinder<HTMLPanel, PlayerView> {
     }
 
-    @UiField(provided = true)
+    @UiField
     VideoWidget mVideoWidget;
 	
     @Inject
-    public PlayerView(Binder pBinder, VideoWidget pVideoWidget) {
-        mVideoWidget = pVideoWidget;
+    public PlayerView(Binder pBinder) {
         initWidget(pBinder.createAndBindUi(this));
     }
 
@@ -37,6 +36,36 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
         mVideoWidget.setAutoPlay(pParams.isAutoPlay());
         mVideoWidget.addSource(new VideoSource(pParams.getFileSource(), pParams.getVideoType()));
         mVideoWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
+    }
+    
+    @Override
+    public void play() {
+        mVideoWidget.playPause();
+    }
+
+    @Override
+    public void pause() {
+        mVideoWidget.playPause();
+    }
+
+    @Override
+    public void mute() {
+        mVideoWidget.mute();
+    }
+
+    @Override
+    public void unmute() {
+        mVideoWidget.unmute();
+    }
+
+    @Override
+    public void fullScreen() {
+        mVideoWidget.fullScreen();
+    }
+
+    @Override
+    public void volume(double pValue) {
+        mVideoWidget.setVolume(pValue);
     }
     
 }

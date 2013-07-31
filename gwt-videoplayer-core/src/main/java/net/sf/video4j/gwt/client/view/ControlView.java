@@ -17,8 +17,6 @@ import com.kiouri.sliderbar.client.event.BarValueChangedHandler;
 import com.kiouri.sliderbar.client.solution.adv.AdvancedSliderBar;
 import com.kiouri.sliderbar.client.solution.adv.BasicSliderBar;
 
-import fr.hd3d.html5.video.client.VideoWidget;
-
 /**
  * @author gumatias
  */
@@ -38,13 +36,11 @@ public class ControlView extends ViewWithUiHandlers<ControlUiHandlers> implement
     @UiField
     BasicSliderBar mTimelineSlider;
     
-    private final VideoWidget mVideoWidget;
-    
     private boolean mIsPlaying;
+    private boolean mIsMuted;
     
     @Inject
-    public ControlView(Binder pBinder, VideoWidget pVideoWidget) {
-        mVideoWidget = pVideoWidget;
+    public ControlView(Binder pBinder) {
         initWidget(pBinder.createAndBindUi(this));
         setUpTimelineSlider();
         setUpVolumeSlider();
@@ -62,33 +58,38 @@ public class ControlView extends ViewWithUiHandlers<ControlUiHandlers> implement
         mVolumeSlider.addBarValueChangedHandler(new BarValueChangedHandler() {
             @Override
             public void onBarValueChanged(BarValueChangedEvent event) {
-                mVideoWidget.setVolume((double)event.getValue() / 10);
+                getUiHandlers().onVolumeChange((double)event.getValue() / 10);
             }
         });
     }
     
     @UiHandler("mPlayPauseButton")
     public void onPlayPauseClickEvent(ClickEvent pEvent) {
-        mVideoWidget.playPause();
         mIsPlaying = !mIsPlaying;
-        if (mIsPlaying) mPlayPauseButton.setText("Pause");
-        else mPlayPauseButton.setText("Play"); 
+        if (mIsPlaying) {
+            getUiHandlers().onPlay();
+            mPlayPauseButton.setText("Pause");
+        } else {
+            getUiHandlers().onPause();
+            mPlayPauseButton.setText("Play"); 
+        }
     }
     
     @UiHandler("mMuteButton")
     public void onMuteClickEvent(ClickEvent pEvent) {
-        if (mVideoWidget.isMuted()) {
+        if (mIsMuted) {
             mMuteButton.setText("Mute");
-            mVideoWidget.unmute();
+            getUiHandlers().onUnmute();
         } else {
             mMuteButton.setText("Unmute");
-            mVideoWidget.mute();
+            getUiHandlers().onMute();
         }
+        mIsMuted = !mIsMuted;
     }
     
     @UiHandler("mFullScreenButton")
     public void onFullScreenClickEvent(ClickEvent pEvent) {
-        mVideoWidget.fullScreen();
+        getUiHandlers().onFullScreen();
     }
     
 }
