@@ -68,4 +68,9 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
         mVideoWidget.setVolume(pValue);
     }
     
+    @Override
+    public void seek(double pValue) {
+    	mVideoWidget.setCurrentTime(pValue);
+    }
+    
 }

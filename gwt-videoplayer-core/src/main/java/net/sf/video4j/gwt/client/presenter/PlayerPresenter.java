@@ -40,6 +40,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         void unmute();
         void fullScreen();
         void volume(double pValue);
+        void seek(double pValue);
     }
 	
     @Inject
@@ -97,7 +98,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
 
     @Override
     public void onControlSeekedEvent(ControlSeekedEvent pEvent) {
-        // TODO Auto-generated method stub
+        getView().seek(pEvent.getValue());
     }
 
     @Override

@@ -55,8 +55,8 @@ public class ControlPresenter extends PresenterWidget<ControlPresenter.CView> im
     }
 
     @Override
-    public void onSeeked() {
-        ControlSeekedEvent.fire(this);
+    public void onSeeked(double pValue) {
+        ControlSeekedEvent.fire(this, pValue);
     }
 
     @Override
