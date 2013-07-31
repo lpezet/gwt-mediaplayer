@@ -16,7 +16,8 @@ public interface ControlUiHandlers extends UiHandlers {
 
     void onFullScreen();
 
-    void onSeeked();
+    // TODO: percentage??
+    void onSeeked(double pValue);
 
     void onVolumeChange(double pValue);
 }
