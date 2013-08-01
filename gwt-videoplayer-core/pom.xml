@@ -12,17 +12,18 @@
 
 		<gwt-plugin-ads.version>0.0.1-SNAPSHOT</gwt-plugin-ads.version>
 		<gwt.version>2.5.1</gwt.version>
-		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<gwtp.version>1.0</gwtp.version>
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<easymock.version>3.1</easymock.version>
-		<junit.version>4.11</junit.version>
 		<logback-classic.version>0.9.28</logback-classic.version>
 		<jackson-mapper-asl.version>1.7.1</jackson-mapper-asl.version>
 		<gin.version>2.1.0</gin.version>
+
+		<gwt-test-utils.version>0.44</gwt-test-utils.version>
+		<mockito-all.version>1.9.5</mockito-all.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<build>
@@ -149,12 +150,18 @@
 			<artifactId>gwt-test-utils</artifactId>
 			<version>${gwt-test-utils.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mockito</groupId>
+					<artifactId>mockito-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>com.gwtplatform</groupId>
-            <artifactId>gwtp-mvp-client</artifactId>
-            <version>${gwtp.version}</version>
-        </dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-mvp-client</artifactId>
+			<version>${gwtp.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.gwt.inject</groupId>
 			<artifactId>gin</artifactId>
@@ -183,9 +190,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<version>${easymock.version}</version>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito-all.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
