@@ -1,6 +1,8 @@
 package net.sf.video4j.gwt.client.presenter;
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -45,7 +47,7 @@ public class PlayerPresenterTest {
         mPresenter.onBind();
         ArgumentCaptor<PlayerParameters> oArgument = ArgumentCaptor.forClass(PlayerParameters.class);
         verify(mView).startPlayer(oArgument.capture());
-        assertNotNull(oArgument.getValue());
+        assertThat(oArgument.getValue(), is(notNullValue()));
     }
     
     @Test
