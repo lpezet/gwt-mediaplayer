@@ -1,5 +1,6 @@
 package net.sf.video4j.gwt.client.presenter;
 
+import net.sf.video4j.gwt.client.controller.ApplicationController;
 import net.sf.video4j.gwt.client.place.NameTokens;
 
 import com.google.inject.Inject;
@@ -29,12 +30,14 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
 
     PlayerPresenter            mPlayerPresenter;
     ControlPresenter           mControlPresenter;
+    ApplicationController		mApplicationController;
     
     @Inject
-    Video4JPresenter(EventBus pEventBus, V4JView pView, V4JProxy pProxy, PlayerPresenter pPlayerPresenter, ControlPresenter pControlPresenter) {
+    Video4JPresenter(EventBus pEventBus, V4JView pView, V4JProxy pProxy, PlayerPresenter pPlayerPresenter, ControlPresenter pControlPresenter, ApplicationController pController) {
         super(pEventBus, pView, pProxy, RevealType.Root);
         mPlayerPresenter = pPlayerPresenter;
         mControlPresenter = pControlPresenter;
+        mApplicationController = pController;
     }
     
     @Override
@@ -42,6 +45,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
     	super.onBind();
     	setInSlot(SLOT_VIDEO_PLAYER, mPlayerPresenter);
     	setInSlot(SLOT_CONTROL, mControlPresenter);
+    	mApplicationController.begin();
     }
 
 }

@@ -6,6 +6,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import net.sf.video4j.gwt.client.controller.ApplicationController;
 import net.sf.video4j.gwt.client.presenter.ControlPresenter.CView;
 import net.sf.video4j.gwt.client.presenter.PlayerPresenter.PView;
 
@@ -15,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.testing.CountingEventBus;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -24,14 +27,21 @@ import com.google.gwt.user.client.ui.IsWidget;
 public class Video4JPresenterTest {
     
     private Video4JPresenter mPresenter;
+    private EventBus mEventBus;
     
     @Mock
     private Video4JPresenter.V4JView mView;
     
     @Before
     public void setUp() throws Exception {
-        mPresenter = new Video4JPresenter(null, mView, null, new PlayerPresenter(null, mock(PView.class)), 
-                                            new ControlPresenter(null, mock(CView.class)));
+    	mEventBus = new CountingEventBus();
+    	mPresenter = new Video4JPresenter(
+    			mEventBus, 
+    			mView,
+    			null,
+    			new PlayerPresenter(mEventBus, mock(PView.class)), 
+    			new ControlPresenter(mEventBus, mock(CView.class)), 
+    			new ApplicationController(mEventBus));
     }
 
     @Test
