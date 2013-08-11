@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import net.sf.video4j.gwt.client.controller.ApplicationController;
+import net.sf.video4j.gwt.client.controller.PlaylistController;
 import net.sf.video4j.gwt.client.presenter.ControlPresenter.CView;
 import net.sf.video4j.gwt.client.presenter.PlayerPresenter.PView;
 
@@ -41,7 +42,8 @@ public class Video4JPresenterTest {
     			null,
     			new PlayerPresenter(mEventBus, mock(PView.class)), 
     			new ControlPresenter(mEventBus, mock(CView.class)), 
-    			new ApplicationController(mEventBus));
+    			new ApplicationController(mEventBus),
+    			new PlaylistController(mEventBus));
     }
 
     @Test
