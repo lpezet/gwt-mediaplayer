@@ -17,6 +17,8 @@ import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.player.PlayItem;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -70,8 +72,22 @@ public class PlaylistController extends BaseController implements
 			mLogger.log(Level.INFO, "Nothing to play.");
 			return;
 		}
-		PlayItem oNext = mConfig.getPlaylist().next();
-		PlaylistPlayEvent.fire(this, oNext);
+		GWT.runAsync(new RunAsyncCallback() {
+			
+			@Override
+			public void onSuccess() {
+				mLogger.log(Level.INFO, "Getting play item...");
+				PlayItem oNext = mConfig.getPlaylist().next();
+				mLogger.log(Level.INFO, "Firing PlayListPlayEvent...");
+				PlaylistPlayEvent.fire(PlaylistController.this, oNext);
+				mLogger.log(Level.INFO, "PlayListPlayEvent fired.");
+			}
+			
+			@Override
+			public void onFailure(Throwable pReason) {
+				mLogger.log(Level.SEVERE, "Could not start playlist.", pReason);
+			}
+		});
 	}
 
 }
