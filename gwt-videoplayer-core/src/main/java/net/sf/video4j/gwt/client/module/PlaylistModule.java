@@ -3,7 +3,7 @@
  */
 package net.sf.video4j.gwt.client.module;
 
-import net.sf.video4j.gwt.client.controller.ApplicationController;
+import net.sf.video4j.gwt.client.controller.PlaylistController;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 
@@ -11,11 +11,11 @@ import com.google.gwt.inject.client.AbstractGinModule;
  * @author luc
  *
  */
-public class ApplicationModule extends AbstractGinModule {
+public class PlaylistModule extends AbstractGinModule {
 
 	@Override
 	protected void configure() {
-		bind(ApplicationController.class);
+		bind(PlaylistController.class);
 	}
 
 }
