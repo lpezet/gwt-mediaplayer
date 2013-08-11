@@ -65,9 +65,17 @@ public class Playlist {
 	private PlayItem mTail;
 	private PlayItem mCursor;
 	private Map<Integer, TrackPlayItems> mTrackPlayItemsById = new HashMap<Integer, Playlist.TrackPlayItems>();
-	private IPlayItemDecisionManager mPlayItemDecisionManager = new PlayAllDecisionManager();
+	//private IPlayItemDecisionManager mPlayItemDecisionManager = new PlayAllDecisionManager();
 	
-	public void add(Track pTrack) {
+	public void visit(PlaylistVisitor pVisitor) {
+		PlayItem oCursor = mCursor;
+		while (hasNext()) {
+			pVisitor.visit(next());
+		}
+		mCursor = oCursor;
+	}
+	
+	public PlayItem add(Track pTrack) {
 		pTrack.setId(++mTrackIdGenerator);
 		PlayItem oItem = new PlayItem(pTrack);
 		if (mHead == null) {
@@ -79,9 +87,10 @@ public class Playlist {
 			mTail = oItem;
 		}
 		addTrackPlayItem(pTrack, oItem);
+		return oItem;
 	}
 	
-	public void addChild(Track pTrack, Track pParentTrack, int pCutOffTime) {
+	public PlayItem addChild(Track pTrack, Track pParentTrack, int pCutOffTime) {
 		PlayItem oItem = new PlayItem(pTrack);
 		TrackPlayItems oParentTrackPlayItems = mTrackPlayItemsById.get(pParentTrack.getId());
 		if (oParentTrackPlayItems == null) throw new RuntimeException("Parent track must exist or have valid id.");
@@ -114,6 +123,9 @@ public class Playlist {
 					PlayItem oAfter = new PlayItem(oPivot.getTrack(), pCutOffTime, oPivot.getEnd());
 					oBefore.setPrevious(oPivot.getPrevious());
 					oPivot.getPrevious().setNext(oBefore);
+					oParentTrackPlayItems.getItems().remove(oPivot); // check
+					oParentTrackPlayItems.getItems().add(oBefore);
+					oParentTrackPlayItems.getItems().add(oAfter);
 					
 					oAfter.setNext(oPivot.getNext());
 					oPivot.getNext().setPrevious(oAfter);
@@ -128,6 +140,7 @@ public class Playlist {
 			}
 		}
 		addTrackPlayItem(pTrack, oItem);
+		return oItem;
 	}
 	
 	private void addTrackPlayItem(Track pTrack, PlayItem pItem) {
@@ -163,20 +176,30 @@ public class Playlist {
 	public boolean hasNext() {
 		if (mCursor == mTail) return false;
 		PlayItem oCursor = mCursor;
+		/*
 		while (oCursor != mTail) {
 			PlayItem oNext = oCursor == null ? mHead : oCursor.getNext();
 			if (mPlayItemDecisionManager.canPlay(oNext.getTrack())) return true;
 			oCursor = oNext;
 		}
 		return false;
+		*/
+		return (mCursor != mTail);
+	}
+	
+	public PlayItem peek() {
+		if (!hasNext()) return null;
+		return mCursor == null ? mHead : mCursor.getNext();
 	}
 	
 	public PlayItem next() {
 		if (!hasNext()) return null;
 		PlayItem oCursor = mCursor == null ? mHead : mCursor.getNext();
+		/*
 		while (oCursor != null && !mPlayItemDecisionManager.canPlay(oCursor.getTrack())) {
 			oCursor = oCursor.getNext();
 		}
+		*/
 		/*
 		if (mCursor == null) {
 			mCursor = mHead;
@@ -194,28 +217,34 @@ public class Playlist {
 		mCursor = mCursor.getPrevious();
 		*/
 		PlayItem oCursor = mCursor.getPrevious();
+		/*
 		while (oCursor != null && !mPlayItemDecisionManager.canPlay(oCursor.getTrack())) {
 			oCursor = oCursor.getPrevious();
 		}
+		*/
 		mCursor = oCursor;
 		return mCursor;
 	}
 	
 	public boolean hasPrevious() {
 		if (mCursor == mHead || mCursor == null) return false;
+		/*
 		PlayItem oCursor = mCursor;
 		while (oCursor != mHead) {
 			PlayItem oPrevious = oCursor.getPrevious();
 			if (mPlayItemDecisionManager.canPlay(oPrevious.getTrack())) return true;
 			oCursor = oPrevious;
 		}
-		return false;
+		return false
+		*/
+		return (mCursor != mHead);
 	}
 	
 	public void reset() {
 		mCursor = null;
 	}
 
+	/*
 	public IPlayItemDecisionManager getPlayItemDecisionManager() {
 		return mPlayItemDecisionManager;
 	}
@@ -224,6 +253,7 @@ public class Playlist {
 			IPlayItemDecisionManager pPlayItemDecisionManager) {
 		mPlayItemDecisionManager = pPlayItemDecisionManager;
 	}
+	*/
 	
 	public int count() {
 		return count(false);
