@@ -18,6 +18,7 @@ public class PlayItem implements Comparable<PlayItem> {
 	private int mEnd = -1;
 	private PlayItem mNext;
 	private PlayItem mPrevious;
+	private int mTotalPlays = -1; // -1 = infinite. Each play : totalPlays = totalPlays - 1. If reaches 0, then don't play
 	
 	public PlayItem(Track pTrack) {
 		mTrack = pTrack;
@@ -77,5 +78,17 @@ public class PlayItem implements Comparable<PlayItem> {
 
 	public void setAutoPlay(boolean pAutoPlay) {
 		mAutoPlay = pAutoPlay;
+	}
+
+	public int getTotalPlays() {
+		return mTotalPlays;
+	}
+
+	public void setTotalPlays(int pTotalPlays) {
+		mTotalPlays = pTotalPlays;
+	}
+	
+	public int decrementPlays() {
+		return mTotalPlays--;
 	}
 }
