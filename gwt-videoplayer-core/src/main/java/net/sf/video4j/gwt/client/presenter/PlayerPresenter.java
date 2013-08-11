@@ -4,8 +4,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
-import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
+import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
+import net.sf.video4j.gwt.client.event.ApplicationLoadEvent.ApplicationLoadHandler;
 import net.sf.video4j.gwt.client.event.ControlFullScreenEvent;
 import net.sf.video4j.gwt.client.event.ControlFullScreenEvent.ControlFullScreenHandler;
 import net.sf.video4j.gwt.client.event.ControlMuteEvent;
@@ -20,13 +21,13 @@ import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
+import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
+import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
+import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -40,8 +41,10 @@ import fr.hd3d.html5.video.client.VideoSource.VideoType;
  */
 public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView> 
     implements PlayerUiHandlers, ControlPlayHandler, ControlPauseHandler, ControlMuteHandler, ControlUnmuteHandler, 
-                ControlSeekedHandler, ControlFullScreenHandler, ControlVolumeChangeHandler, 
+                ControlSeekedHandler, ControlFullScreenHandler, ControlVolumeChangeHandler,
+                ApplicationLoadHandler,
                 ApplicationInitHandler,
+                PlaylistPlayHandler,
                 IPlugin {
 	
     public interface PView extends View, HasUiHandlers<PlayerUiHandlers> {
@@ -72,7 +75,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     protected void onBind() {
         super.onBind();
-        getView().startPlayer(getPlayerParameters());
+        //getView().startPlayer(getPlayerParameters());
         addRegisteredHandlers();
     }
 
@@ -84,6 +87,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         addRegisteredHandler(ControlSeekedEvent.getType(), this);
         addRegisteredHandler(ControlFullScreenEvent.getType(), this);
         addRegisteredHandler(ControlVolumeChangeEvent.getType(), this);
+        addRegisteredHandler(ApplicationLoadEvent.getType(), this);
         addRegisteredHandler(ApplicationInitEvent.getType(), this);
     }
     
@@ -98,11 +102,16 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     }
     
     @Override
-    public void onApplicationInitEvent(ApplicationInitEvent pEvent) {
-    	mLogger.log(Level.INFO, "received AppInitEvent...");
+    public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
+    	mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
     	pEvent.getConfig().getPlugins().add(this);
-    	mLogger.log(Level.INFO, "Firing plugin ready event...");
+    }
+    
+    @Override
+    public void onApplicationInitEvent(ApplicationInitEvent pEvent) {
+    	mLogger.log(Level.INFO, "Received ApplicationInitEvent.");
     	PluginReadyEvent.fire(this, this);
+    	mLogger.log(Level.INFO, "PluginReadyEvent fired.");
     	/*
     	GWT.runAsync(new RunAsyncCallback() {
 			
@@ -118,6 +127,21 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
 			}
 		});
 		*/
+    }
+    
+    @Override
+    public void onPlaylistPlayEvent(PlaylistPlayEvent pEvent) {
+    	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getTrack().getId() + "...");
+    	PlayerParameters oParams = new PlayerParameters()
+    		.withAutoPlay(true)
+    		.withControls(false) //TODO: this should come from ApplicationConfig (?)
+    		.withFileSource(pEvent.getPlayItem().getTrack().getURI())
+    		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
+    		.withVideoType(VideoType.MP4)
+    		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
+    	;
+    	getView().startPlayer(oParams);
+    	mLogger.log(Level.INFO, "Item now playing (or loading...)");
     }
 
     @Override
