@@ -15,6 +15,7 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent.PluginReadyHandler;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.player.Playlist;
+import net.sf.video4j.gwt.client.player.Track;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -45,6 +46,11 @@ public class ApplicationController extends BaseController implements PluginReady
 	public void begin() {
 		mLogger.log(Level.INFO, "Starting application controller...");
 		Playlist oPlaylist = new Playlist();
+		Track t = new Track();
+		t.setDurationInSeconds(100);
+		t.setTitle("Test video");
+		t.setURI("http://videos.tripfilms.com/720p/D93A130B1BC3E02EB7AB99812EFB8C00.mp4");
+		oPlaylist.add(t);
 		mConfig = new ApplicationConfig(oPlaylist);
 		/*
 		try {
