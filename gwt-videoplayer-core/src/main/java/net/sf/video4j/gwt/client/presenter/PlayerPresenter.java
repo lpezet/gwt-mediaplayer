@@ -21,6 +21,7 @@ import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
+import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
@@ -89,6 +90,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         addRegisteredHandler(ControlVolumeChangeEvent.getType(), this);
         addRegisteredHandler(ApplicationLoadEvent.getType(), this);
         addRegisteredHandler(ApplicationInitEvent.getType(), this);
+        addRegisteredHandler(PlaylistPlayEvent.getType(), this);
     }
     
     private PlayerParameters getPlayerParameters() {
@@ -177,6 +179,11 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onControlMuteEvent(ControlMuteEvent pEvent) {
         getView().mute();
+    }
+    
+    @Override
+    public void onTimeUpdate(double pCurrentTime) {
+    	PlayerPlayingEvent.fire(this, pCurrentTime);
     }
 
 }
