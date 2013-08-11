@@ -7,4 +7,5 @@ import com.gwtplatform.mvp.client.UiHandlers;
  */
 public interface PlayerUiHandlers extends UiHandlers {
 
+	void onTimeUpdate(double pCurrentTime);
 }
