@@ -3,15 +3,19 @@
  */
 package net.sf.video4j.gwt.client.player;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import fr.hd3d.html5.video.client.events.VideoEndedEvent;
+import fr.hd3d.html5.video.client.events.VideoPlayingEvent;
+import fr.hd3d.html5.video.client.events.VideoTimeUpdateEvent;
 import fr.hd3d.html5.video.client.handlers.VideoEndedHandler;
+import fr.hd3d.html5.video.client.handlers.VideoPlayingHandler;
+import fr.hd3d.html5.video.client.handlers.VideoTimeUpdateHandler;
 
 /**
  * @author luc
@@ -33,11 +37,32 @@ public class PlayTimeMonitor {
 		}
 	}
 	
+	private static class VideoTimeUpdateHandlerImpl implements VideoTimeUpdateHandler {
+		private transient double mLastTime;
+		private transient double mDuration;
+		
+		@Override
+		public void onTimeUpdated(VideoTimeUpdateEvent pEvent) {
+			mLastTime = pEvent.getCurrentTime();
+			mDuration = pEvent.getDuration();
+		}
+		
+		public double getDuration() {
+			return mDuration;
+		}
+		
+		public double getLastTime() {
+			return mLastTime;
+		}
+		
+	}
+	
 	private Timer mTimer;
 	private PlayItem mPlayItem;
 	private EventBus mEventBus;
 	private VideoEndedHandlerImpl mVideoEndedHandler = new VideoEndedHandlerImpl();
-	private List<HandlerRegistration> mHandlersRegistered = new ArrayList<HandlerRegistration>(); 
+	private VideoTimeUpdateHandlerImpl mVideoTimeUpdateHandler = new VideoTimeUpdateHandlerImpl();
+	private final transient List<HandlerRegistration> mHandlerRegistrations = new java.util.ArrayList<HandlerRegistration>();
 	
 	public PlayTimeMonitor(EventBus pEventBus, PlayItem pPlayItem) {
 		mTimer = new Timer() {
@@ -52,8 +77,13 @@ public class PlayTimeMonitor {
 		setupListeners();
 	}
 	
+	public <T> void addRegisteredHandler(Type<T> pType, T pHandler) {
+		mHandlerRegistrations.add( mEventBus.addHandler(pType, pHandler) );
+	}
+	
 	private void setupListeners() {
-		mHandlersRegistered.add( mEventBus.addHandler(VideoEndedEvent.getType(), mVideoEndedHandler) );
+		addRegisteredHandler( VideoEndedEvent.getType(), mVideoEndedHandler );
+		addRegisteredHandler( VideoTimeUpdateEvent.getType(), mVideoTimeUpdateHandler);
 	}
 
 	private void monitor() {
@@ -65,9 +95,10 @@ public class PlayTimeMonitor {
 	
 	public void shutdown() {
 		mTimer.cancel();
-		for (HandlerRegistration r : mHandlersRegistered) {
+		for (HandlerRegistration r : mHandlerRegistrations) {
 			r.removeHandler();
 		}
+		mHandlerRegistrations.clear();
 	}
 
 	/**
@@ -75,8 +106,7 @@ public class PlayTimeMonitor {
 	 * @return
 	 */
 	private double getCurrentPlayTime() {
-		//return getVideoPlayer().getCurrentTime();
-		return 0.0;
+		return mVideoTimeUpdateHandler.getLastTime();
 	}
 	
 	private boolean checkPlayEnded() {
