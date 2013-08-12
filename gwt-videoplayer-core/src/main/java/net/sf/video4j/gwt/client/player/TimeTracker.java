@@ -17,7 +17,7 @@ import com.google.web.bindery.event.shared.EventBus;
 public class TimeTracker implements HasHandlers {
 	
 	private long mStartTime;
-	private long mStoppedTime;
+	private long mCheckpointTime;
 	private Timer mTimer;
 	private PlayItem mPlayItem;
 	private EventBus mEventBus;
@@ -46,6 +46,10 @@ public class TimeTracker implements HasHandlers {
 		mTimer.run();
 	}
 	
+	public void setCheckpoint(long pTimeInMillis) {
+		mCheckpointTime = pTimeInMillis;
+	}
+	
 	private long getPlayItemDuration() {
 		if (mPlayItem.getEnd() < 0) return -1;
 		return mPlayItem.getEnd() - mPlayItem.getStart();
@@ -62,7 +66,7 @@ public class TimeTracker implements HasHandlers {
 
 	public void stop() {
 		mTimer.cancel();
-		mStoppedTime = getClockTime();
+		mCheckpointTime = getClockTime();
 	}
 	
 	public void shutdown() {
@@ -71,7 +75,7 @@ public class TimeTracker implements HasHandlers {
 	
 	public long getTimePassed() {
 		long oNow = getClockTime();
-		long oResult = mStoppedTime + (oNow - mStartTime);
+		long oResult = mCheckpointTime + (oNow - mStartTime);
 		return oResult;
 	}
 	
