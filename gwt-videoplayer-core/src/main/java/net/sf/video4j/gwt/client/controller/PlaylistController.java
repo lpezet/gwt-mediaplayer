@@ -11,6 +11,8 @@ import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
 import net.sf.video4j.gwt.client.event.ApplicationLoadEvent.ApplicationLoadHandler;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent.ApplicationReadyHandler;
+import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
+import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent.PlayerPlayEndedHandler;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
@@ -30,6 +32,7 @@ public class PlaylistController extends BaseController implements
 		ApplicationLoadHandler,
 		ApplicationInitHandler, 
 		ApplicationReadyHandler, 
+		PlayerPlayEndedHandler,
 		IPlugin {
 	
 	private ApplicationConfig mConfig;
@@ -44,6 +47,7 @@ public class PlaylistController extends BaseController implements
 		addRegisteredHandler(ApplicationLoadEvent.getType(), this);
 		addRegisteredHandler(ApplicationReadyEvent.getType(), this);
 		addRegisteredHandler(ApplicationInitEvent.getType(), this);
+		addRegisteredHandler(PlayerPlayEndedEvent.getType(), this);
 	}
 	
 	@Override
@@ -64,10 +68,19 @@ public class PlaylistController extends BaseController implements
 		PluginReadyEvent.fire(this, this);
 		mLogger.log(Level.INFO, "PluginReadyEvent fired.");
 	}
+	
+	@Override
+	public void onPlayerPlayEndedEvent(PlayerPlayEndedEvent pEvent) {
+		play();
+	}
 
 	@Override
 	public void onApplicationReadyEvent(ApplicationReadyEvent pEvent) {
 		mLogger.log(Level.INFO, "Received ApplicationReadyEvent. Starting playlist...");
+		play();
+	}
+
+	private void play() {
 		if (!mConfig.getPlaylist().hasNext()) {
 			mLogger.log(Level.INFO, "Nothing to play.");
 			return;
