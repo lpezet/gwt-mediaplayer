@@ -47,9 +47,15 @@ public class ApplicationController extends BaseController implements PluginReady
 		mLogger.log(Level.INFO, "Starting application controller...");
 		Playlist oPlaylist = new Playlist();
 		Track t = new Track();
-		t.setDurationInSeconds(100);
+		//t.setDurationInSeconds(100);
 		t.setTitle("Test video");
-		t.setURI("http://videos.tripfilms.com/720p/D93A130B1BC3E02EB7AB99812EFB8C00.mp4");
+		t.setURI("http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4");
+		oPlaylist.add(t);
+		
+		t = new Track();
+		//t.setDurationInSeconds(100);
+		t.setTitle("Test video 2");
+		t.setURI("http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4");
 		oPlaylist.add(t);
 		mConfig = new ApplicationConfig(oPlaylist);
 		/*
