@@ -12,7 +12,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author luc
  *
  */
-public class PlayerPlayEndedEvent extends GwtEvent<PlayerPlayEndedEvent.PlayEndedHandler> {
+public class PlayerPlayEndedEvent extends GwtEvent<PlayerPlayEndedEvent.PlayerPlayEndedHandler> {
     
     protected PlayerPlayEndedEvent() {
     }
@@ -26,28 +26,28 @@ public class PlayerPlayEndedEvent extends GwtEvent<PlayerPlayEndedEvent.PlayEnde
         pSource.fireEvent(pEventInstance);
     }
 
-    public interface PlayEndedHandlers extends HasHandlers {
-        HandlerRegistration addPlayEndedHandler(PlayEndedHandler pHandler);
+    public interface PlayerPlayEndedHandlers extends HasHandlers {
+        HandlerRegistration addPlayerPlayEndedHandler(PlayerPlayEndedHandler pHandler);
     }
 
-    public interface PlayEndedHandler extends EventHandler {
-        public void onPlayEndedEvent(PlayerPlayEndedEvent pEvent);
+    public interface PlayerPlayEndedHandler extends EventHandler {
+        public void onPlayerPlayEndedEvent(PlayerPlayEndedEvent pEvent);
     }
 
-    private static final Type<PlayEndedHandler> TYPE = new Type<PlayEndedHandler>();
+    private static final Type<PlayerPlayEndedHandler> TYPE = new Type<PlayerPlayEndedHandler>();
 
-    public static Type<PlayEndedHandler> getType() {
+    public static Type<PlayerPlayEndedHandler> getType() {
         return TYPE;
     }
 
     @Override
-    public Type<PlayEndedHandler> getAssociatedType() {
+    public Type<PlayerPlayEndedHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected void dispatch(PlayEndedHandler pHandler) {
-        pHandler.onPlayEndedEvent(this);
+    protected void dispatch(PlayerPlayEndedHandler pHandler) {
+        pHandler.onPlayerPlayEndedEvent(this);
     }
     
 }
