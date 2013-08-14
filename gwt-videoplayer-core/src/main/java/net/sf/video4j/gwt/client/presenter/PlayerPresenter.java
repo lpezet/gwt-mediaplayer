@@ -21,6 +21,7 @@ import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
+import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
 import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
@@ -92,7 +93,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         addRegisteredHandler(ApplicationInitEvent.getType(), this);
         addRegisteredHandler(PlaylistPlayEvent.getType(), this);
     }
-    
+    /*
     private PlayerParameters getPlayerParameters() {
         PlayerParameters oParams = new PlayerParameters()
             .withControls(false)  
@@ -102,6 +103,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
             .withFileSource("http://videos.tripfilms.com/720p/D93A130B1BC3E02EB7AB99812EFB8C00.mp4");
         return oParams;
     }
+    */
     
     @Override
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
@@ -183,7 +185,34 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     
     @Override
     public void onTimeUpdate(double pCurrentTime) {
+    	mLogger.info("onTimeUpdate() : " + pCurrentTime);
     	PlayerPlayingEvent.fire(this, pCurrentTime);
+    }
+    
+    @Override
+    public void onDurationChanged(double pNewDuration) {
+    	mLogger.info("onDurationChanged() : " + pNewDuration);
+    }
+    
+    @Override
+    public void onEnded() {
+    	mLogger.info("onEnded()...");
+    	PlayerPlayEndedEvent.fire(this);
+    }
+    
+    @Override
+    public void onError() {
+    	mLogger.info("onError()...");
+    }
+    
+    @Override
+    public void onPause() {
+    	mLogger.info("onPause()...");
+    }
+    
+    @Override
+    public void onPlaying() {
+    	mLogger.info("onPlaying()...");
     }
 
 }
