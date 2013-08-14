@@ -42,6 +42,7 @@ public class PlayerPresenterTest {
         mPresenter = new PlayerPresenter(mEventBus, mView);
     }
     
+    /*
     @Test
     public void whenOnBind_shouldStartPlayerWithValidParameters() {
         mPresenter.onBind();
@@ -49,6 +50,7 @@ public class PlayerPresenterTest {
         verify(mView).startPlayer(oArgument.capture());
         assertThat(oArgument.getValue(), is(notNullValue()));
     }
+    */
     
     @Test
     public void whenOnControlPlayEvent_shouldPlayInView() {
