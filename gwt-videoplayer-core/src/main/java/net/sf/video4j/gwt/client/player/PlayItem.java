@@ -19,6 +19,7 @@ public class PlayItem implements Comparable<PlayItem> {
 	private PlayItem mNext;
 	private PlayItem mPrevious;
 	private int mTotalPlays = -1; // -1 = infinite. Each play : totalPlays = totalPlays - 1. If reaches 0, then don't play
+	private boolean mInStream;
 	
 	public PlayItem(Track pTrack) {
 		mTrack = pTrack;
@@ -90,5 +91,13 @@ public class PlayItem implements Comparable<PlayItem> {
 	
 	public int decrementPlays() {
 		return mTotalPlays--;
+	}
+
+	public boolean isInStream() {
+		return mInStream;
+	}
+
+	public void setInStream(boolean pInStream) {
+		mInStream = pInStream;
 	}
 }
