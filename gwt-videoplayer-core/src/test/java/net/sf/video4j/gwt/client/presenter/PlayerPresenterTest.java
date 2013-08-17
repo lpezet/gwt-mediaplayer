@@ -16,6 +16,7 @@ import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +43,7 @@ public class PlayerPresenterTest {
         mPresenter = new PlayerPresenter(mEventBus, mView);
     }
     
-    /*
+    @Ignore
     @Test
     public void whenOnBind_shouldStartPlayerWithValidParameters() {
         mPresenter.onBind();
@@ -50,7 +51,6 @@ public class PlayerPresenterTest {
         verify(mView).startPlayer(oArgument.capture());
         assertThat(oArgument.getValue(), is(notNullValue()));
     }
-    */
     
     @Test
     public void whenOnControlPlayEvent_shouldPlayInView() {

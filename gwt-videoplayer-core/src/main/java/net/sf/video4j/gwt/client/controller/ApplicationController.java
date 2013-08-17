@@ -14,8 +14,6 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent.PluginReadyHandler;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
-import net.sf.video4j.gwt.client.player.Playlist;
-import net.sf.video4j.gwt.client.player.Track;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -43,21 +41,22 @@ public class ApplicationController extends BaseController implements PluginReady
 		addRegisteredHandler(PluginReadyEvent.getType(), this);
 	}
 	
-	public void begin() {
+	public void begin(ApplicationConfig pConfig) {
+	        mConfig = pConfig;
 		mLogger.log(Level.INFO, "Starting application controller...");
-		Playlist oPlaylist = new Playlist();
-		Track t = new Track();
-		//t.setDurationInSeconds(100);
-		t.setTitle("Test video");
-		t.setURI("http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4");
-		oPlaylist.add(t);
-		
-		t = new Track();
-		//t.setDurationInSeconds(100);
-		t.setTitle("Test video 2");
-		t.setURI("http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4");
-		oPlaylist.add(t);
-		mConfig = new ApplicationConfig(oPlaylist);
+//		Playlist oPlaylist = new Playlist();
+//		Track t = new Track();
+//		//t.setDurationInSeconds(100);
+//		t.setTitle("Test video");
+//		t.setURI("http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4");
+//		oPlaylist.add(t);
+//		
+//		t = new Track();
+//		//t.setDurationInSeconds(100);
+//		t.setTitle("Test video 2");
+//		t.setURI("http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4");
+//		oPlaylist.add(t);
+//		mConfig = new ApplicationConfig(oPlaylist);
 		/*
 		try {
 			mLogger.log(Level.INFO, "ApplicationInitEvent: firing...");

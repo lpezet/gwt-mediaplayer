@@ -3,7 +3,7 @@
  */
 package net.sf.video4j.gwt.client.player;
 
-import net.sf.video4j.gwt.client.event.TimerCompleteEvent;
+import net.sf.video4j.gwt.client.event.TimeCompleteEvent;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -60,7 +60,7 @@ public class TimeTracker implements HasHandlers {
 		long oTimePassed = getTimePassed();
 		if (oTimePassed >= oPlayItemDuration) {
 			stop();
-			TimerCompleteEvent.fire(this); // TODO: Async???
+			TimeCompleteEvent.fire(this); // TODO: Async???
 		}
 	}
 
