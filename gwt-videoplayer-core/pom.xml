@@ -20,6 +20,7 @@
 		<logback-classic.version>0.9.28</logback-classic.version>
 		<jackson-mapper-asl.version>1.7.1</jackson-mapper-asl.version>
 		<gin.version>2.1.0</gin.version>
+		<logback-classic.version>1.0.13</logback-classic.version>
 
 		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<mockito-all.version>1.9.5</mockito-all.version>
@@ -206,6 +207,12 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>${hamcrest-all.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-classic.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
