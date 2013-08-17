@@ -54,7 +54,7 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
         oConfig.setWidth(oJSOConfig.getWidth());
         oConfig.setHeight(oJSOConfig.getHeight());
         oConfig.setPlaylist(newPlaylist(oJSOConfig.getPlaylist()));
-        return null;
+        return oConfig;
     }
     
 
