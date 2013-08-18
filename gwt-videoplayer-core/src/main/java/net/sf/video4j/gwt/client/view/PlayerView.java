@@ -35,95 +35,96 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     }
 
     @UiField
-    VideoWidget mMainPlayer;
+    VideoWidget mPlayerWidget;
 	
     @Inject
     public PlayerView(Binder pBinder) {
         initWidget(pBinder.createAndBindUi(this));
         setupHandlers();
+        
     }
     
     private void setupHandlers() {
-		mMainPlayer.addTimeUpdateHandler(new VideoTimeUpdateHandler() {			
+		mPlayerWidget.addTimeUpdateHandler(new VideoTimeUpdateHandler() {			
 			@Override
 			public void onTimeUpdated(VideoTimeUpdateEvent pEvent) {
 				getUiHandlers().onTimeUpdate(pEvent.getCurrentTime());
 			}
 		});
-		mMainPlayer.addErrorHandler(new VideoErrorHandler() {			
+		mPlayerWidget.addErrorHandler(new VideoErrorHandler() {			
 			@Override
 			public void onError(VideoErrorEvent pEvent) {
 				getUiHandlers().onError();
 			}
 		});
-		mMainPlayer.addPlayingHandler(new VideoPlayingHandler() {
+		mPlayerWidget.addPlayingHandler(new VideoPlayingHandler() {
 			@Override
 			public void onPlaying(VideoPlayingEvent pEvent) {
 				getUiHandlers().onPlaying();
 			}
 		});
-		mMainPlayer.addPauseHanlder(new VideoPauseHandler() {
+		mPlayerWidget.addPauseHanlder(new VideoPauseHandler() {
 			@Override
 			public void onPause(VideoPauseEvent pEvent) {
 				getUiHandlers().onPause();
 			}
 		});
-		mMainPlayer.addEndedHandler(new VideoEndedHandler() {
+		mPlayerWidget.addEndedHandler(new VideoEndedHandler() {
 			@Override
 			public void onVideoEnded(VideoEndedEvent pEvent) {
 				getUiHandlers().onEnded();
 			}
 		});
-		mMainPlayer.addDurationChangeHandler(new VideoDurationChangeHandler() {
+		mPlayerWidget.addDurationChangeHandler(new VideoDurationChangeHandler() {
 			@Override
 			public void onDurationChange(VideoDurationChangeEvent pEvent) {
-				getUiHandlers().onDurationChanged(mMainPlayer.getDuration());
+				getUiHandlers().onDurationChanged(mPlayerWidget.getDuration());
 			}
 		});
 	}
 
 	@Override
     public void startPlayer(PlayerParameters pParams) {
-        mMainPlayer.setControls(pParams.hasControls());
-        mMainPlayer.setAutoPlay(pParams.isAutoPlay());
-        mMainPlayer.setSrc(pParams.getFileSource());
+        mPlayerWidget.setControls(pParams.hasControls());
+        mPlayerWidget.setAutoPlay(pParams.isAutoPlay());
+        mPlayerWidget.setSrc(pParams.getFileSource());
         //mMainPlayer.addSource(new VideoSource(pParams.getFileSource(), pParams.getVideoType()));
-        mMainPlayer.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
+        mPlayerWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
     }
     
     @Override
     public void play() {
-        mMainPlayer.playPause();
+        mPlayerWidget.playPause();
     }
 
     @Override
     public void pause() {
-        mMainPlayer.playPause();
+        mPlayerWidget.playPause();
     }
 
     @Override
     public void mute() {
-        mMainPlayer.mute();
+        mPlayerWidget.mute();
     }
 
     @Override
     public void unmute() {
-        mMainPlayer.unmute();
+        mPlayerWidget.unmute();
     }
 
     @Override
     public void fullScreen() {
-        mMainPlayer.fullScreen();
+        mPlayerWidget.fullScreen();
     }
 
     @Override
     public void volume(double pValue) {
-        mMainPlayer.setVolume(pValue);
+        mPlayerWidget.setVolume(pValue);
     }
     
     @Override
     public void seek(double pValue) {
-    	mMainPlayer.setCurrentTime(pValue);
+    	mPlayerWidget.setCurrentTime(pValue);
     }
     
 }

@@ -4,7 +4,7 @@
 	xmlns:hd3d="urn:import:fr.hd3d.html5.video.client">
 
     <g:HTMLPanel>
-		<hd3d:VideoWidget ui:field="mMainPlayer" />
+		<hd3d:VideoWidget ui:field="mPlayerWidget" />
     </g:HTMLPanel>
     
 </ui:UiBinder>
