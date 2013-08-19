@@ -6,28 +6,52 @@ package net.sf.video4j.gwt.client.player;
 import java.util.LinkedList;
 import java.util.List;
 
-import fr.hd3d.html5.video.client.IVideoPlayer;
-import fr.hd3d.html5.video.client.events.VideoCuePointEvent;
-import fr.hd3d.html5.video.client.events.VideoTimeUpdateEvent;
-import fr.hd3d.html5.video.client.handlers.VideoTimeUpdateHandler;
+import net.sf.video4j.gwt.client.event.CuePointEvent;
+import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
+import net.sf.video4j.gwt.client.event.PlayerPlayingEvent.PlayerPlayingHandler;
+
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.event.shared.HasHandlers;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.HandlerContainerImpl;
 
 /**
  * @author luc
  *
  */
-public class CuePointManager implements VideoTimeUpdateHandler {
+public class CuePointManager extends HandlerContainerImpl implements 
+	HasHandlers, 
+	PlayerPlayingHandler {
 
 	private static final int MAX_LINEAR_SEARCH = 50;
 	private List<CuePoint> mCuePoints = new LinkedList<CuePoint>();
 	private int mCurrentCuePointIndex = 0;
 	private double mCuePointTolerance = 200 / 100; // Firefox fires the timeupdate event once per frame. Safari 5 and Chrome 6 fire every 250ms. Opera 10.50 fires every 200ms.
-	private IVideoPlayer mVideoPlayer;
+	private EventBus mEventBus;
 	
-	public CuePointManager(IVideoPlayer pVideoPlayer) {
-		mVideoPlayer = pVideoPlayer;
-		mVideoPlayer.addTimeUpdateHandler(this);
+	public CuePointManager(EventBus pEventBus) {
+		mEventBus = pEventBus;
+		setupHandlers();
 	}
 	
+	private void setupHandlers() {
+		addRegisteredHandler(PlayerPlayingEvent.getType(), this);
+	}
+	
+	@Override
+	public void fireEvent(GwtEvent<?> pEvent) {
+		mEventBus.fireEvent(pEvent);
+	}
+	
+	protected EventBus getEventBus() {
+		return mEventBus;
+	}
+	
+	public <T> void addRegisteredHandler(Type<T> pType, T pHandler) {
+		registerHandler( mEventBus.addHandler(pType, pHandler) );
+	}
+
 	public void reset() {
 		mCuePoints.clear();
 		mCurrentCuePointIndex = 0;
@@ -40,10 +64,10 @@ public class CuePointManager implements VideoTimeUpdateHandler {
 	public void play(long pTimeInMillis) {
 		//double oNow = mVideoPlayer.getCurrentTime();
 		if (isVideoPlaying() && !mCuePoints.isEmpty()) {
-			System.out.println("Index = " + mCurrentCuePointIndex + ", size = " + mCuePoints.size());
+			//System.out.println("Index = " + mCurrentCuePointIndex + ", size = " + mCuePoints.size());
 			while (mCurrentCuePointIndex < mCuePoints.size() 
 					&& mCuePoints.get(mCurrentCuePointIndex).getTimeInMillis() <= (pTimeInMillis + mCuePointTolerance)) {
-				mVideoPlayer.fireEvent(new VideoCuePointEvent(mCuePoints.get(mCurrentCuePointIndex++)));
+				CuePointEvent.fire(this, mCuePoints.get(mCurrentCuePointIndex++));
 			}
 		}
 		/*
@@ -58,9 +82,13 @@ public class CuePointManager implements VideoTimeUpdateHandler {
 	}
 	
 	private boolean isVideoPlaying() {
+		return true;
+		/*
+		 * OBSOLETE???
 		// TODO: provide a getState() in VideoWidget? state machine?
 		// TODO: actually, the player might be stopped is there was an error while playing for example. In that case, paused=false and ended=false, but the player is not playing anymore.
 		return !mVideoPlayer.isPaused() && !mVideoPlayer.isEnded();
+		*/
 	}
 
 	public CuePoint add(int pTimeInMillis, String pName, Object pParameters) {
@@ -165,8 +193,12 @@ public class CuePointManager implements VideoTimeUpdateHandler {
 		return 0;
 	}
 
+	//Override
+	//public void onTimeUpdated(VideoTimeUpdateEvent pEvent) {
+	//	play((int) (pEvent.getCurrentTime() * 1000)); // currentTime is in seconds like 1.6403322...
+	//}
 	@Override
-	public void onTimeUpdated(VideoTimeUpdateEvent pEvent) {
-		play((int) (pEvent.getCurrentTime() * 1000)); // currentTime is in seconds like 1.6403322...
+	public void onPlayerPlayingEvent(PlayerPlayingEvent pEvent) {
+		play( (int) (pEvent.getCurrentTime() * 1000) );
 	}
 }
