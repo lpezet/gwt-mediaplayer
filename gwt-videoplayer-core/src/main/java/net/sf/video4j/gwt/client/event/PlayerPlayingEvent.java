@@ -14,11 +14,11 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author luc
  *
  */
-public class PlayerPlayingEvent extends GwtEvent<PlayerPlayingEvent.PlayingHandler> {
+public class PlayerPlayingEvent extends GwtEvent<PlayerPlayingEvent.PlayerPlayingHandler> {
     
 	private double mCurrentTime;
 	
-    protected PlayerPlayingEvent(double pCurrentTime) {
+    public PlayerPlayingEvent(double pCurrentTime) {
     	mCurrentTime = pCurrentTime;
     }
     
@@ -35,28 +35,28 @@ public class PlayerPlayingEvent extends GwtEvent<PlayerPlayingEvent.PlayingHandl
     //    pSource.fireEvent(pEventInstance);
     //}
 
-    public interface PlayingHandlers extends HasHandlers {
-        HandlerRegistration addPlayingHandler(PlayHandler pHandler);
+    public interface PlayerPlayingHandlers extends HasHandlers {
+        HandlerRegistration addPlayerPlayingHandler(PlayHandler pHandler);
     }
 
-    public interface PlayingHandler extends EventHandler {
-        public void onPlayingEvent(PlayerPlayingEvent pEvent);
+    public interface PlayerPlayingHandler extends EventHandler {
+        public void onPlayerPlayingEvent(PlayerPlayingEvent pEvent);
     }
 
-    private static final Type<PlayingHandler> TYPE = new Type<PlayingHandler>();
+    private static final Type<PlayerPlayingHandler> TYPE = new Type<PlayerPlayingHandler>();
 
-    public static Type<PlayingHandler> getType() {
+    public static Type<PlayerPlayingHandler> getType() {
         return TYPE;
     }
 
     @Override
-    public Type<PlayingHandler> getAssociatedType() {
+    public Type<PlayerPlayingHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected void dispatch(PlayingHandler pHandler) {
-        pHandler.onPlayingEvent(this);
+    protected void dispatch(PlayerPlayingHandler pHandler) {
+        pHandler.onPlayerPlayingEvent(this);
     }
     
 }
