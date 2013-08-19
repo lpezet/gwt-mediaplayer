@@ -127,4 +127,14 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     	mPlayerWidget.setCurrentTime(pValue);
     }
     
+    @Override
+    public void hide() {
+    	mPlayerWidget.setVisible(false);
+    }
+    
+    @Override
+    public void show() {
+    	mPlayerWidget.setVisible(true);
+    }
+    
 }

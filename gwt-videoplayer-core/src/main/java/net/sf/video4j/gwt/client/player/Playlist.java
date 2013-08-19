@@ -43,10 +43,10 @@ public class Playlist {
 			}
 		}
 		
-		private Track mTrack;
+		private Media mTrack;
 		private Set<PlayItem> mItems = new TreeSet<PlayItem>(new PlayItemComparator());
 		
-		public TrackPlayItems(Track pTrack) {
+		public TrackPlayItems(Media pTrack) {
 			mTrack = pTrack;
 		}
 		
@@ -54,7 +54,7 @@ public class Playlist {
 			return mItems;
 		}
 		
-		public Track getTrack() {
+		public Media getTrack() {
 			return mTrack;
 		}
 		
@@ -75,7 +75,7 @@ public class Playlist {
 		mCursor = oCursor;
 	}
 	
-	public PlayItem add(Track pTrack) {
+	public PlayItem add(Media pTrack) {
 		pTrack.setId(++mTrackIdGenerator);
 		PlayItem oItem = new PlayItem(pTrack);
 		if (mHead == null) {
@@ -90,7 +90,7 @@ public class Playlist {
 		return oItem;
 	}
 	
-	public PlayItem addChild(Track pTrack, Track pParentTrack, int pCutOffTime) {
+	public PlayItem addChild(Media pTrack, Media pParentTrack, int pCutOffTime) {
 		PlayItem oItem = new PlayItem(pTrack);
 		TrackPlayItems oParentTrackPlayItems = mTrackPlayItemsById.get(pParentTrack.getId());
 		if (oParentTrackPlayItems == null) throw new RuntimeException("Parent track must exist or have valid id.");
@@ -119,21 +119,19 @@ public class Playlist {
 					// insert after
 					insertAfter(oItem, oPivot);
 				} else {
-					PlayItem oBefore = new PlayItem(oPivot.getTrack(), oPivot.getStart(), pCutOffTime);
-					PlayItem oAfter = new PlayItem(oPivot.getTrack(), pCutOffTime, oPivot.getEnd());
-					oBefore.setPrevious(oPivot.getPrevious());
-					oPivot.getPrevious().setNext(oBefore);
+					PlayItem oBefore = new PlayItem(oPivot.getMedia(), oPivot.getStart(), pCutOffTime);
+					PlayItem oAfter = new PlayItem(oPivot.getMedia(), pCutOffTime, oPivot.getEnd());
+					
+					setPrevious(oBefore, oPivot.getPrevious());
+					setNext(oAfter, oPivot.getNext());
+					
+					setNext(oBefore, oItem);
+					setPrevious(oAfter, oItem);
+					
 					oParentTrackPlayItems.getItems().remove(oPivot); // check
 					oParentTrackPlayItems.getItems().add(oBefore);
 					oParentTrackPlayItems.getItems().add(oAfter);
 					
-					oAfter.setNext(oPivot.getNext());
-					oPivot.getNext().setPrevious(oAfter);
-					
-					oBefore.setNext(oItem);
-					oItem.setPrevious(oBefore);
-					oAfter.setPrevious(oItem);
-					oItem.setNext(oAfter);
 				}
 			} else {
 				throw new RuntimeException("How can this happen???");
@@ -142,8 +140,18 @@ public class Playlist {
 		addTrackPlayItem(pTrack, oItem);
 		return oItem;
 	}
+
+	private void setPrevious(PlayItem pItem, PlayItem pPrevious) {
+		pItem.setPrevious(pPrevious);
+		pPrevious.setNext(pItem);
+	}
+
+	private void setNext(PlayItem pItem, PlayItem pNext) {
+		pItem.setNext(pNext);
+		pNext.setPrevious(pItem);
+	}
 	
-	private void addTrackPlayItem(Track pTrack, PlayItem pItem) {
+	private void addTrackPlayItem(Media pTrack, PlayItem pItem) {
 		TrackPlayItems oTrackPlayItems = mTrackPlayItemsById.get(pTrack.getId());
 		if (oTrackPlayItems == null) {
 			oTrackPlayItems = new TrackPlayItems(pTrack);
@@ -160,17 +168,14 @@ public class Playlist {
 	private void insertAfter(PlayItem pItem, PlayItem pParentItem) {
 		PlayItem oNext = pParentItem.getNext();
 		pItem.setPrevious(pParentItem);
-		pItem.setNext(oNext);
-		oNext.setPrevious(pItem);
+		setNext(oNext, pItem);
 		pParentItem.setNext(pItem);
 	}
 	
 	private void insertBefore(PlayItem pItem, PlayItem pParentItem) {
 		PlayItem oPrevious = pParentItem.getPrevious();
-		pItem.setPrevious(oPrevious);
-		oPrevious.setNext(pItem);
-		pItem.setNext(pParentItem);
-		pParentItem.setPrevious(pItem);
+		setPrevious(oPrevious, pItem);
+		setNext(pParentItem, pItem);
 	}
 
 	public boolean hasNext() {

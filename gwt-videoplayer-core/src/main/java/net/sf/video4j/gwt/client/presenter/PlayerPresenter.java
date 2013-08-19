@@ -22,13 +22,13 @@ import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
 import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
+import net.sf.video4j.gwt.client.player.PlayItem;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -58,20 +58,22 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         void fullScreen();
         void volume(double pValue);
         void seek(double pValue);
+        void hide();
+        void show();
     }
     
-    private Logger mLogger = Logger.getLogger(PlayerPresenter.class.getName());
+    protected Logger mLogger = Logger.getLogger(this.getClass().getName());
+    private PlayItem mPlaying;
 	
     @Inject
     public PlayerPresenter(EventBus pEventBus, PView pView) {
         super(pEventBus, pView);
         getView().setUiHandlers(this);
-        
     }
     
     @Override
     public String getPluginName() {
-    	return "PlayerPresenter";
+    	return this.getClass().getName();
     }
     
     @Override
@@ -93,6 +95,11 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         addRegisteredHandler(ApplicationInitEvent.getType(), this);
         addRegisteredHandler(PlaylistPlayEvent.getType(), this);
     }
+    
+    public PlayItem getPlaying() {
+		return mPlaying;
+	}
+    
     /*
     private PlayerParameters getPlayerParameters() {
         PlayerParameters oParams = new PlayerParameters()
@@ -135,16 +142,17 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     
     @Override
     public void onPlaylistPlayEvent(PlaylistPlayEvent pEvent) {
-    	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getTrack().getId() + "...");
+    	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
     	PlayerParameters oParams = new PlayerParameters()
     		.withAutoPlay(true)
     		.withControls(false) //TODO: this should come from ApplicationConfig (?)
-    		.withFileSource(pEvent.getPlayItem().getTrack().getURI())
+    		.withFileSource(pEvent.getPlayItem().getMedia().getURI())
     		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
     		.withVideoType(VideoType.MP4)
     		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
     	;
     	getView().startPlayer(oParams);
+    	mPlaying = pEvent.getPlayItem();
     	mLogger.log(Level.INFO, "Item now playing (or loading...)");
     }
 
@@ -186,12 +194,13 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onTimeUpdate(double pCurrentTime) {
     	mLogger.info("onTimeUpdate() : " + pCurrentTime);
-    	PlayerPlayingEvent.fire(this, pCurrentTime);
+    	//PlayerPlayingEvent.fire(this, pCurrentTime);
     }
     
     @Override
     public void onDurationChanged(double pNewDuration) {
     	mLogger.info("onDurationChanged() : " + pNewDuration);
+    	//if (mPlaying != null) mPlaying.getTrack().set
     }
     
     @Override

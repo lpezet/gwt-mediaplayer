@@ -11,7 +11,7 @@ import java.util.Map;
  * @author luc
  *
  */
-public class Track {
+public class Media {
 
 	private int mId;
 	private String mTitle;
@@ -20,6 +20,7 @@ public class Track {
 	private Map<String, Object> mMetaData = new HashMap<String, Object>(); // TODO: Should metadata and URL be part of a separate class: Resource??
 	private Map<String, Object> mProperties = new HashMap<String, Object>();
 	private boolean mAd = false;
+	private MediaType mType;
 	
 	public String getTitle() {
 		return mTitle;
@@ -67,6 +68,12 @@ public class Track {
 	}
 	public void setAd(boolean pAd) {
 		mAd = pAd;
+	}
+	public MediaType getType() {
+		return mType;
+	}
+	public void setType(MediaType pType) {
+		mType = pType;
 	}
 	
 }

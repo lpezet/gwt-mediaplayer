@@ -12,7 +12,7 @@ import net.sf.video4j.gwt.client.util.NumberUtils;
  */
 public class PlayItem implements Comparable<PlayItem> {
 
-	private Track mTrack;
+	private Media mMedia;
 	private boolean mAutoPlay;
 	private int mStart = 0;
 	private int mEnd = -1;
@@ -21,12 +21,12 @@ public class PlayItem implements Comparable<PlayItem> {
 	private int mTotalPlays = -1; // -1 = infinite. Each play : totalPlays = totalPlays - 1. If reaches 0, then don't play
 	private boolean mInStream;
 	
-	public PlayItem(Track pTrack) {
-		mTrack = pTrack;
+	public PlayItem(Media pMedia) {
+		mMedia = pMedia;
 	}
 	
-	public PlayItem(Track pTrack, int pStart, int pEnd) {
-		mTrack = pTrack;
+	public PlayItem(Media pMedia, int pStart, int pEnd) {
+		mMedia = pMedia;
 		mStart = pStart;
 		mEnd = pEnd;
 	}
@@ -43,8 +43,8 @@ public class PlayItem implements Comparable<PlayItem> {
 	public PlayItem getPrevious() {
 		return mPrevious;
 	}
-	public Track getTrack() {
-		return mTrack;
+	public Media getMedia() {
+		return mMedia;
 	}
 
 	public int getStart() {
@@ -66,9 +66,9 @@ public class PlayItem implements Comparable<PlayItem> {
 	@Override
 	public int compareTo(PlayItem pOther) {
 		if (pOther == null) return 1;
-		Track oOtherTrack = pOther.getTrack();
-		Track oThisTrack = getTrack();
-		if (oOtherTrack.getId() != oThisTrack.getId()) return NumberUtils.compare(oThisTrack.getId(), oOtherTrack.getId());
+		Media oOtherMedia = pOther.getMedia();
+		Media oThisMedia = getMedia();
+		if (oOtherMedia.getId() != oThisMedia.getId()) return NumberUtils.compare(oThisMedia.getId(), oOtherMedia.getId());
 		if (pOther.getStart() != getStart()) return NumberUtils.compare(getStart(), pOther.getStart());
 		return NumberUtils.compare(getEnd(), pOther.getEnd());
 	}
