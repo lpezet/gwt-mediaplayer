@@ -5,4 +5,5 @@
 	<inherits name="net.sf.video4j.gwt.plugin.VAST"/>
 	<inherits name="fr.hd3d.html5.video.HTML5Video"/>
 	<inherits name="com.kiouri.sliderbar.SliderBarMVP"/>
+	<inherits name='com.gwtplatform.mvp.Mvp' />
 </module>
