@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+			 xmlns:s="urn:import:com.kiouri.sliderbar.client.solution.adv">
+
+    <g:HTMLPanel>
+		<g:HorizontalPanel>
+			<g:Button ui:field="mPlayButton">Play</g:Button>
+			<g:Button ui:field="mPauseButton" ui:visible="false" >Pause</g:Button>
+			<s:BasicSliderBar ui:field="mTimelineSlider" />
+			<g:Button ui:field="mMuteButton">Mute</g:Button>
+			<g:Button ui:field="mUnmuteButton" ui:visible="false">Unmute</g:Button>
+			<s:AdvancedSliderBar ui:field="mVolumeSlider" />
+			<g:Button ui:field="mFullScreenButton">Full-Screen</g:Button>
+		</g:HorizontalPanel>
+    </g:HTMLPanel>
+    
+</ui:UiBinder>

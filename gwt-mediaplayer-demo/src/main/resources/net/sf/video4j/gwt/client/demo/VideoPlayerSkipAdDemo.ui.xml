@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             
+    <g:HTMLPanel ui:field="container" styleName="video-container">
+    	<div class="video-player-overlay">
+    		<g:HorizontalPanel ui:field="overlayContainer"></g:HorizontalPanel>
+    	</div>
+    	<div class="video-player">
+    		<g:HorizontalPanel ui:field="videoContainer"></g:HorizontalPanel>
+    	</div>
+    </g:HTMLPanel>
+</ui:UiBinder>
