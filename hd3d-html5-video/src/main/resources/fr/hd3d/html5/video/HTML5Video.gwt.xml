@@ -1,4 +1,4 @@
 <module>
 	<inherits name="com.google.gwt.user.User"/>
-	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	<source path="client" excludes="**/*Test.java" />
 </module>
