@@ -48,6 +48,8 @@
 					<compileSourcesArtifacts>
 						<compileSourcesArtifact>net.sf.video4j:gwt-videoplayer-core</compileSourcesArtifact>
 						<compileSourcesArtifact>net.sf.video4j:gwt-plugin-ads</compileSourcesArtifact>
+						<compileSourcesArtifact>fr.hd3d.html5:hd3d-html5-video</compileSourcesArtifact>
+						<compileSourcesArtifact>com.kiouri:kiouri-slidebar</compileSourcesArtifact>
 					</compileSourcesArtifacts>
 				</configuration>
 				<executions>
