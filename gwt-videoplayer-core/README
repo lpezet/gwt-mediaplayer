@@ -1,6 +1,0 @@
-To run GWT unit tests in the IDE, it's necessary to increase the VM memory size for unit tests. 
-
-i.e. -Xmx512M -XX:MaxPermSize=128M
-
-Eclipse
-In the test class: Right Click > Run Configurarions... > go to "Arguments" tab > set it under "VM Arguments"
