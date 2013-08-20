@@ -29,9 +29,9 @@ public class PlaylistTest extends GwtTest {
 	public void simple() {
 		Playlist oList = new Playlist();
 		
-		Track oT1 = new Track();
-		Track oT2 = new Track();
-		Track oT3 = new Track();
+		Media oT1 = new Media();
+		Media oT2 = new Media();
+		Media oT3 = new Media();
 		
 		oList.add(oT1);
 		oList.add(oT2);
@@ -42,13 +42,13 @@ public class PlaylistTest extends GwtTest {
 		assertTrue(oList.hasNext());
 		PlayItem oActual = oList.next();
 		assertNotNull(oActual);
-		assertEquals(oT1, oActual.getTrack());
+		assertEquals(oT1, oActual.getMedia());
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT2, oActual.getTrack());
+		assertEquals(oT2, oActual.getMedia());
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT3, oActual.getTrack());
+		assertEquals(oT3, oActual.getMedia());
 	}
 	
 	/**
@@ -63,15 +63,15 @@ public class PlaylistTest extends GwtTest {
 	public void midRoll1() {
 		Playlist oList = new Playlist();
 		
-		Track oT1 = new Track();
-		Track oT2 = new Track();
-		Track oT3 = new Track();
+		Media oT1 = new Media();
+		Media oT2 = new Media();
+		Media oT3 = new Media();
 		
 		oList.add(oT1);
 		oList.add(oT2);
 		oList.add(oT3);
 		
-		Track oT21 = new Track();
+		Media oT21 = new Media();
 		oList.addChild(oT21, oT2, 10);
 		
 		assertEquals(4, oList.count(false));
@@ -80,27 +80,27 @@ public class PlaylistTest extends GwtTest {
 		assertTrue(oList.hasNext());
 		PlayItem oActual = oList.next();
 		assertNotNull(oActual);
-		assertEquals(oT1, oActual.getTrack());
+		assertEquals(oT1, oActual.getMedia());
 		
 		// T2
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT2, oActual.getTrack());
+		assertEquals(oT2, oActual.getMedia());
 		
 		// T21
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT21, oActual.getTrack());
+		assertEquals(oT21, oActual.getMedia());
 		
 		// T2
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT2, oActual.getTrack());
+		assertEquals(oT2, oActual.getMedia());
 		
 		// T3
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT3, oActual.getTrack());
+		assertEquals(oT3, oActual.getMedia());
 	}
 	
 	/**
@@ -115,102 +115,54 @@ public class PlaylistTest extends GwtTest {
 	public void deepList() {
 		Playlist oList = new Playlist();
 		
-		Track oT1 = new Track();
-		Track oT2 = new Track();
-		Track oT3 = new Track();
+		Media oT1 = new Media();
+		Media oT2 = new Media();
+		Media oT3 = new Media();
 		
 		oList.add(oT1);
 		oList.add(oT2);
 		oList.add(oT3);
 		
-		Track oT21 = new Track();
+		Media oT21 = new Media();
 		oList.addChild(oT21, oT2, 10);
 		
-		Track oT211 = new Track();
+		Media oT211 = new Media();
 		oList.addChild(oT211, oT21, 10);
 		
 		// T1
 		assertTrue(oList.hasNext());
 		PlayItem oActual = oList.next();
 		assertNotNull(oActual);
-		assertEquals(oT1, oActual.getTrack());
+		assertEquals(oT1, oActual.getMedia());
 		
 		// T2
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT2, oActual.getTrack());
+		assertEquals(oT2, oActual.getMedia());
 		
 		// T21
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT21, oActual.getTrack());
+		assertEquals(oT21, oActual.getMedia());
 		
 		// T211
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT211, oActual.getTrack());
+		assertEquals(oT211, oActual.getMedia());
 		
 		// T21
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT21, oActual.getTrack());
+		assertEquals(oT21, oActual.getMedia());
 		
 		// T2
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT2, oActual.getTrack());
+		assertEquals(oT2, oActual.getMedia());
 		
 		// T3
 		assertTrue(oList.hasNext());
 		oActual = oList.next();
-		assertEquals(oT3, oActual.getTrack());
-	}
-	
-	//Test
-	public void playItemDecision() {
-		Playlist oList = new Playlist();
-		IPlayItemDecisionManager oAdsOnceOnly = new IPlayItemDecisionManager() {
-			@Override
-			public boolean canPlay(Track pTrack) {
-				Integer oTimesAdPlayed = (Integer) pTrack.getMetaData().get("ad");
-				if (oTimesAdPlayed == null) return true; // not an ad
-				return (oTimesAdPlayed.intValue() == 0);
-			}
-		};
-		
-		//oList.setPlayItemDecisionManager(oAdsOnceOnly);
-		
-		Track oPreRoll = new Track();
-		oPreRoll.getMetaData().put("ad", 0);
-		oPreRoll.setAd(true);
-		Track oT1 = new Track();
-		
-		oList.add(oPreRoll);
-		oList.add(oT1);
-		
-		assertEquals(1, oList.count()); // i.e. not counting preroll ad.
-		assertEquals(1, oList.count(false)); // i.e. not counting preroll ad.
-		assertEquals(2, oList.count(true));
-		
-		// PreRoll
-		assertTrue(oList.hasNext());
-		PlayItem oActual = oList.next();
-		assertNotNull(oActual);
-		assertEquals(oPreRoll, oActual.getTrack());
-		
-		// T1
-		assertTrue(oList.hasNext());
-		oActual = oList.next();
-		assertEquals(oT1, oActual.getTrack());
-		
-		// Reset
-		oList.reset();
-		oPreRoll.getMetaData().put("ad", 1);
-		
-		// T1
-		assertTrue(oList.hasNext());
-		oActual = oList.next();
-		assertEquals(oT1, oActual.getTrack());
-		
+		assertEquals(oT3, oActual.getMedia());
 	}
 }
