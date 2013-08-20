@@ -11,13 +11,14 @@
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
 		<gwt-plugin-ads.version>0.0.1-SNAPSHOT</gwt-plugin-ads.version>
+		<hd3d-html5-video.version>0.0.1-SNAPSHOT</hd3d-html5-video.version>
+		<kiouri-slidebar.version>0.0.1-SNAPSHOT</kiouri-slidebar.version>
 		<gwt.version>2.5.1</gwt.version>
 		<gwtp.version>1.0</gwtp.version>
 		<aspectj.version>1.6.8</aspectj.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<logback-classic.version>0.9.28</logback-classic.version>
 		<jackson-mapper-asl.version>1.7.1</jackson-mapper-asl.version>
 		<gin.version>2.1.0</gin.version>
 		<logback-classic.version>1.0.13</logback-classic.version>
@@ -134,6 +135,16 @@
 			<groupId>net.sf.video4j</groupId>
 			<artifactId>gwt-plugin-ads</artifactId>
 			<version>${gwt-plugin-ads.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.hd3d.html5</groupId>
+			<artifactId>hd3d-html5-video</artifactId>
+			<version>${hd3d-html5-video.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kiouri</groupId>
+			<artifactId>kiouri-slidebar</artifactId>
+			<version>${kiouri-slidebar.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
