@@ -950,7 +950,7 @@ public class VideoWidget extends Widget implements IVideoPlayer
 				.addEventListener(
 						'seeked',
 						function() {
-							var event = @fr.hd3d.html5.video.client.events.VideoSeekedEvent::new()();
+							var event = @fr.hd3d.html5.video.client.events.VideoSeekedEvent::new(D)(videoElement.currentTime);
 							videoWidget.@fr.hd3d.html5.video.client.VideoWidget::fireEvent(Ljava/lang/Object;)(event);
 						}, true);
     }-*/;

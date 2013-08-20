@@ -11,9 +11,18 @@ import fr.hd3d.html5.video.client.handlers.VideoSeekedHandler;
  * @author michael.guiral
  * 
  */
-public class VideoSeekedEvent extends GwtEvent<VideoSeekedHandler>
-{
+public class VideoSeekedEvent extends GwtEvent<VideoSeekedHandler> {
     private static final Type<VideoSeekedHandler> TYPE = new Type<VideoSeekedHandler>();
+    
+    private double mCurrentTime;
+    
+    public VideoSeekedEvent(double pCurrentTime) {
+		mCurrentTime = pCurrentTime;
+	}
+    
+    public double getCurrentTime() {
+		return mCurrentTime;
+	}
 
     public static Type<VideoSeekedHandler> getType()
     {
