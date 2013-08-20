@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.video4j.gwt.client.util.MapUtils;
+
 /**
  * @author luc
  *
@@ -14,7 +16,8 @@ import java.util.Map;
 public enum MediaType {
 	Image,
 	Video,
-	Audio;
+	Audio,
+	Unknown;
 	
 	
 	private static final String[] FLASH_VIDEO_EXTENSIONS = { "f4b", "f4p", "f4v", "flv" };
@@ -48,12 +51,12 @@ public enum MediaType {
 	
 	public static MediaType fromExtension(String pExtension) {
 		String oExt = pExtension.toLowerCase().replaceAll("\\.", "").trim();
-		return EXTENSIONS_TYPE.get(oExt);
+		return MapUtils.get(EXTENSIONS_TYPE, oExt, MediaType.Unknown);
 	}
 	
 	public static MediaType fromMime(String pMime) {
 		String oMime = pMime.toLowerCase().trim();
-		return MIME_TYPE.get(oMime);
+		return MapUtils.get(MIME_TYPE, oMime, MediaType.Unknown);
 	}
 	
 	public static boolean isFlashExtension(String pExtension) {
