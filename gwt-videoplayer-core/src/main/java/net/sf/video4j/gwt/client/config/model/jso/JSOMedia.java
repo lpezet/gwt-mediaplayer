@@ -5,9 +5,9 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * @author gumatias
  */
-public class JSOTrack extends JavaScriptObject {
+public class JSOMedia extends JavaScriptObject {
     
-    protected JSOTrack() { }
+    protected JSOMedia() { }
     
     public final native String getURL() /*-{ 
         return this.url;

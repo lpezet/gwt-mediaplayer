@@ -6,11 +6,11 @@ import com.google.gwt.core.client.JsArray;
 /**
  * @author gumatias
  */
-public class JSOVideo4JConfig extends JavaScriptObject {
+public class JSOApplicationConfig extends JavaScriptObject {
     
-    protected JSOVideo4JConfig() { }
+    protected JSOApplicationConfig() { }
     
-    public final static native JSOVideo4JConfig build()/*-{
+    public final static native JSOApplicationConfig build()/*-{
         return $wnd.video4j;
     }-*/;
     
@@ -26,7 +26,7 @@ public class JSOVideo4JConfig extends JavaScriptObject {
         return this.height;
     }-*/;
     
-    public final native JsArray<JSOTrack> getPlaylist() /*-{ 
+    public final native JsArray<JSOMedia> getPlaylist() /*-{ 
         return this.playlist;
     }-*/;
     

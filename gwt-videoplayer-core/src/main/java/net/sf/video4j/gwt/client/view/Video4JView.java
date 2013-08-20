@@ -1,13 +1,10 @@
 package net.sf.video4j.gwt.client.view;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import net.sf.video4j.gwt.client.config.model.Playlist;
-import net.sf.video4j.gwt.client.config.model.Track;
-import net.sf.video4j.gwt.client.config.model.Video4JConfig;
-import net.sf.video4j.gwt.client.config.model.jso.JSOTrack;
-import net.sf.video4j.gwt.client.config.model.jso.JSOVideo4JConfig;
+import net.sf.video4j.gwt.client.config.model.jso.JSOApplicationConfig;
+import net.sf.video4j.gwt.client.config.model.jso.JSOMedia;
+import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.player.Media;
+import net.sf.video4j.gwt.client.player.Playlist;
 import net.sf.video4j.gwt.client.presenter.Video4JPresenter;
 
 import com.google.gwt.core.client.JsArray;
@@ -28,8 +25,10 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
     public interface Binder extends UiBinder<Widget, Video4JView> {
     }
 
-    @UiField SimplePanel mVideoPlayerPanel;
-    @UiField SimplePanel mControlPanel;
+    @UiField 
+    SimplePanel mVideoPlayerPanel;
+    @UiField 
+    SimplePanel mControlPanel;
 
     @Inject
     public Video4JView(Binder pBinder) {
@@ -45,34 +44,30 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
         else 
             super.setInSlot(pSlot, pContent);
     }
-
+    
     @Override
-    public Video4JConfig getVideo4JConfig() {
-        JSOVideo4JConfig oJSOConfig = JSOVideo4JConfig.build();
-        Video4JConfig oConfig = new Video4JConfig();
-        oConfig.setAutoPlay(oJSOConfig.isAutoPlay());
-        oConfig.setWidth(oJSOConfig.getWidth());
-        oConfig.setHeight(oJSOConfig.getHeight());
-        oConfig.setPlaylist(newPlaylist(oJSOConfig.getPlaylist()));
+    public ApplicationConfig getApplicationConfig() {
+        JSOApplicationConfig oJSOConfig = JSOApplicationConfig.build();
+        ApplicationConfig oConfig = new ApplicationConfig(newPlaylist(oJSOConfig.getPlaylist()));
+        oJSOConfig.isAutoPlay();
+        oJSOConfig.getWidth();
+        oJSOConfig.getHeight();
         return oConfig;
     }
-    
 
-    private Playlist newPlaylist(JsArray<JSOTrack> pJSOPlaylist) {
+    private Playlist newPlaylist(JsArray<JSOMedia> pJSOPlaylist) {
         Playlist oPlaylist = new Playlist();
-        Set<Track> oTracks = new LinkedHashSet<Track>();
         for (int i = 0; i < pJSOPlaylist.length(); i++) {
-            JSOTrack oJSOTrack = pJSOPlaylist.get(i);
-            oTracks.add(newTrack(oJSOTrack));
+            JSOMedia oJSOMedia = pJSOPlaylist.get(i);
+            oPlaylist.add(newMedia(oJSOMedia));
         }
-        oPlaylist.setTracks(oTracks);
         return oPlaylist;
     }
 
-    private Track newTrack(JSOTrack pJSOTrack) {
-        Track oTrack = new Track();
-        oTrack.setURL(pJSOTrack.getURL());
-        return oTrack;
+    private Media newMedia(JSOMedia pJSOMedia) {
+        Media m = new Media();
+        m.setURI(pJSOMedia.getURL());
+        return m;
     }
-
+    
 }
