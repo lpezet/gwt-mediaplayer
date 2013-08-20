@@ -11,15 +11,6 @@
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
 		<gwt.version>2.5.1</gwt.version>
-		<gwtp.version>1.0</gwtp.version>
-		<aspectj.version>1.6.8</aspectj.version>
-		<spring.version>3.1.0.RELEASE</spring.version>
-		<spring-security.version>3.1.0.RELEASE</spring-security.version>
-		<slf4j.version>1.6.1</slf4j.version>
-		<logback-classic.version>0.9.28</logback-classic.version>
-		<jackson-mapper-asl.version>1.7.1</jackson-mapper-asl.version>
-		<gin.version>2.0.0</gin.version>
-		<logback-classic.version>1.0.13</logback-classic.version>
 
 		<gwt-test-utils.version>0.44</gwt-test-utils.version>
 		<mockito-all.version>1.9.5</mockito-all.version>
@@ -154,32 +145,6 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-mvp-client</artifactId>
-			<version>${gwtp.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.inject</groupId>
-			<artifactId>gin</artifactId>
-			<version>${gin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.gwtplatform</groupId>
-			<artifactId>gwtp-tester</artifactId>
-			<version>${gwtp.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback-classic.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson-mapper-asl.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
@@ -201,12 +166,6 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>${hamcrest-all.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback-classic.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
