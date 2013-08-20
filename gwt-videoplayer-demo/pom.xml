@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.video4j</groupId>
-	<artifactId>gwt-videoplayer-demo</artifactId>
+	<artifactId>gwt-mediaplayer-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -11,7 +11,7 @@
 		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
-		<gwt-videoplayer-core.version>0.0.1-SNAPSHOT</gwt-videoplayer-core.version>
+		<gwt-mediaplayer-core.version>0.0.1-SNAPSHOT</gwt-mediaplayer-core.version>
 		<gwt.version>2.5.1</gwt.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<gwtp.version>1.0</gwtp.version>
@@ -46,7 +46,7 @@
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<localWorkers>4</localWorkers>
 					<compileSourcesArtifacts>
-						<compileSourcesArtifact>net.sf.video4j:gwt-videoplayer-core</compileSourcesArtifact>
+						<compileSourcesArtifact>net.sf.video4j:gwt-mediaplayer-core</compileSourcesArtifact>
 						<compileSourcesArtifact>net.sf.video4j:gwt-plugin-ads</compileSourcesArtifact>
 						<compileSourcesArtifact>fr.hd3d.html5:hd3d-html5-video</compileSourcesArtifact>
 						<compileSourcesArtifact>com.kiouri:kiouri-slidebar</compileSourcesArtifact>
@@ -128,8 +128,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.video4j</groupId>
-			<artifactId>gwt-videoplayer-core</artifactId>
-			<version>${gwt-videoplayer-core.version}</version>
+			<artifactId>gwt-mediaplayer-core</artifactId>
+			<version>${gwt-mediaplayer-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
