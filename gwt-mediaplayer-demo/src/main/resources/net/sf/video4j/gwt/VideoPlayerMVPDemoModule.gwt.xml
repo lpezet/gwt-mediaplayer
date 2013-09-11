@@ -14,6 +14,14 @@
     <!-- Other module inherits                                      -->
     <inherits name="net.sf.video4j.gwt.Video4J"/>
     <inherits name="com.gwtplatform.mvp.MvpWithEntryPoint"/>
+    
+	<!-- Enables Logging -->
+	<inherits name="com.google.gwt.logging.Logging"/>
+	<set-property name="gwt.logging.logLevel" value="FINEST" />
+	<set-property name='gwt.logging.enabled' value='TRUE'/>           
+	<set-property name='gwt.logging.consoleHandler' value='ENABLED'/>
+	<set-property name='gwt.logging.firebugHandler' value='ENABLED'/>  
+	<set-property name='gwt.logging.popupHandler' value='DISABLED'/>
 
     <!-- Specify the paths for translatable code                    -->
     <source path="client"/>
