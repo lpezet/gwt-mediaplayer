@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,8 +15,6 @@ import net.sf.video4j.gwt.client.controller.PlaylistController;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.Playlist;
-import net.sf.video4j.gwt.client.presenter.ControlPresenter.CView;
-import net.sf.video4j.gwt.client.presenter.PlayerPresenter.PView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +40,12 @@ public class Video4JPresenterTest {
     private Video4JPresenter.V4JView mView;
     @Mock
     private ApplicationController mApplicationController;
+    @Mock
+    private AdPresenter mAdPresenter;
+    @Mock
+    private ControlPresenter mControlPresenter;
+    @Mock
+    private PlayerPresenter mPlayerPresenter;
     
     @Before
     public void setUp() throws Exception {
@@ -51,8 +54,9 @@ public class Video4JPresenterTest {
     			mEventBus, 
     			mView,
     			null,
-    			new PlayerPresenter(mEventBus, mock(PView.class)), 
-    			new ControlPresenter(mEventBus, mock(CView.class)), 
+    			mPlayerPresenter, 
+    			mControlPresenter,
+    			mAdPresenter,
     			mApplicationController,
     			new PlaylistController(mEventBus));
     }
@@ -63,9 +67,10 @@ public class Video4JPresenterTest {
         
         mPresenter.onBind();
         
-        verify(mView, times(2)).setInSlot(anyObject(), any(IsWidget.class));
+        verify(mView, times(3)).setInSlot(anyObject(), any(IsWidget.class));
         verify(mView).setInSlot(anyObject(), isA(PlayerPresenter.class));
         verify(mView).setInSlot(anyObject(), isA(ControlPresenter.class));
+        verify(mView).setInSlot(anyObject(), isA(AdPresenter.class));
     }
     
     @Test

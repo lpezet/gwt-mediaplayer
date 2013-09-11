@@ -29,6 +29,8 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
     SimplePanel mVideoPlayerPanel;
     @UiField 
     SimplePanel mControlPanel;
+    @UiField 
+    SimplePanel mAdPanel;
 
     @Inject
     public Video4JView(Binder pBinder) {
@@ -40,7 +42,9 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
         if (pSlot == Video4JPresenter.SLOT_VIDEO_PLAYER) 
             mVideoPlayerPanel.setWidget(pContent);
         else if (pSlot == Video4JPresenter.SLOT_CONTROL) 
-            mControlPanel.setWidget(pContent);        	
+            mControlPanel.setWidget(pContent);
+        else if (pSlot == Video4JPresenter.SLOT_AD) 
+            mAdPanel.setWidget(pContent);   
         else 
             super.setInSlot(pSlot, pContent);
     }

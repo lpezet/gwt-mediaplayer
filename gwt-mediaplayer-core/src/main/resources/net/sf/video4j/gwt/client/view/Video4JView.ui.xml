@@ -9,6 +9,9 @@
         <div class="video-player-controls">
         	<g:SimplePanel ui:field="mControlPanel"/>
         </div>
+        <div class="ad">
+        	<g:SimplePanel ui:field="mAdPanel"/>
+        </div>
     </g:HTMLPanel>
     
 </ui:UiBinder>

@@ -34,9 +34,11 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
 
     public static final Object SLOT_VIDEO_PLAYER = new Object();
     public static final Object SLOT_CONTROL      = new Object();
+    public static final Object SLOT_AD           = new Object();
 
     PlayerPresenter            mPlayerPresenter;
     ControlPresenter           mControlPresenter;
+    AdPresenter                mAdPresenter;
     ApplicationController      mApplicationController;
     PlaylistController         mPlaylistController;
     
@@ -47,12 +49,14 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
                 V4JProxy pProxy, 
                 PlayerPresenter pPlayerPresenter, 
                 ControlPresenter pControlPresenter,
+                AdPresenter pAdPresenter,
                 ApplicationController pApplicationController,
                 PlaylistController pPlaylistController
                 ) {
         super(pEventBus, pView, pProxy, RevealType.Root);
         mPlayerPresenter = pPlayerPresenter;
         mControlPresenter = pControlPresenter;
+        mAdPresenter = pAdPresenter;
         mApplicationController = pApplicationController;
         mPlaylistController = pPlaylistController;
     }
@@ -62,6 +66,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
         super.onBind();
         setInSlot(SLOT_VIDEO_PLAYER, mPlayerPresenter);
         setInSlot(SLOT_CONTROL, mControlPresenter);
+        setInSlot(SLOT_AD, mAdPresenter);
         ApplicationConfig oConfig = getView().getApplicationConfig();
         mApplicationController.begin(oConfig);
     }
