@@ -7,22 +7,31 @@ import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
- *
+ * 
  */
 public class Tracking {
 
-	private TrackingEvent mEvent;
-	private SafeUri mURI;
-	public TrackingEvent getEvent() {
-		return mEvent;
-	}
-	public void setEvent(TrackingEvent pEvent) {
-		mEvent = pEvent;
-	}
-	public SafeUri getURI() {
-		return mURI;
-	}
-	public void setURI(SafeUri pURI) {
-		mURI = pURI;
-	}
+    private TrackingEvent mEvent;
+    private SafeUri       mURI;
+
+    public TrackingEvent getEvent() {
+        return mEvent;
+    }
+
+    public void setEvent(TrackingEvent pEvent) {
+        mEvent = pEvent;
+    }
+
+    public SafeUri getURI() {
+        return mURI;
+    }
+
+    public void setURI(SafeUri pURI) {
+        mURI = pURI;
+    }
+
+    @Override
+    public String toString() {
+        return "Tracking [mEvent=" + mEvent + ", mURI=" + mURI + "]";
+    }
 }

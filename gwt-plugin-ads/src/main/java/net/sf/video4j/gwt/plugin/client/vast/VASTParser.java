@@ -4,7 +4,9 @@
 package net.sf.video4j.gwt.plugin.client.vast;
 
 
-import com.google.gwt.user.client.Window;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
@@ -15,7 +17,9 @@ import com.google.gwt.xml.client.XMLParser;
  * 
  */
 public class VASTParser implements IVASTParser {
-
+    
+        private Logger mLogger = Logger.getLogger(this.getClass().getName());
+    
 	@Override
 	public VAST parse(String pXML) {
 		VAST oVAST = new VAST();
@@ -25,12 +29,10 @@ public class VASTParser implements IVASTParser {
 
 			Node n = oDoc.getFirstChild();
 			if (n.getNodeName().indexOf("VAST") >= 0) {
-				System.out.println("Parsing VAST 2.0...");
 				Node oVN = n.getAttributes().getNamedItem("version");
 				String oVersion = oVN.getNodeValue();
 				if (oVersion.startsWith("2.")) return parse2x(n);
 			} else {
-				System.out.println("Parsing VAST 1.0...");
 				return parse1x(n);
 			}
 
@@ -52,13 +54,14 @@ public class VASTParser implements IVASTParser {
 			 * (); String body = bodyNode.getData(); bodyLabel.setText(body);
 			 */
 		} catch (DOMException e) {
-			Window.alert("Could not parse XML document.");
+			mLogger.log(Level.SEVERE, "Could not parse XML document.");
 		}
 		return oVAST;
 	}
 
 	private VAST parse1x(Node pVASTNode) {
 		// TODO Auto-generated method stub
+	        mLogger.log(Level.SEVERE, "1x parser not yet implemented");
 		return null;
 	}
 

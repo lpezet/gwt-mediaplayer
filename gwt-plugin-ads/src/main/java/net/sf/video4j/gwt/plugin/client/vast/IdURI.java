@@ -7,27 +7,32 @@ import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
- *
+ * 
  */
 public class IdURI {
 
-	private String mId;
-	
-	private SafeUri mURI;
+    private String  mId;
 
-	public String getId() {
-		return mId;
-	}
+    private SafeUri mURI;
 
-	public void setId(String pId) {
-		mId = pId;
-	}
+    public String getId() {
+        return mId;
+    }
 
-	public SafeUri getURI() {
-		return mURI;
-	}
+    public void setId(String pId) {
+        mId = pId;
+    }
 
-	public void setURI(SafeUri pURI) {
-		mURI = pURI;
-	}
+    public SafeUri getURI() {
+        return mURI;
+    }
+
+    public void setURI(SafeUri pURI) {
+        mURI = pURI;
+    }
+
+    @Override
+    public String toString() {
+        return "IdURI [mId=" + mId + ", mURI=" + mURI + "]";
+    }
 }

@@ -28,42 +28,62 @@ import com.googlecode.gwt.test.GwtTest;
 @GwtModule("net.sf.video4j.gwt.plugin.VAST")
 public class VASTParserTest extends GwtTest {
 
-	@Test
-	public void overlays() throws Exception {
-		VASTParser oParser = new  VASTParser();
-		String oXML = getXMLAsString("/vast2_overlays.xml");
-		
-		VAST oVAST = oParser.parse(oXML);
-		
-		assertNotNull(oVAST);
-	}
-	
-	@Test
-	public void regularLinear() throws Exception {
-		VASTParser oParser = new  VASTParser();
-		String oXML = getXMLAsString("/vast2_regular_linear.xml");
-		
-		VAST oVAST = oParser.parse(oXML);
-		assertNotNull(oVAST);
-		assertNotNull(oVAST.getAds());
-		assertEquals(1, oVAST.getAds().size());
-		
-		Ad oAd = oVAST.getAds().get(0);
-		assertEquals("preroll-1", oAd.getId());
-		assertTrue(oAd instanceof InLine);
-		
-		InLine oInLine = (InLine) oAd;
-		assertEquals("2.0", oInLine.getAdSystem().getName());
-		assertEquals("5748406", oInLine.getAdTitle());
-		assertEquals(2, oInLine.getCreatives().size());
-	}
+    @Test
+    public void overlays() throws Exception {
+        VASTParser oParser = new VASTParser();
+        String oXML = getXMLAsString("/vast2_overlays.xml");
 
-	private String getXMLAsString(String pResourcePath) throws IOException {
-		InputStream oIS = this.getClass().getResourceAsStream(pResourcePath);
-		StringWriter writer = new StringWriter();
-		IOUtils.copy(oIS, writer, "UTF8");
-		String oXML = writer.toString();
-		return oXML;
-	}
+        VAST oVAST = oParser.parse(oXML);
+
+        assertNotNull(oVAST);
+    }
+
+    @Test
+    public void regularLinear() throws Exception {
+        VASTParser oParser = new VASTParser();
+        String oXML = getXMLAsString("/vast2_regular_linear.xml");
+
+        VAST oVAST = oParser.parse(oXML);
+        assertNotNull(oVAST);
+        assertNotNull(oVAST.getAds());
+        assertEquals(1, oVAST.getAds().size());
+
+        Ad oAd = oVAST.getAds().get(0);
+        assertEquals("preroll-1", oAd.getId());
+        assertTrue(oAd instanceof InLine);
+
+        InLine oInLine = (InLine) oAd;
+        assertEquals("2.0", oInLine.getAdSystem().getName());
+        assertEquals("5748406", oInLine.getAdTitle());
+        assertEquals(2, oInLine.getCreatives().size());
+    }
+    
+    @Test
+    public void regularLinear() throws Exception {
+        VASTParser oParser = new VASTParser();
+        String oXML = getXMLAsString("/vast2_regular_linear.xml");
+
+        VAST oVAST = oParser.parse(oXML);
+        assertNotNull(oVAST);
+        assertNotNull(oVAST.getAds());
+        assertEquals(1, oVAST.getAds().size());
+
+        Ad oAd = oVAST.getAds().get(0);
+        assertEquals("preroll-1", oAd.getId());
+        assertTrue(oAd instanceof InLine);
+
+        InLine oInLine = (InLine) oAd;
+        assertEquals("2.0", oInLine.getAdSystem().getName());
+        assertEquals("5748406", oInLine.getAdTitle());
+        assertEquals(2, oInLine.getCreatives().size());
+    }
+
+    private String getXMLAsString(String pResourcePath) throws IOException {
+        InputStream oIS = this.getClass().getResourceAsStream(pResourcePath);
+        StringWriter writer = new StringWriter();
+        IOUtils.copy(oIS, writer, "UTF8");
+        String oXML = writer.toString();
+        return oXML;
+    }
 
 }

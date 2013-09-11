@@ -10,127 +10,142 @@ import com.google.gwt.safehtml.shared.SafeUri;
 
 /**
  * @author luc
- *
+ * 
  */
 public class CompanionAd {
-	
-	// Optional identifier
-	private String mId;
-	
-	// Pixel dimensions of companion
-	private int mWidth;
-	
-	// Pixel dimensions of companion
-	private int mHeight;
-	
-	// Pixel dimensions of expanding companion ad when in expanded state
-	private int mExpandedWidth;
-	
-	// Pixel dimensions of expanding companion ad when in expanded state
-	private int mExpandedHeight;
-	
-	// The apiFramework defines the method to use for communication with the companion
-	private String mApiFramework;
-	
-	private CompanionResource mResource;
-	
-	// The creativeView should always be requested when present. For Companions creativeView is the only supported event.
-	private List<Tracking> mTrackingEvents = new ArrayList<Tracking>();
-	
-	// URL to open as destination page when user clicks on the the companion banner ad.
-	private SafeUri mClickThrough;
-	
-	// Alt text to be displayed when companion is rendered in HTML environment.
-	private String mAltText;
-	
-	// Data to be passed into the companion ads. The apiFramework defines the method to use for communication (e.g. "FlashVar")
-	private String mAdParameters;
 
-	public String getId() {
-		return mId;
-	}
+    // Optional identifier
+    private String            mId;
 
-	public void setId(String pId) {
-		mId = pId;
-	}
+    // Pixel dimensions of companion
+    private int               mWidth;
 
-	public int getWidth() {
-		return mWidth;
-	}
+    // Pixel dimensions of companion
+    private int               mHeight;
 
-	public void setWidth(int pWidth) {
-		mWidth = pWidth;
-	}
+    // Pixel dimensions of expanding companion ad when in expanded state
+    private int               mExpandedWidth;
 
-	public int getHeight() {
-		return mHeight;
-	}
+    // Pixel dimensions of expanding companion ad when in expanded state
+    private int               mExpandedHeight;
 
-	public void setHeight(int pHeight) {
-		mHeight = pHeight;
-	}
+    // The apiFramework defines the method to use for communication with the
+    // companion
+    private String            mApiFramework;
 
-	public int getExpandedWidth() {
-		return mExpandedWidth;
-	}
+    private CompanionResource mResource;
 
-	public void setExpandedWidth(int pExpandedWidth) {
-		mExpandedWidth = pExpandedWidth;
-	}
+    // The creativeView should always be requested when present. For Companions
+    // creativeView is the only supported event.
+    private List<Tracking>    mTrackingEvents = new ArrayList<Tracking>();
 
-	public int getExpandedHeight() {
-		return mExpandedHeight;
-	}
+    // URL to open as destination page when user clicks on the the companion
+    // banner ad.
+    private SafeUri           mClickThrough;
 
-	public void setExpandedHeight(int pExpandedHeight) {
-		mExpandedHeight = pExpandedHeight;
-	}
+    // Alt text to be displayed when companion is rendered in HTML environment.
+    private String            mAltText;
 
-	public String getApiFramework() {
-		return mApiFramework;
-	}
+    // Data to be passed into the companion ads. The apiFramework defines the
+    // method to use for communication (e.g. "FlashVar")
+    private String            mAdParameters;
 
-	public void setApiFramework(String pApiFramework) {
-		mApiFramework = pApiFramework;
-	}
+    public String getId() {
+        return mId;
+    }
 
-	public CompanionResource getResource() {
-		return mResource;
-	}
+    public void setId(String pId) {
+        mId = pId;
+    }
 
-	public void setResource(CompanionResource pResource) {
-		mResource = pResource;
-	}
+    public int getWidth() {
+        return mWidth;
+    }
 
-	public List<Tracking> getTrackingEvents() {
-		return mTrackingEvents;
-	}
+    public void setWidth(int pWidth) {
+        mWidth = pWidth;
+    }
 
-	public void setTrackingEvents(List<Tracking> pTrackingEvents) {
-		mTrackingEvents = pTrackingEvents;
-	}
+    public int getHeight() {
+        return mHeight;
+    }
 
-	public SafeUri getClickThrough() {
-		return mClickThrough;
-	}
+    public void setHeight(int pHeight) {
+        mHeight = pHeight;
+    }
 
-	public void setClickThrough(SafeUri pClickThrough) {
-		mClickThrough = pClickThrough;
-	}
+    public int getExpandedWidth() {
+        return mExpandedWidth;
+    }
 
-	public String getAltText() {
-		return mAltText;
-	}
+    public void setExpandedWidth(int pExpandedWidth) {
+        mExpandedWidth = pExpandedWidth;
+    }
 
-	public void setAltText(String pAltText) {
-		mAltText = pAltText;
-	}
+    public int getExpandedHeight() {
+        return mExpandedHeight;
+    }
 
-	public String getAdParameters() {
-		return mAdParameters;
-	}
+    public void setExpandedHeight(int pExpandedHeight) {
+        mExpandedHeight = pExpandedHeight;
+    }
 
-	public void setAdParameters(String pAdParameters) {
-		mAdParameters = pAdParameters;
-	}
+    public String getApiFramework() {
+        return mApiFramework;
+    }
+
+    public void setApiFramework(String pApiFramework) {
+        mApiFramework = pApiFramework;
+    }
+
+    public CompanionResource getResource() {
+        return mResource;
+    }
+
+    public void setResource(CompanionResource pResource) {
+        mResource = pResource;
+    }
+
+    public List<Tracking> getTrackingEvents() {
+        return mTrackingEvents;
+    }
+
+    public void setTrackingEvents(List<Tracking> pTrackingEvents) {
+        mTrackingEvents = pTrackingEvents;
+    }
+
+    public SafeUri getClickThrough() {
+        return mClickThrough;
+    }
+
+    public void setClickThrough(SafeUri pClickThrough) {
+        mClickThrough = pClickThrough;
+    }
+
+    public String getAltText() {
+        return mAltText;
+    }
+
+    public void setAltText(String pAltText) {
+        mAltText = pAltText;
+    }
+
+    public String getAdParameters() {
+        return mAdParameters;
+    }
+
+    public void setAdParameters(String pAdParameters) {
+        mAdParameters = pAdParameters;
+    }
+
+    @Override
+    public String toString() {
+        return "CompanionAd [mId=" + mId + ", mWidth=" + mWidth + ", mHeight="
+                + mHeight + ", mExpandedWidth=" + mExpandedWidth
+                + ", mExpandedHeight=" + mExpandedHeight + ", mApiFramework="
+                + mApiFramework + ", mResource=" + mResource
+                + ", mTrackingEvents=" + mTrackingEvents + ", mClickThrough="
+                + mClickThrough + ", mAltText=" + mAltText + ", mAdParameters="
+                + mAdParameters + "]";
+    }
 }

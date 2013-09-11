@@ -6,7 +6,8 @@ package net.sf.video4j.gwt.plugin.client.vast;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.safehtml.shared.UriUtils;
@@ -18,8 +19,11 @@ import com.google.gwt.xml.client.NodeList;
  *
  */
 public class VAST20Parser {
+    
+        private Logger mLogger = Logger.getLogger(this.getClass().getName());
 	
 	public VAST parse(Node pRoot) {
+	        mLogger.log(Level.FINEST, "Parsing VAST 2.0");
 		VAST oVAST = new VAST();
 		NodeList oChildren = pRoot.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
@@ -31,6 +35,7 @@ public class VAST20Parser {
 				// invalid VAST document??
 			}
 		}
+		mLogger.log(Level.FINEST, "Done parsing VAST 2.0 " + oVAST);
 		return oVAST;
 	}
 
