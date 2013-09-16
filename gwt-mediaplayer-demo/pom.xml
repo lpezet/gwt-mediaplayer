@@ -1,26 +1,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf.video4j.gwt</groupId>
 	<artifactId>gwt-mediaplayer-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
+	<parent>
+		<groupId>net.sf.video4j.gwt</groupId>
+		<artifactId>gwt-parent</artifactId>	
+		<version>0.0.1</version>
+	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.sourceDirectory>src/main/java</project.build.sourceDirectory>
-		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
-
+	<properties>		
 		<gwt-mediaplayer-core.version>0.0.1-SNAPSHOT</gwt-mediaplayer-core.version>
-		<gwt.version>2.5.1</gwt.version>
-		<spring.version>3.1.0.RELEASE</spring.version>
-		<gwtp.version>1.0</gwtp.version>
-		<gin.version>2.1.0</gin.version>
 		<spring-webmvc.version>3.2.3.RELEASE</spring-webmvc.version>
 	</properties>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.3.1</version> <!-- find the latest version at http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<!-- 
+								<requireMavenVersion>
+									<version>2.0.6</version>
+								</requireMavenVersion>
+								<requireOS>
+									<family>unix</family>
+								</requireOS>
+								-->
+								<requireJavaVersion>
+									<version>1.6</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.1</version>
@@ -35,6 +61,7 @@
 					<optimize>${java.compiler.optimize}</optimize>
 				</configuration>
 			</plugin>
+			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -124,7 +151,28 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+		<repository>
+			<id>net.sf.video4j.gwt.release</id>
+			<url>https://repository-tripfilms.forge.cloudbees.com/release</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>net.sf.video4j.gwt.snapshot</id>
+			<url>https://repository-tripfilms.forge.cloudbees.com/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.video4j</groupId>
@@ -134,22 +182,18 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.gwtplatform</groupId>
 			<artifactId>gwtp-mvp-client</artifactId>
-			<version>${gwtp.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt.inject</groupId>
 			<artifactId>gin</artifactId>
-			<version>${gin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
