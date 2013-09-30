@@ -18,6 +18,7 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.player.PlayItem;
+import net.sf.video4j.gwt.client.player.PlaylistNavigator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -36,6 +37,7 @@ public class PlaylistController extends BaseController implements
 		IPlugin {
 	
 	private ApplicationConfig mConfig;
+	private PlaylistNavigator mPlaylistNavigator;
 
 	@Inject
 	public PlaylistController(EventBus pBus) {
@@ -60,6 +62,7 @@ public class PlaylistController extends BaseController implements
 		mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
 		mConfig = pEvent.getConfig();
 		mConfig.getPlugins().add(this);
+		mPlaylistNavigator = new PlaylistNavigator(mConfig.getPlaylist());
 	}
 	
 	@Override
@@ -81,7 +84,7 @@ public class PlaylistController extends BaseController implements
 	}
 
 	private void play() {
-		if (!mConfig.getPlaylist().hasNext()) {
+		if (!mPlaylistNavigator.hasNext()) {
 			mLogger.log(Level.INFO, "Nothing to play.");
 			return;
 		}
@@ -90,7 +93,7 @@ public class PlaylistController extends BaseController implements
 			@Override
 			public void onSuccess() {
 				mLogger.log(Level.INFO, "Getting play item...");
-				PlayItem oNext = mConfig.getPlaylist().next();
+				PlayItem oNext = mPlaylistNavigator.next();
 				mLogger.log(Level.INFO, "Firing PlayListPlayEvent...");
 				PlaylistPlayEvent.fire(PlaylistController.this, oNext);
 				mLogger.log(Level.INFO, "PlayListPlayEvent fired.");
