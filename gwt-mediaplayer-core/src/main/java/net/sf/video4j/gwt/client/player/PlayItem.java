@@ -100,4 +100,8 @@ public class PlayItem implements Comparable<PlayItem> {
 	public void setInStream(boolean pInStream) {
 		mInStream = pInStream;
 	}
+	@Override
+	public String toString() {
+		return String.format("PlayItem[hash:%s, Media:%s, start:%s, end:%s]", hashCode(), (mMedia == null) ? "NA" : mMedia.getId(), mStart, mEnd);
+	}	
 }
