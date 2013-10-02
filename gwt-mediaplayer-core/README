@@ -2,5 +2,12 @@ To run GWT unit tests in the IDE, it's necessary to increase the VM memory size 
 
 i.e. -Xmx512M -XX:MaxPermSize=128M
 
-Eclipse
+# Eclipse #
+
 In the test class: Right Click > Run Configurarions... > go to "Arguments" tab > set it under "VM Arguments"
+
+# Servlet #
+
+The user must add Guice listener, filter and filter mapping in web.xml. 
+
+sample: https://github.com/ArcBees/ArcBees-tools/blob/master/archetypes/gwtp-appengine-objectify/src/main/webapp/WEB-INF/web.xml

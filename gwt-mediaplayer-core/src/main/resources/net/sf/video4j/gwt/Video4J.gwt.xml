@@ -6,6 +6,14 @@
 	<inherits name="fr.hd3d.html5.video.HTML5Video"/>
 	<inherits name="com.kiouri.sliderbar.SliderBarMVP"/>
 	<inherits name='com.gwtplatform.mvp.Mvp' />
+	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
+	
+	<!-- Default client module -->
+    <set-configuration-property name="gin.ginjector.modules" value="com.arcbees.project.client.gin.ClientModule"/>
+    
+    <!-- Bootstrapper -->
+    <set-configuration-property name="gwtp.bootstrapper" value="com.arcbees.project.client.gin.BootstrapperImpl"/> 
 	
   	<source path="client" excludes="**/*Test.java" />
+  	<source path="shared" excludes="**/*Test.java" />
 </module>

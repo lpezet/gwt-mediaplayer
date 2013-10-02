@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.event.shared.EventBus;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 
 /**
  * @author gumatias
@@ -25,10 +26,12 @@ public class AdPresenterTest {
     private EventBus mEventBus;
     @Mock
     private IAdService mAdService;
+    @Mock
+    private DispatchAsync mDispatcher;
     
     @Before
     public void setUp() throws Exception {
-        mPresenter = new AdPresenter(mEventBus, mView, mAdService);
+        mPresenter = new AdPresenter(mEventBus, mView, mAdService, mDispatcher);
     }
     
 }
