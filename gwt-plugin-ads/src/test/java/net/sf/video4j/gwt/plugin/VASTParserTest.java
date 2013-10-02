@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import net.sf.video4j.gwt.plugin.client.vast.Ad;
-import net.sf.video4j.gwt.plugin.client.vast.InLine;
-import net.sf.video4j.gwt.plugin.client.vast.VAST;
-import net.sf.video4j.gwt.plugin.client.vast.VASTParser;
+import net.sf.video4j.gwt.plugin.shared.vast.Ad;
+import net.sf.video4j.gwt.plugin.shared.vast.InLine;
+import net.sf.video4j.gwt.plugin.shared.vast.VAST;
+import net.sf.video4j.gwt.plugin.shared.vast.VASTParser;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;

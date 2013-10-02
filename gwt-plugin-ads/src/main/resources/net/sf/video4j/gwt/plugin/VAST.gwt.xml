@@ -3,4 +3,5 @@
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.xml.XML" />
 	<source path="client" excludes="**/*Test.java" />
+	<source path="shared" excludes="**/*Test.java" />
 </module>

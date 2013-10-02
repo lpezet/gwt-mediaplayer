@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.sf.video4j.gwt.plugin.client.vast;
+package net.sf.video4j.gwt.plugin.shared.vast;
 
 /**
  * Second-level element surrounding wrapper ad pointing to Secondary ad server.
