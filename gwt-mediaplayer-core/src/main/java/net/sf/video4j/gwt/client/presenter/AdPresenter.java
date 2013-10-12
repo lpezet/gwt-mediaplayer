@@ -8,11 +8,11 @@ import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.plugin.client.vast.Ad;
-import net.sf.video4j.gwt.plugin.client.vast.AdRequestCallback;
-import net.sf.video4j.gwt.plugin.client.vast.InLine;
-import net.sf.video4j.gwt.plugin.client.vast.VAST;
 import net.sf.video4j.gwt.plugin.client.vast.service.IAdService;
+import net.sf.video4j.gwt.plugin.shared.vast.Ad;
+import net.sf.video4j.gwt.plugin.shared.vast.AdRequestCallback;
+import net.sf.video4j.gwt.plugin.shared.vast.InLine;
+import net.sf.video4j.gwt.plugin.shared.vast.VAST;
 import net.sf.video4j.gwt.shared.FetchAdAction;
 import net.sf.video4j.gwt.shared.model.FetchAdResult;
 
@@ -56,20 +56,11 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
         super.onBind();
         // TODO create a servlet that the user must add in its web.xml so we can 
         // perform ad ws calls to retrieve ad info and get back to this logic
-        
-        // XXX Servlet implementation
-        FetchAdAction oAction = new FetchAdAction();
-        mDispatcher.execute(oAction, new AsyncCallbackImpl<FetchAdResult>() {
+        fetchAdsFromServlet();
+//        fetchAdsFromAJAX();
+    }
 
-            @Override
-            public void onSuccess(FetchAdResult pResult) {
-                // TODO display Ad on playlist event
-                mLogger.info("got result=" + pResult);
-            }
-            
-        });
-        
-        // XXX AJAX implementation
+    private void fetchAdsFromAJAX() {
         // is not allowed by Access-Control-Allow-Origin
         String oAdServiceURL = "http://demo.tremorvideo.com/proddev/vast/vast2VPAIDLinear.xml"; // coming from front end (JS) ? 
         mAdService.fetchAds(oAdServiceURL, new AdRequestCallback() {
@@ -101,6 +92,20 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
             public void onError(Throwable pException) {
                 mLogger.log(Level.SEVERE, "Failed to fetch ads from server");
             }
+        });
+    }
+
+    private void fetchAdsFromServlet() {
+        mLogger.log(Level.INFO, "Fetching Ads from servlet");
+        FetchAdAction oAction = new FetchAdAction();
+        mDispatcher.execute(oAction, new AsyncCallbackImpl<FetchAdResult>() {
+
+            @Override
+            public void onSuccess(FetchAdResult pResult) {
+                mLogger.log(Level.INFO, "Got results=" + pResult);
+                // TODO display Ad on playlist event
+            }
+            
         });
     }
 

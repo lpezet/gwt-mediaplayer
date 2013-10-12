@@ -56,7 +56,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
         super(pEventBus, pView, pProxy, RevealType.Root);
         mPlayerPresenter = pPlayerPresenter;
         mControlPresenter = pControlPresenter;
-        mAdPresenter = pAdPresenter;
+//        mAdPresenter = pAdPresenter;
         mApplicationController = pApplicationController;
         mPlaylistController = pPlaylistController;
     }

@@ -41,11 +41,11 @@ public class Video4JPresenterTest {
     @Mock
     private ApplicationController mApplicationController;
     @Mock
-    private AdPresenter mAdPresenter;
-    @Mock
     private ControlPresenter mControlPresenter;
     @Mock
     private PlayerPresenter mPlayerPresenter;
+    @Mock
+    private AdPresenter mAdPresenter;
     
     @Before
     public void setUp() throws Exception {
@@ -70,7 +70,6 @@ public class Video4JPresenterTest {
         verify(mView, times(3)).setInSlot(anyObject(), any(IsWidget.class));
         verify(mView).setInSlot(anyObject(), isA(PlayerPresenter.class));
         verify(mView).setInSlot(anyObject(), isA(ControlPresenter.class));
-        verify(mView).setInSlot(anyObject(), isA(AdPresenter.class));
     }
     
     @Test

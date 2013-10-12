@@ -99,7 +99,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.sf.video4j</groupId>
+			<groupId>net.sf.video4j.gwt.plugin</groupId>
 			<artifactId>gwt-plugin-ads</artifactId>
 			<version>${gwt-plugin-ads.version}</version>
 		</dependency>
@@ -142,7 +142,6 @@
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-dispatch-client</artifactId>
             <version>${gwtp.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.gwtplatform</groupId>

@@ -1,6 +1,6 @@
 package net.sf.video4j.gwt.shared.model;
 
-import net.sf.video4j.gwt.plugin.client.vast.VAST;
+import net.sf.video4j.gwt.plugin.shared.vast.VAST;
 
 import com.gwtplatform.dispatch.shared.Result;
 
