@@ -73,8 +73,8 @@
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<localWorkers>4</localWorkers>
 					<compileSourcesArtifacts>
-						<compileSourcesArtifact>net.sf.video4j:gwt-mediaplayer-core</compileSourcesArtifact>
-						<compileSourcesArtifact>net.sf.video4j:gwt-plugin-ads</compileSourcesArtifact>
+						<compileSourcesArtifact>net.sf.video4j.gwt:gwt-mediaplayer-core</compileSourcesArtifact>
+						<compileSourcesArtifact>net.sf.video4j.gwt.plugin:gwt-plugin-ads</compileSourcesArtifact>
 						<compileSourcesArtifact>fr.hd3d.html5:hd3d-html5-video</compileSourcesArtifact>
 						<compileSourcesArtifact>com.kiouri:kiouri-slidebar</compileSourcesArtifact>
 					</compileSourcesArtifacts>
@@ -175,7 +175,7 @@
 	</repositories>
 	<dependencies>
 		<dependency>
-			<groupId>net.sf.video4j</groupId>
+			<groupId>net.sf.video4j.gwt</groupId>
 			<artifactId>gwt-mediaplayer-core</artifactId>
 			<version>${gwt-mediaplayer-core.version}</version>
 		</dependency>
