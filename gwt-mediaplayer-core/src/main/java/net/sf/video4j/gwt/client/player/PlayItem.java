@@ -102,6 +102,6 @@ public class PlayItem implements Comparable<PlayItem> {
 	}
 	@Override
 	public String toString() {
-		return String.format("PlayItem[hash:%s, Media:%s, start:%s, end:%s]", hashCode(), (mMedia == null) ? "NA" : mMedia.getId(), mStart, mEnd);
+	    return "PlayItem[hash:"+ hashCode() +", Media:" + ((mMedia == null) ? "NA" : mMedia.getId()) + ", start:"+ mStart +", end:"+ mEnd +"]";
 	}	
 }
