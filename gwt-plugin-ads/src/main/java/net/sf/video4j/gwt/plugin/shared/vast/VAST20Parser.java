@@ -33,6 +33,8 @@ public class VAST20Parser {
 	private static final String TYPE = "type";
 	private static final String HEIGHT = "height";
 	private static final String WIDTH = "width";
+	private static final String EXPANDED_HEIGHT = "expandedHeight";
+	private static final String EXPANDED_WIDTH = "expandedWidth";
 	private static final String BITRATE = "bitrate";
 	private static final String API_FRAMEWORK = "apiFramework";
 	private static final String MEDIA_FILES = "MediaFiles";
@@ -45,6 +47,7 @@ public class VAST20Parser {
 	private static final String NON_LINEAR_ADS = "NonLinearAds";
 	private static final String COMPANION_ADS = "CompanionAds";
 	private static final String LINEAR = "Linear";
+	private static final String NON_LINEAR = "NonLinear";
 	private static final String CREATIVES = "Creatives";
 	private static final String IMPRESSION = "Impression";
 	private static final String ERROR = "Error";
@@ -57,6 +60,12 @@ public class VAST20Parser {
 	private static final String IN_LINE = "InLine";
 	private static final String ID = "id";
 	private static final String AD = "ad";
+	private static final String MIN_SUGGESTED_DURATION = "minSuggestedDuration";
+	private static final String NON_LINEAR_CLICK_THROUGH = "NonLinearClickThrough";
+	private static final String STATIC_RESOURCE = "StaticResource";
+	private static final String IFRAME_RESOURCE = "IFrameResource";
+	private static final String HTML_RESOURCE = "HTMLResource";
+	private static final String CREATIVE_TYPE = "creativeType";
 	
 	private Logger mLogger = Logger.getLogger(this.getClass().getName());
 
@@ -162,13 +171,80 @@ public class VAST20Parser {
 	}
 
 	private Creative parseNonLinearAds(Node pNode) {
-		mLogger.log(Level.WARNING, "NonLinearAds not yet supported. Returning empty one.");
-		return new NonLinearAds();
+		NonLinearAds oResult = new NonLinearAds();
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength(); i++) {
+			Node n = oChildren.item(i);
+			if (NON_LINEAR.equalsIgnoreCase(n.getNodeName())) {
+				NonLinearAd oAd = parseNonLinear(n);
+				oResult.getList().add(oAd);
+			} else if (TRACKING_EVENTS.equalsIgnoreCase(n.getNodeName())) {
+				List<Tracking> oTrackingEvents = parseTrackingEvents(n);
+				oResult.setTrackingEvents(oTrackingEvents);				
+			} else {
+				mLogger.log(Level.WARNING, "NonLinear child not supported: \"" + n.getNodeName() + "\". Skipping.");
+			}
+		}
+		return oResult; 
 	}
 
 	private Creative parseCompanionAds(Node pNode) {
 		mLogger.log(Level.WARNING, "CompanionAds not yet supported. Returning empty one.");
 		return new CompanionAds();
+	}
+	
+	private NonLinearAd parseNonLinear(Node pNode) {
+		NonLinearAd oResult = new NonLinearAd();
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength(); i++) {
+			Node n = oChildren.item(i);
+			if (AD_PARAMETERS.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setAdParameters(n.getNodeValue());
+			} else if (NON_LINEAR_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setClickThrough(newURI(n.getNodeValue()));
+			} else if (STATIC_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseStaticResource(n));
+			} else if (HTML_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseHTMLResource(n));
+			} else if (IFRAME_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseIFrameResource(n));
+			} else {
+				mLogger.log(Level.WARNING, "NonLinear child not supported: \"" + n.getNodeName() + "\". Skipping.");
+			}
+		}
+		oResult.setApiFramework(getAttribute(pNode, API_FRAMEWORK, null));
+		oResult.setExpandedHeight(getAttribute(pNode, EXPANDED_HEIGHT, 0));
+		oResult.setExpandedWidth(getAttribute(pNode, EXPANDED_WIDTH, 0));
+		oResult.setHeight(getAttribute(pNode, HEIGHT, 0));
+		//oResult.setId(getAttribute(pNode, ID, null));
+		oResult.setMaintainAspectRatio(getAttribute(pNode, MAINTAIN_ASPECT_RATIO, false)); // TODO: default???
+		oResult.setMinSuggestedDuration(parseTimeToSeconds(getAttribute(pNode, MIN_SUGGESTED_DURATION, "00:00:00")));
+		oResult.setScalable(getAttribute(pNode, SCALABLE, false));
+		return oResult;
+	}
+
+	private CompanionResource parseIFrameResource(Node pNode) {
+		CompanionResource oResult = new CompanionResource();
+		oResult.setType(CompanionResourceType.IFrame);
+		oResult.setURI(pNode.getNodeValue());
+		return oResult;
+	}
+
+	private CompanionResource parseHTMLResource(Node pNode) {
+		CompanionResource oResult = new CompanionResource();
+		oResult.setType(CompanionResourceType.HTML);
+		oResult.setContent(pNode.getNodeValue());
+		return oResult;
+	}
+
+	private CompanionResource parseStaticResource(Node pNode) {
+		CompanionResource oResult = new CompanionResource();
+		System.out.println("################################################## Static Resource !");
+		System.out.println("Node : " + pNode.getNodeName() + ", type = " + pNode.getNodeType() + ", value = " + pNode.getNodeValue());
+		oResult.setType(CompanionResourceType.Static);
+		oResult.setURI(pNode.getNodeValue());
+		oResult.setCreativeType(getAttribute(pNode, CREATIVE_TYPE, "HELLO"));
+		return oResult;
 	}
 
 	private Creative parseLinear(Node pNode) {
