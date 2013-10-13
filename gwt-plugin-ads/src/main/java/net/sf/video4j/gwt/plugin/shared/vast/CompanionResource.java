@@ -13,7 +13,7 @@ public class CompanionResource {
 
     private CompanionResourceType mType;
     private String                mContent;     // HTML
-    private SafeUri               mURI;         // Static and IFrame
+    private String	              mURI;         // Static and IFrame
     private String                mCreativeType; // Static
 
     public CompanionResourceType getType() {
@@ -32,11 +32,11 @@ public class CompanionResource {
         mContent = pContent;
     }
 
-    public SafeUri getURI() {
+    public String getURI() {
         return mURI;
     }
 
-    public void setURI(SafeUri pURI) {
+    public void setURI(String pURI) {
         mURI = pURI;
     }
 
