@@ -38,7 +38,7 @@ public class VASTParserTest extends GwtTest {
 	
 	@Test
 	public void xmlAttributeParsingProblem() throws Exception {
-		Document oDoc = XMLParser.parse("<toto><tata myAttribute=\"titi\"><tutu/></tata></toto>");
+		Document oDoc = XMLParser.parse("<toto><tata myAttribute=\"titi\" myAttribute2=\"tete\" test=\"test1\"><tutu/></tata></toto>");
 		Node oToto = oDoc.getChildNodes().item(0);
 		Node oTata = oToto.getFirstChild();
 		/*
@@ -50,6 +50,8 @@ public class VASTParserTest extends GwtTest {
 			
 		}
 		*/
+		assertEquals("test1", oTata.getAttributes().getNamedItem("test").getNodeValue());
+		assertEquals("tete", oTata.getAttributes().getNamedItem("myAttribute2").getNodeValue());
 		assertEquals("titi", oTata.getAttributes().getNamedItem("myAttribute").getNodeValue());
 	}
 
@@ -78,13 +80,20 @@ public class VASTParserTest extends GwtTest {
         assertNotNull(oNonLinearAds.getList());
         assertEquals(1, oNonLinearAds.getList().size());
         NonLinearAd oNonLinearAd = oNonLinearAds.getList().get(0);
+        
+        assertEquals("overlay-1", oNonLinearAd.getId());
+        assertEquals(380, oNonLinearAd.getWidth());
+        assertEquals(60, oNonLinearAd.getHeight());
+        //NOT WORKING: XMLParserImpl problem??
+        //assertEquals("VPAID", oNonLinearAd.getApiFramework());
+        
         CompanionResource oCompanion = oNonLinearAd.getResource();
         assertNotNull(oCompanion);        
         assertEquals(CompanionResourceType.Static, oCompanion.getType());
-        //SafeUri oUri = UriUtils.fromString("http://static.scanscout.com/ads/vpaidad3.swf?adData=http%3A//app.scanscout.com/ssframework/adStreamJSController.xml%3Fa%3Dgetadscheduleforcontent%26PI%3D567%26scheduleVersion%3D3%26HI%3D567|overlay|372934318%26AI%3D0");
-        //System.out.println("########### Safe Uri = " + oUri.asString());
         assertEquals("http://static.scanscout.com/ads/vpaidad3.swf?adData=http%3A//app.scanscout.com/ssframework/adStreamJSController.xml%3Fa%3Dgetadscheduleforcontent%26PI%3D567%26scheduleVersion%3D3%26HI%3D567|overlay|372934318%26AI%3D0", oCompanion.getURI());
+        //NOT WORKING: XMLParserImpl problem??
         //assertEquals("application/x-shockwave-flash", oCompanion.getCreativeType()); //TODO: fix this: somehow the attribute value from GWT is null but in the document it's not.
+        
     }
 	
     @Test
