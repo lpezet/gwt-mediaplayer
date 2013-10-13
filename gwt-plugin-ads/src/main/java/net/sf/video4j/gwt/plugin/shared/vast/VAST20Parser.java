@@ -216,9 +216,10 @@ public class VAST20Parser {
 		oResult.setExpandedHeight(getAttribute(pNode, EXPANDED_HEIGHT, 0));
 		oResult.setExpandedWidth(getAttribute(pNode, EXPANDED_WIDTH, 0));
 		oResult.setHeight(getAttribute(pNode, HEIGHT, 0));
-		//oResult.setId(getAttribute(pNode, ID, null));
+		oResult.setWidth(getAttribute(pNode, WIDTH, 0));
+		oResult.setId(getAttribute(pNode, ID, null));
 		oResult.setMaintainAspectRatio(getAttribute(pNode, MAINTAIN_ASPECT_RATIO, false)); // TODO: default???
-		oResult.setMinSuggestedDuration(parseTimeToSeconds(getAttribute(pNode, MIN_SUGGESTED_DURATION, "00:00:00")));
+		oResult.setMinSuggestedDuration(parseTimeToSeconds(getAttribute(pNode, MIN_SUGGESTED_DURATION, "00:00:00"))); // TODO: default????
 		oResult.setScalable(getAttribute(pNode, SCALABLE, false));
 		return oResult;
 	}
