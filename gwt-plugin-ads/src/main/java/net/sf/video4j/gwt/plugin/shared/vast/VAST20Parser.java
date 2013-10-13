@@ -70,7 +70,8 @@ public class VAST20Parser {
 				Ad oAd = parseAd(n);
 				oVAST.getAds().add(oAd);
 			} else {
-				// invalid VAST document??
+				mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + n.getNodeName() + "\", expecting \"" + AD + "\".");
+				throw new InvalidDocumentException(n.getNodeName(), AD);
 			}
 		}
 		mLogger.log(Level.FINEST, "Done parsing VAST 2.0 " + oVAST);
@@ -87,14 +88,15 @@ public class VAST20Parser {
 			oResult = parseWrapper(oChild);
 		}
 		if (oResult == null) {
-			// invalid VAST doc??
+			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + oChild.getNodeName() + "\", expecting \"" + IN_LINE + "\" or \"" + WRAPPER  + "\".");
+			throw new InvalidDocumentException(oChild.getNodeName(), new String[] { IN_LINE, WRAPPER });
 		}
 		oResult.setId(oId);
 		return oResult;
 	}
 
 	private Ad parseWrapper(Node pChild) {
-		// TODO
+		mLogger.log(Level.WARNING, "Wrapper not supported yet. Returning empty wrapper.");
 		return new Wrapper();
 	}
 
@@ -121,6 +123,8 @@ public class VAST20Parser {
 				oResult.getImpressions().add(oImp);
 			} else if (CREATIVES.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setCreatives(parseCreatives(n));
+			} else {
+				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipping.");
 			}
 		}
 		return oResult;
@@ -148,7 +152,8 @@ public class VAST20Parser {
 			oResult = parseNonLinearAds(oCreativeNode);
 		}
 		if (oResult == null) {
-			// invalid VAST doc?
+			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + oCreativeNode.getNodeName() + "\", expecting \"" + LINEAR + "\" or \"" + COMPANION_ADS + "\" or \"" + NON_LINEAR_ADS + "\".");
+			throw new InvalidDocumentException(oCreativeNode.getNodeName(), new String[] { LINEAR, COMPANION_ADS, NON_LINEAR_ADS });
 		}
 		oResult.setAdId(getAttribute(oCreativeNode, AD_ID, null));
 		oResult.setId(getAttribute(oCreativeNode, ID, null));
@@ -157,12 +162,12 @@ public class VAST20Parser {
 	}
 
 	private Creative parseNonLinearAds(Node pNode) {
-		// TODO
+		mLogger.log(Level.WARNING, "NonLinearAds not yet supported. Returning empty one.");
 		return new NonLinearAds();
 	}
 
 	private Creative parseCompanionAds(Node pNode) {
-		// TODO
+		mLogger.log(Level.WARNING, "CompanionAds not yet supported. Returning empty one.");
 		return new CompanionAds();
 	}
 
@@ -185,9 +190,11 @@ public class VAST20Parser {
 			} else if (MEDIA_FILES.equalsIgnoreCase(n.getNodeName())) {
 				List<MediaFile> oMediaFiles = parseMediaFiles(n);
 				oLinear.setMediaFiles(oMediaFiles);
+			} else {
+				mLogger.log(Level.WARNING, "Linear attribute not supported: " + n.getNodeName() + ". Skipped.");
 			}
 		}
-		return new Linear();
+		return oLinear;
 	}
 
 	private List<MediaFile> parseMediaFiles(Node pNode) {
@@ -225,6 +232,8 @@ public class VAST20Parser {
 				oResult.getClickTrackings().add(oIdURI);
 			} else if (CUSTOM_CLICK.equalsIgnoreCase(n.getNodeName())) {
 				oResult.getCustomClicks().add(oIdURI);
+			} else {
+				mLogger.log(Level.WARNING, "Video Click not supported: " + n.getNodeName() + ". Skipped.");
 			}
 		}
 		return oResult;
@@ -239,6 +248,9 @@ public class VAST20Parser {
 				Tracking t = new Tracking();
 				t.setURI(newURI(n.getNodeValue()));
 				t.setEvent(TrackingEvent.parse(getAttribute(n, EVENT, CREATIVE_VIEW)));
+				oResult.add(t);
+			} else {
+				mLogger.log(Level.WARNING, "Tracking not supported: " + n.getNodeName() + ". Skipped.");
 			}
 		}
 		return oResult;
