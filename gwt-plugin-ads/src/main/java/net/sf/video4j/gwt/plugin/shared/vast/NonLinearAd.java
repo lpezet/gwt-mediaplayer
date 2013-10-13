@@ -34,7 +34,7 @@ public class NonLinearAd {
 
     // Suggested duration to display non-linear ad, typically for animation to
     // complete. Expressed in seconds
-    private int               mSuggestedDuration;
+    private int               mMinSuggestedDuration;
 
     // The apiFramework defines the method to use for communication with the
     // companion
@@ -106,12 +106,12 @@ public class NonLinearAd {
         mMaintainAspectRatio = pMaintainAspectRatio;
     }
 
-    public int getSuggestedDuration() {
-        return mSuggestedDuration;
+    public int getMinSuggestedDuration() {
+        return mMinSuggestedDuration;
     }
 
-    public void setSuggestedDuration(int pSuggestedDuration) {
-        mSuggestedDuration = pSuggestedDuration;
+    public void setMinSuggestedDuration(int pSuggestedDuration) {
+        mMinSuggestedDuration = pSuggestedDuration;
     }
 
     public String getApiFramework() {
@@ -148,13 +148,13 @@ public class NonLinearAd {
 
     @Override
     public String toString() {
-        return "NonLinearAd [mId=" + mId + ", mWidth=" + mWidth + ", mHeight="
-                + mHeight + ", mExpandedWidth=" + mExpandedWidth
-                + ", mExpandedHeight=" + mExpandedHeight + ", mScalable="
-                + mScalable + ", mMaintainAspectRatio=" + mMaintainAspectRatio
-                + ", mSuggestedDuration=" + mSuggestedDuration
-                + ", mApiFramework=" + mApiFramework + ", mResource="
-                + mResource + ", mClickThrough=" + mClickThrough
-                + ", mAdParameters=" + mAdParameters + "]";
+        return "NonLinearAd [id=" + mId + ", width=" + mWidth + ", height="
+                + mHeight + ", expandedWidth=" + mExpandedWidth
+                + ", expandedHeight=" + mExpandedHeight + ", scalable="
+                + mScalable + ", maintainAspectRatio=" + mMaintainAspectRatio
+                + ", suggestedDuration=" + mMinSuggestedDuration
+                + ", apiFramework=" + mApiFramework + ", resource="
+                + mResource + ", clickThrough=" + mClickThrough
+                + ", adParameters=" + mAdParameters + "]";
     }
 }
