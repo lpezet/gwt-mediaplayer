@@ -3,12 +3,14 @@ package net.sf.video4j.gwt.plugin.shared.vast;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * 
  * @author gumatias
  * 
  */
-public class VAST {
+public class VAST implements IsSerializable {
 
     private List<Ad> mAds = new ArrayList<Ad>();
 
