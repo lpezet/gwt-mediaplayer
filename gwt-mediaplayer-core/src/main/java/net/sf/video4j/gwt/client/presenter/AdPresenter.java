@@ -8,7 +8,7 @@ import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.plugin.client.vast.service.IAdService;
+import net.sf.video4j.gwt.plugin.client.vast.dao.IAdService;
 import net.sf.video4j.gwt.plugin.shared.vast.Ad;
 import net.sf.video4j.gwt.plugin.shared.vast.AdRequestCallback;
 import net.sf.video4j.gwt.plugin.shared.vast.InLine;
@@ -44,6 +44,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
         mAdService  = pAdService;
         mDispatcher = pDispatcher;
         addRegisteredHandler(PlaylistPlayEvent.getType(), this);
+        mLogger.log(Level.INFO, "Creating Ad Presenter");
     }
     
     @Override
@@ -54,9 +55,11 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
     @Override
     protected void onBind() {
         super.onBind();
+        mLogger.log(Level.INFO, "Before fetching Ads from servlet");
         // TODO create a servlet that the user must add in its web.xml so we can 
         // perform ad ws calls to retrieve ad info and get back to this logic
         fetchAdsFromServlet();
+        mLogger.log(Level.INFO, "After fetching Ads from servlet");
 //        fetchAdsFromAJAX();
     }
 

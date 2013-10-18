@@ -2,12 +2,12 @@ package net.sf.video4j.gwt.server.dispatch;
 
 import java.util.logging.Logger;
 
+import net.sf.video4j.gwt.plugin.server.vast.dao.AdService;
+import net.sf.video4j.gwt.plugin.server.vast.dao.IAdService;
 import net.sf.video4j.gwt.plugin.shared.vast.VAST;
-import net.sf.video4j.gwt.server.dao.IAdService;
 import net.sf.video4j.gwt.shared.FetchAdAction;
 import net.sf.video4j.gwt.shared.model.FetchAdResult;
 
-import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
@@ -20,10 +20,9 @@ public class FetchAdHandler extends AbstractAction<FetchAdAction, FetchAdResult>
     
     private final IAdService mAdService;
 
-    @Inject
-    public FetchAdHandler(IAdService pAdService) {
+    public FetchAdHandler() {
         super(FetchAdAction.class);
-        mAdService = pAdService;
+        mAdService = new AdService(); // How to use guice's DI on server side? @Inject didn't work
     }
 
     @Override
