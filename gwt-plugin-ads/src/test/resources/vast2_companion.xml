@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+  <Ad id="overlay-1">
+    <InLine>
+      <AdSystem>2.0</AdSystem>
+      <AdTitle>5750101</AdTitle>
+      <Creatives>
+        <Creative>
+          <CompanionAds>
+            <CompanionAd apiFramework="VPAID" height="60" width="380" id="overlay-1">
+              <TrackingEvents>
+              	<Tracking event="start">http://www.tracking.com/action/start</Tracking>
+              	<Tracking event="firstQuartile">http://www.tracking.com/action/firstQuartile</Tracking>
+              	<Tracking event="midpoint">http://www.tracking.com/action/midpoint</Tracking>
+              	<Tracking event="thirdQuartile">http://www.tracking.com/action/thirdQuartile</Tracking>
+              	<Tracking event="complete">http://www.tracking.com/action/complete</Tracking>
+              </TrackingEvents>
+              <StaticResource creativeType="application/x-shockwave-flash"><![CDATA[http://static.scanscout.com/ads/vpaidad3.swf?adData=http%3A//app.scanscout.com/ssframework/adStreamJSController.xml%3Fa%3Dgetadscheduleforcontent%26PI%3D567%26scheduleVersion%3D3%26HI%3D567|overlay|372934318%26AI%3D0]]></StaticResource>
+            </CompanionAd>
+          </CompanionAds>
+        </Creative>
+      </Creatives>
+    </InLine>
+  </Ad>
+</VAST>

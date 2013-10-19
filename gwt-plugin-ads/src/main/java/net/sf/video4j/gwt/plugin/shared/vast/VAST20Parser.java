@@ -66,6 +66,8 @@ public class VAST20Parser {
 	private static final String IFRAME_RESOURCE = "IFrameResource";
 	private static final String HTML_RESOURCE = "HTMLResource";
 	private static final String CREATIVE_TYPE = "creativeType";
+	private static final String ALT_TEXT = "AltText";
+	private static final String COMPANION_CLICK_THROUGH = "CompanionClickThrough";
 	
 	private Logger mLogger = Logger.getLogger(this.getClass().getName());
 
@@ -189,10 +191,49 @@ public class VAST20Parser {
 	}
 
 	private Creative parseCompanionAds(Node pNode) {
-		mLogger.log(Level.WARNING, "CompanionAds not yet supported. Returning empty one.");
-		return new CompanionAds();
+		CompanionAds oResult = new CompanionAds();
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength(); i++) {
+			Node n = oChildren.item(i);
+			CompanionAd oCompanion = parseCompanionAd(n);
+			oResult.getCompanions().add(oCompanion);
+		}
+		return oResult;
 	}
 	
+	private CompanionAd parseCompanionAd(Node pNode) {
+		CompanionAd oResult = new CompanionAd();
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength(); i++) {
+			Node n = oChildren.item(i);
+			if (AD_PARAMETERS.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setAdParameters(n.getNodeValue());
+			} else if (COMPANION_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setClickThrough(newURI(n.getNodeValue()));
+			} else if (ALT_TEXT.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setAltText(n.getNodeValue());
+			} else if (STATIC_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseStaticResource(n));
+			} else if (HTML_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseHTMLResource(n));
+			} else if (IFRAME_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setResource(parseIFrameResource(n));
+			} else if (TRACKING_EVENTS.equalsIgnoreCase(n.getNodeName())) {
+				List<Tracking> oTrackings = parseTrackingEvents(n);
+				oResult.setTrackingEvents(oTrackings);				
+			} else {
+				mLogger.log(Level.WARNING, "NonLinear child not supported: \"" + n.getNodeName() + "\". Skipping.");
+			}
+		}
+		oResult.setId(getAttribute(pNode, ID, null));
+		oResult.setHeight(getAttribute(pNode, HEIGHT, 0));
+		oResult.setWidth(getAttribute(pNode, WIDTH, 0));
+		oResult.setExpandedHeight(getAttribute(pNode, EXPANDED_HEIGHT, 0));
+		oResult.setExpandedWidth(getAttribute(pNode, EXPANDED_WIDTH, 0));		
+		oResult.setApiFramework(getAttribute(pNode, API_FRAMEWORK, null));
+		return oResult;
+	}
+
 	private NonLinearAd parseNonLinear(Node pNode) {
 		NonLinearAd oResult = new NonLinearAd();
 		NodeList oChildren = pNode.getChildNodes();
