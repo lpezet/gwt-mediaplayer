@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VAST version="2.0">
+	<Ad id="228">
+		<InLine>
+			<AdSystem version="4.9.1-20">LiveRail</AdSystem>
+			<AdTitle><![CDATA[TV Overlay PNG]]></AdTitle>
+			<Description><![CDATA[]]>
+			</Description>
+			<Error><![CDATA[http://t4.liverail.com/?metric=error&erc=[ERRORCODE]&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=&redirect=]]></Error>
+			<Impression id="LR"><![CDATA[http://t4.liverail.com/?metric=impression&cofl=0&flid=0&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=29&y=29&xy=9dae&z2=0]]></Impression>
+			<Impression id="QC"><![CDATA[http://pixel.quantserve.com/pixel/p-d05JkuPGiy-jY.gif?labels=inventory.1331,impression.2281331&r=1585]]></Impression>
+			<Impression><![CDATA[http://t4.liverail.com/?metric=rsync&p=1002&redirect=http%3A%2F%2Ftags.bluekai.com%2Fsite%2F13233%3Fid%3D88779901]]></Impression>
+			<Impression><![CDATA[http://t4.liverail.com/?metric=rsync&p=1003&redirect=http%3A%2F%2Fbcp.crwdcntrl.net%2Fmap%2Fc%3D936%2Ftp%3DRAIL%2Ftpid%3D88779901]]></Impression>
+			<Impression><![CDATA[http://load.exelator.com/load/?p=104&g=440&j=0]]></Impression>
+			<Impression><![CDATA[http://j.navdmp.com/usr?vast=http%3A%2F%2Ft4.liverail.com%2F%3Fmetric%3Dmsync%26p%3D78]]></Impression>
+			<Creatives>
+				<Creative sequence="1" id="8455">
+					<NonLinearAds>
+						<NonLinear width="300" height="60">
+							<StaticResource creativeType="image/png"><![CDATA[http://cdn.liverail.com/adasset/228/8455/overlay.png]]></StaticResource>
+							<NonLinearClickThrough><![CDATA[http://t4.liverail.com/?metric=clickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></NonLinearClickThrough>
+						</NonLinear>
+						<TrackingEvents>
+							<Tracking event="acceptInvitation"><![CDATA[http://t4.liverail.com/?metric=accept&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+							<Tracking event="collapse"><![CDATA[http://t4.liverail.com/?metric=minimize&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+						</TrackingEvents>
+					</NonLinearAds>
+				</Creative>
+				<Creative sequence="1" id="8455">
+					<CompanionAds>
+						<Companion width="300" height="60">
+							<StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/228/8455/300x60.jpg]]></StaticResource>
+							<TrackingEvents>
+								<Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+
+							</TrackingEvents>
+							<CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+						</Companion>
+						<Companion width="300" height="250">
+							<StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/228/8455/300x250.jpg]]></StaticResource>
+							<TrackingEvents>
+								<Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+
+							</TrackingEvents>
+							<CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default+_rt_verizon_nn+_rt_med6_include+_rt_revlon_nail&pp=&vv=&tt=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=0&adt=0&did=&buid=&scen=&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvast%2Fvast_xml_samples&cb=1585.75.163.178.81.0.690&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+						</Companion>
+					</CompanionAds>
+				</Creative>
+			</Creatives>
+		</InLine>
+	</Ad>
+</VAST><!-- 83 US_COLORADO_COLORADOSPRINGSPUEBLOCO_COLORADOSPRINGS -->
