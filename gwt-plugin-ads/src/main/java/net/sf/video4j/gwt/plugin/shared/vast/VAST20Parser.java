@@ -68,6 +68,8 @@ public class VAST20Parser {
 	private static final String CREATIVE_TYPE = "creativeType";
 	private static final String ALT_TEXT = "AltText";
 	private static final String COMPANION_CLICK_THROUGH = "CompanionClickThrough";
+	private static final String VAST_AD_TAG_URI = "VASTAdTagURI";
+	private static final String EXTENSIONS = "Extensions";
 	
 	private Logger mLogger = Logger.getLogger(this.getClass().getName());
 
@@ -106,9 +108,37 @@ public class VAST20Parser {
 		return oResult;
 	}
 
-	private Ad parseWrapper(Node pChild) {
-		mLogger.log(Level.WARNING, "Wrapper not supported yet. Returning empty wrapper.");
-		return new Wrapper();
+	private Ad parseWrapper(Node pNode) {
+		Wrapper oResult = new Wrapper();
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength(); i++) {
+			Node n = oChildren.item(i);
+			if (AD_SYSTEM.equalsIgnoreCase(n.getNodeName())) {
+				AdSystem oAdSys = parseAdSystem(n);
+				oResult.setAdSystem(oAdSys);
+			} else if (VAST_AD_TAG_URI.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setVASTAdTagURI(n.getNodeValue());
+			} else if (ERROR.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setError(n.getNodeValue());
+			} else if (IMPRESSION.equalsIgnoreCase(n.getNodeName())) {
+				Impression oImp = parseImpression(n);
+				oResult.getImpressions().add(oImp);
+			} else if (CREATIVES.equalsIgnoreCase(n.getNodeName())) {
+				oResult.setCreatives(parseCreatives(n));
+			} else if (EXTENSIONS.equalsIgnoreCase(n.getNodeName())) {
+				//TODO
+			} else {
+				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipping.");
+			}
+		}
+		return oResult;
+	}
+
+	private AdSystem parseAdSystem(Node pNode) {
+		AdSystem oAdSys = new AdSystem();
+		oAdSys.setVersion(getAttribute(pNode, VERSION, null));
+		oAdSys.setName(pNode.getNodeValue());
+		return oAdSys;
 	}
 
 	private InLine parseInLine(Node pNode) {
@@ -117,9 +147,7 @@ public class VAST20Parser {
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
 			if (AD_SYSTEM.equalsIgnoreCase(n.getNodeName())) {
-				AdSystem oAdSys = new AdSystem();
-				oAdSys.setVersion(getAttribute(n, VERSION, null));
-				oAdSys.setName(n.getNodeValue());
+				AdSystem oAdSys = parseAdSystem(n);
 				oResult.setAdSystem(oAdSys);
 			} else if (AD_TITLE.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setAdTitle(n.getNodeValue());
@@ -134,6 +162,8 @@ public class VAST20Parser {
 				oResult.getImpressions().add(oImp);
 			} else if (CREATIVES.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setCreatives(parseCreatives(n));
+			} else if (EXTENSIONS.equalsIgnoreCase(n.getNodeName())) {
+				//TODO
 			} else {
 				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipping.");
 			}
@@ -281,11 +311,11 @@ public class VAST20Parser {
 
 	private CompanionResource parseStaticResource(Node pNode) {
 		CompanionResource oResult = new CompanionResource();
-		System.out.println("################################################## Static Resource !");
-		System.out.println("Node : " + pNode.getNodeName() + ", type = " + pNode.getNodeType() + ", value = " + pNode.getNodeValue());
+		//System.out.println("################################################## Static Resource !");
+		//System.out.println("Node : " + pNode.getNodeName() + ", type = " + pNode.getNodeType() + ", value = " + pNode.getNodeValue());
 		oResult.setType(CompanionResourceType.Static);
 		oResult.setURI(pNode.getNodeValue());
-		oResult.setCreativeType(getAttribute(pNode, CREATIVE_TYPE, "HELLO"));
+		oResult.setCreativeType(getAttribute(pNode, CREATIVE_TYPE, "")); // TODO: default???
 		return oResult;
 	}
 
