@@ -404,8 +404,9 @@ public class VAST20Parser {
 		return oResult;
 	}
 
-	private int parseTimeToSeconds(String pNodeValue) {
-		String[] oTimes = pNodeValue.split(COLON);
+	private int parseTimeToSeconds(String pValue) {
+		if (pValue == null || pValue.isEmpty()) return 0;
+		String[] oTimes = pValue.split(COLON);
 		switch (oTimes.length) {
 		case 0:
 			return 0;
