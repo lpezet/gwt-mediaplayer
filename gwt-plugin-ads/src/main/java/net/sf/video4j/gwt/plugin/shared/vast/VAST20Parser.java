@@ -79,12 +79,14 @@ public class VAST20Parser {
 		NodeList oChildren = pRoot.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (n.getNodeName().equalsIgnoreCase(AD)) {
 				Ad oAd = parseAd(n);
 				oVAST.getAds().add(oAd);
 			} else {
-				mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + n.getNodeName() + "\", expecting \"" + AD + "\".");
-				throw new InvalidDocumentException(n.getNodeName(), AD);
+				mLogger.log(Level.WARNING, "Found node \"" + n.getNodeName() + "\" (type=" + n.getNodeType() + ") instead of <ad>.");
+				//mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + n.getNodeName() + "\", expecting \"" + AD + "\".");
+				//throw new InvalidDocumentException(n.getNodeName(), AD);
 			}
 		}
 		mLogger.log(Level.FINEST, "Done parsing VAST 2.0 " + oVAST);
@@ -92,33 +94,45 @@ public class VAST20Parser {
 	}
 
 	private Ad parseAd(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing Ad...");
 		Ad oResult = null;
 		String oId = getAttribute(pNode, ID, null);
-		Node oChild = pNode.getFirstChild();
-		if (IN_LINE.equalsIgnoreCase(oChild.getNodeName())) {
-			oResult = parseInLine(oChild);
-		} else if (WRAPPER.equalsIgnoreCase(oChild.getNodeName())) {
-			oResult = parseWrapper(oChild);
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength() && oResult == null; i++) {
+			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
+			if (IN_LINE.equalsIgnoreCase(n.getNodeName())) {
+				oResult = parseInLine(n);
+			} else if (WRAPPER.equalsIgnoreCase(n.getNodeName())) {
+				oResult = parseWrapper(n);
+			} else {
+				mLogger.log(Level.WARNING, "Found node \"" + n.getNodeName() + "\" (type=" + n.getNodeType() + ") instead of <" + IN_LINE + "> or <" + WRAPPER + ">.");
+			}
+				
 		}
 		if (oResult == null) {
-			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + oChild.getNodeName() + "\", expecting \"" + IN_LINE + "\" or \"" + WRAPPER  + "\".");
-			throw new InvalidDocumentException(oChild.getNodeName(), new String[] { IN_LINE, WRAPPER });
+			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Expecting \"" + IN_LINE + "\" or \"" + WRAPPER  + "\" in <Ad>.");
+			throw new InvalidDocumentException(null, new String[] { IN_LINE, WRAPPER });
 		}
 		oResult.setId(oId);
 		return oResult;
 	}
 
 	private Ad parseWrapper(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing wrapper...");
 		Wrapper oResult = new Wrapper();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (AD_SYSTEM.equalsIgnoreCase(n.getNodeName())) {
 				AdSystem oAdSys = parseAdSystem(n);
 				oResult.setAdSystem(oAdSys);
 			} else if (VAST_AD_TAG_URI.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting vast ad tag uri...");
 				oResult.setVASTAdTagURI(n.getNodeValue());
 			} else if (ERROR.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting error...");
 				oResult.setError(n.getNodeValue());
 			} else if (IMPRESSION.equalsIgnoreCase(n.getNodeName())) {
 				Impression oImp = parseImpression(n);
@@ -128,13 +142,14 @@ public class VAST20Parser {
 			} else if (EXTENSIONS.equalsIgnoreCase(n.getNodeName())) {
 				//TODO
 			} else {
-				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipping.");
+				mLogger.log(Level.WARNING, "Wrapper not supported: \"" + n.getNodeName() + "\". Skipped.");
 			}
 		}
 		return oResult;
 	}
 
 	private AdSystem parseAdSystem(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing AdSystem...");
 		AdSystem oAdSys = new AdSystem();
 		oAdSys.setVersion(getAttribute(pNode, VERSION, null));
 		oAdSys.setName(pNode.getNodeValue());
@@ -142,20 +157,28 @@ public class VAST20Parser {
 	}
 
 	private InLine parseInLine(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing Inline...");
 		InLine oResult = new InLine();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (AD_SYSTEM.equalsIgnoreCase(n.getNodeName())) {
 				AdSystem oAdSys = parseAdSystem(n);
+				mLogger.log(Level.FINEST, "##### AdSystem parsed.");
 				oResult.setAdSystem(oAdSys);
 			} else if (AD_TITLE.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting ad title...");
 				oResult.setAdTitle(n.getNodeValue());
+				mLogger.log(Level.FINEST, "### Got ad title.");
 			} else if (DESCRIPTION.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting description...");
 				oResult.setDescription(n.getNodeValue());
 			} else if (SURVEY.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting survey...");
 				oResult.setSurvey(newURI(n.getNodeValue()));
 			} else if (ERROR.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting error...");
 				oResult.setError(newURI(n.getNodeValue()));
 			} else if (IMPRESSION.equalsIgnoreCase(n.getNodeName())) {
 				Impression oImp = parseImpression(n);
@@ -165,17 +188,19 @@ public class VAST20Parser {
 			} else if (EXTENSIONS.equalsIgnoreCase(n.getNodeName())) {
 				//TODO
 			} else {
-				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipping.");
+				mLogger.log(Level.WARNING, "InLine not supported: \"" + n.getNodeName() + "\". Skipped.");
 			}
 		}
 		return oResult;
 	}
 
 	private List<Creative> parseCreatives(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing creatives...");
 		List<Creative> oResult = new ArrayList<Creative>();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			Creative c = parseCreative(n);
 			oResult.add(c);
 		}
@@ -183,30 +208,43 @@ public class VAST20Parser {
 	}
 
 	private Creative parseCreative(Node pNode) {
-		Node oCreativeNode = pNode.getFirstChild();
+		mLogger.log(Level.FINEST, "Parsing creative...");
 		Creative oResult = null;
-		if (LINEAR.equalsIgnoreCase(oCreativeNode.getNodeName())) {
-			oResult = parseLinear(oCreativeNode);
-		} else if (COMPANION_ADS.equalsIgnoreCase(oCreativeNode.getNodeName())) {
-			oResult = parseCompanionAds(oCreativeNode);
-		} else if (NON_LINEAR_ADS.equalsIgnoreCase(oCreativeNode.getNodeName())) {
-			oResult = parseNonLinearAds(oCreativeNode);
+		NodeList oChildren = pNode.getChildNodes();
+		for (int i = 0; i < oChildren.getLength() && oResult == null; i++) {
+			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
+			if (LINEAR.equalsIgnoreCase(n.getNodeName())) {
+				oResult = parseLinear(n);
+			} else if (COMPANION_ADS.equalsIgnoreCase(n.getNodeName())) {
+				oResult = parseCompanionAds(n);
+			} else if (NON_LINEAR_ADS.equalsIgnoreCase(n.getNodeName())) {
+				oResult = parseNonLinearAds(n);
+			} else {
+				mLogger.log(Level.WARNING, "Found node \"" + n.getNodeName() + "\" (type=" + n.getNodeType() + ") instead of <" + LINEAR + "> or <" + COMPANION_ADS + "> or <" + NON_LINEAR_ADS + ">.");
+			}
+			if (oResult != null) {
+				oResult.setAdId(getAttribute(n, AD_ID, null));
+				oResult.setId(getAttribute(n, ID, null));
+				oResult.setSequence(getAttribute(n, SEQUENCE, 1));
+			}
 		}
+		
 		if (oResult == null) {
-			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document. Found: \"" + oCreativeNode.getNodeName() + "\", expecting \"" + LINEAR + "\" or \"" + COMPANION_ADS + "\" or \"" + NON_LINEAR_ADS + "\".");
-			throw new InvalidDocumentException(oCreativeNode.getNodeName(), new String[] { LINEAR, COMPANION_ADS, NON_LINEAR_ADS });
+			mLogger.log(Level.SEVERE, "Invalid VAST 2.0 document.Expecting \"" + LINEAR + "\" or \"" + COMPANION_ADS + "\" or \"" + NON_LINEAR_ADS + "\".");
+			throw new InvalidDocumentException(null, new String[] { LINEAR, COMPANION_ADS, NON_LINEAR_ADS });
 		}
-		oResult.setAdId(getAttribute(oCreativeNode, AD_ID, null));
-		oResult.setId(getAttribute(oCreativeNode, ID, null));
-		oResult.setSequence(getAttribute(oCreativeNode, SEQUENCE, 1));
+		
 		return oResult;
 	}
 
 	private Creative parseNonLinearAds(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing non-linear ads...");
 		NonLinearAds oResult = new NonLinearAds();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (NON_LINEAR.equalsIgnoreCase(n.getNodeName())) {
 				NonLinearAd oAd = parseNonLinear(n);
 				oResult.getList().add(oAd);
@@ -221,10 +259,12 @@ public class VAST20Parser {
 	}
 
 	private Creative parseCompanionAds(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing companion ads...");
 		CompanionAds oResult = new CompanionAds();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			CompanionAd oCompanion = parseCompanionAd(n);
 			oResult.getCompanions().add(oCompanion);
 		}
@@ -232,15 +272,20 @@ public class VAST20Parser {
 	}
 	
 	private CompanionAd parseCompanionAd(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing companion ad...");
 		CompanionAd oResult = new CompanionAd();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (AD_PARAMETERS.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting ad parameters (companion ad)...");
 				oResult.setAdParameters(n.getNodeValue());
 			} else if (COMPANION_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting companion click through (companion ad)...");
 				oResult.setClickThrough(newURI(n.getNodeValue()));
 			} else if (ALT_TEXT.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting alt text (companion ad)...");
 				oResult.setAltText(n.getNodeValue());
 			} else if (STATIC_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setResource(parseStaticResource(n));
@@ -265,11 +310,14 @@ public class VAST20Parser {
 	}
 
 	private NonLinearAd parseNonLinear(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing non-linear...");
 		NonLinearAd oResult = new NonLinearAd();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (AD_PARAMETERS.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting ad parameters (non-linear ad)...");
 				oResult.setAdParameters(n.getNodeValue());
 			} else if (NON_LINEAR_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setClickThrough(newURI(n.getNodeValue()));
@@ -296,41 +344,63 @@ public class VAST20Parser {
 	}
 
 	private CompanionResource parseIFrameResource(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing IFrame resource...");
 		CompanionResource oResult = new CompanionResource();
 		oResult.setType(CompanionResourceType.IFrame);
-		oResult.setURI(pNode.getNodeValue());
+		String oUri = getFirstNodeValue(pNode);
+		if (oUri != null) {
+			oResult.setURI(oUri);
+		} else {
+			mLogger.log(Level.WARNING, "Could not get uri for iframe resource.");
+		}
 		return oResult;
 	}
 
 	private CompanionResource parseHTMLResource(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing HTML resource...");
 		CompanionResource oResult = new CompanionResource();
 		oResult.setType(CompanionResourceType.HTML);
-		oResult.setContent(pNode.getNodeValue());
+		String oContent = getFirstNodeValue(pNode);
+		if (oContent != null) {
+			oResult.setContent(oContent);
+		} else {
+			mLogger.log(Level.WARNING, "Could not get content for HTML resource.");
+		}
 		return oResult;
 	}
 
 	private CompanionResource parseStaticResource(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing static resource...");
 		CompanionResource oResult = new CompanionResource();
 		//System.out.println("################################################## Static Resource !");
 		//System.out.println("Node : " + pNode.getNodeName() + ", type = " + pNode.getNodeType() + ", value = " + pNode.getNodeValue());
 		oResult.setType(CompanionResourceType.Static);
-		oResult.setURI(pNode.getNodeValue());
+		String oUri = getFirstNodeValue(pNode);
+		if (oUri != null) {
+			oResult.setURI(oUri);
+		} else {
+			mLogger.log(Level.WARNING, "Could not get uri for static resource.");
+		}
 		oResult.setCreativeType(getAttribute(pNode, CREATIVE_TYPE, "")); // TODO: default???
 		return oResult;
 	}
 
 	private Creative parseLinear(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing linear...");
 		Linear oLinear = new Linear();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (DURATION.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting duration...");
 				int oSeconds = parseTimeToSeconds(n.getNodeValue());
 				oLinear.setDurationInSeconds(oSeconds);
 			} else if (TRACKING_EVENTS.equalsIgnoreCase(n.getNodeName())) {
 				List<Tracking> oTE = parseTrackingEvents(n);
 				oLinear.setTrackingEvents(oTE);
 			} else if (AD_PARAMETERS.equalsIgnoreCase(n.getNodeName())) {
+				mLogger.log(Level.FINEST, "Getting ad parameters...");
 				oLinear.setAdParameters(n.getNodeValue());
 			} else if (VIDEO_CLICKS.equalsIgnoreCase(n.getNodeName())) {
 				VideoClicks oClicks = parseVideoClicks(n);
@@ -346,10 +416,12 @@ public class VAST20Parser {
 	}
 
 	private List<MediaFile> parseMediaFiles(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing media files...");
 		List<MediaFile> oResult = new ArrayList<MediaFile>();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			MediaFile m = new MediaFile();
 			m.setApiFramework(getAttribute(n, API_FRAMEWORK, null));
 			m.setBitrate(getAttribute(n, BITRATE, 0));
@@ -360,19 +432,31 @@ public class VAST20Parser {
 			m.setScalable(getAttribute(n, SCALABLE, false));
 			m.setMaintainAspectRatio(getAttribute(n, MAINTAIN_ASPECT_RATIO, false));
 			m.setDelivery(Delivery.parse(getAttribute(n, DELIVERY, PROGRESSIVE)));
-			m.setURI(newURI(n.getNodeValue()));
+			String oUri = getFirstNodeValue(n);
+			if (oUri != null) {
+				m.setURI(newURI(oUri));
+			} else {
+				mLogger.log(Level.WARNING, "Could not get uri for media file.");
+			}
 			oResult.add(m);
 		}
 		return oResult;
 	}
 
 	private VideoClicks parseVideoClicks(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing video clicks...");
 		VideoClicks oResult = new VideoClicks();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			IdURI oIdURI = new IdURI();
-			oIdURI.setURI(newURI(n.getNodeValue()));
+			String oUri = getFirstNodeValue(n);
+			if (oUri != null) {
+				oIdURI.setURI(newURI(oUri));
+			} else {
+				mLogger.log(Level.WARNING, "Could not get uri for video click.");
+			}
 			oIdURI.setId(getAttribute(n, ID, null));
 			if (CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setClickThrough(oIdURI);
@@ -388,10 +472,12 @@ public class VAST20Parser {
 	}
 
 	private List<Tracking> parseTrackingEvents(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing tracking events...");
 		List<Tracking> oResult = new ArrayList<Tracking>();
 		NodeList oChildren = pNode.getChildNodes();
 		for (int i = 0; i < oChildren.getLength(); i++) {
 			Node n = oChildren.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (TRACKING.equalsIgnoreCase(n.getNodeName())) {
 				Tracking t = new Tracking();
 				t.setURI(newURI(n.getNodeValue()));
@@ -424,9 +510,26 @@ public class VAST20Parser {
 	}
 
 	private Impression parseImpression(Node pNode) {
+		mLogger.log(Level.FINEST, "Parsing impression...");
 		Impression oResult = new Impression();
 		oResult.setId(getAttribute(pNode, ID, null));
-		oResult.setURI(newURI(pNode.getNodeValue()));
+		String oUri = getFirstNodeValue(pNode);
+		if (oUri != null) {
+			oResult.setURI(newURI(oUri));
+		} else {
+			mLogger.log(Level.WARNING, "Could not get Uri for impression.");
+		}
+		return oResult;
+	}
+
+	private String getFirstNodeValue(Node pNode) {
+		if (pNode.getNodeValue() != null) return pNode.getNodeValue();
+		NodeList oChildren = pNode.getChildNodes();
+		String oResult = null;
+		for (int i = 0; i < oChildren.getLength() && oResult == null; i++) {
+			Node n = oChildren.item(i);
+			oResult = n.getNodeValue();
+		}
 		return oResult;
 	}
 
