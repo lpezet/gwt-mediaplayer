@@ -39,14 +39,4 @@ public class VASTException extends RuntimeException {
 		super(pArg0, pArg1);
 	}
 
-	/**
-	 * @param pArg0
-	 * @param pArg1
-	 * @param pArg2
-	 * @param pArg3
-	 */
-	public VASTException(String pArg0, Throwable pArg1, boolean pArg2, boolean pArg3) {
-		super(pArg0, pArg1, pArg2, pArg3);
-	}
-
 }
