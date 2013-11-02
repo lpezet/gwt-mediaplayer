@@ -23,8 +23,7 @@ public class BeanFactory<S, T extends AutoBeanFactory> {
 	}
 	
 	public S makeFrom(JSONObject pObject) {
-		AutoBean<S> autoBeanCloneAB = AutoBeanCodex.decode(mObjectFactory, mClass, pObject.toString() );
-		return autoBeanCloneAB.as();
+		return makeABFrom(pObject).as();
 	}
 	/*
 	public List<S> makeFrom(JSONArray pArray) {
