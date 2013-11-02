@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import net.sf.video4j.gwt.client.controller.ApplicationController;
 import net.sf.video4j.gwt.client.controller.PlaylistController;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.Playlist;
 
@@ -78,12 +79,12 @@ public class Video4JPresenterTest {
         
         mPresenter.onBind();
         
-        ArgumentCaptor<ApplicationConfig> oApplicationConfigCaptor = ArgumentCaptor.forClass(ApplicationConfig.class);
-        verify(mApplicationController).begin(oApplicationConfigCaptor.capture());
-        ApplicationConfig oCapturedApplicationConfig = oApplicationConfigCaptor.getValue();
-        assertThat(oCapturedApplicationConfig, is(notNullValue()));
-        assertThat(oCapturedApplicationConfig.getPlaylist(), is(notNullValue()));
-        assertThat(oCapturedApplicationConfig.getPlaylist().count(), equalTo(1));
+        ArgumentCaptor<IApplication> oApplicationCaptor = ArgumentCaptor.forClass(IApplication.class);
+        verify(mApplicationController).begin(oApplicationCaptor.capture());
+        IApplication oCapturedApplication = oApplicationCaptor.getValue();
+        assertThat(oCapturedApplication, is(notNullValue()));
+        assertThat(oCapturedApplication.getConfig(), is(notNullValue()));
+        assertThat(oCapturedApplication.getPlugins().size(), equalTo(1));
     }
 
     private ApplicationConfig newApplicationConfig() {
@@ -91,7 +92,8 @@ public class Video4JPresenterTest {
         Media oTrack = new Media();
         oTrack.setURI("http://video4j.com/video1.mp4");
         oPlaylist.add(oTrack);
-        ApplicationConfig oConfig = new ApplicationConfig(oPlaylist);
+        //TODO: fix this
+        ApplicationConfig oConfig = new ApplicationConfig();
         return oConfig;
     }
     
