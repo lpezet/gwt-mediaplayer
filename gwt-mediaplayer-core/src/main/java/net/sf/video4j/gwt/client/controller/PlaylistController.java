@@ -5,6 +5,8 @@ package net.sf.video4j.gwt.client.controller;
 
 import java.util.logging.Level;
 
+import org.apache.naming.factory.BeanFactory;
+
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
 import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
@@ -16,6 +18,8 @@ import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent.PlayerPlayEndedHandl
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.model.IApplication;
+import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.player.PlayItem;
 import net.sf.video4j.gwt.client.player.PlaylistNavigator;
@@ -36,7 +40,7 @@ public class PlaylistController extends BaseController implements
 		PlayerPlayEndedHandler,
 		IPlugin {
 	
-	private ApplicationConfig mConfig;
+	//private PlaylistCon mConfig;
 	private PlaylistNavigator mPlaylistNavigator;
 
 	@Inject
@@ -60,9 +64,12 @@ public class PlaylistController extends BaseController implements
 	@Override
 	public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
 		mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
-		mConfig = pEvent.getConfig();
-		mConfig.getPlugins().add(this);
-		mPlaylistNavigator = new PlaylistNavigator(mConfig.getPlaylist());
+		pEvent.getApplication().addPlugin(this);
+		IApplicationConfig oConfig = pEvent.getApplication().getConfig();
+		//TODO:
+		//mConfig = new BeanFactory(PlaylistConfig.class, new PlaylistConfigBeanFactory()).makeFrom(oConfig.getPlaylist());
+		//mConfig.getPlugins().add(this);
+		//mPlaylistNavigator = new PlaylistNavigator(mConfig.getPlaylist());
 	}
 	
 	@Override

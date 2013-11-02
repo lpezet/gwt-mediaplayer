@@ -57,7 +57,7 @@ public class ControlPresenter extends PresenterWidget<ControlPresenter.CView> im
     @Override
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
     	mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
-    	pEvent.getConfig().getPlugins().add(this);
+    	pEvent.getApplication().addPlugin(this);
     }
 
 	@Override

@@ -6,31 +6,33 @@ package net.sf.video4j.gwt.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.json.client.JSONObject;
+
+import net.sf.video4j.gwt.client.config.model.jso.JSOApplicationConfig;
 import net.sf.video4j.gwt.client.player.Playlist;
 
 /**
  * @author luc
  *
  */
-public class ApplicationConfig {
+public class ApplicationConfig implements IApplicationConfig {
 
-	private Playlist mPlaylist;
-	private List<IPlugin> mPlugins = new ArrayList<IPlugin>();
+	@Override
+	public JSONObject getCommon() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public ApplicationConfig(Playlist pPlaylist) {
-		mPlaylist = pPlaylist;
+	@Override
+	public JSONObject getPlaylist() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public Playlist getPlaylist() {
-		return mPlaylist;
-	}
-	
-	public List<IPlugin> getPlugins() {
-		return mPlugins;
-	}
-	
-	public void setPlugins(List<IPlugin> pPlugins) {
-		mPlugins = pPlugins;
+
+	@Override
+	public JSONObject getPlugins() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

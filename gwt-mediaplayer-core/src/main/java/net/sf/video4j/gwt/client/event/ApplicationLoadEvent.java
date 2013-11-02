@@ -4,6 +4,7 @@
 package net.sf.video4j.gwt.client.event;
 
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.model.IApplication;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -16,18 +17,18 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  */
 public class ApplicationLoadEvent extends GwtEvent<ApplicationLoadEvent.ApplicationLoadHandler> {
     
-	private ApplicationConfig mConfig;
+	private IApplication mApplication;
 	
-	protected ApplicationLoadEvent(ApplicationConfig pConfig) {
-		mConfig = pConfig;
+	protected ApplicationLoadEvent(IApplication pApplication) {
+		mApplication = pApplication;
     }
 	
-	public ApplicationConfig getConfig() {
-		return mConfig;
+	public IApplication getApplication() {
+		return mApplication;
 	}
 
-    public static void fire(HasHandlers pSource, ApplicationConfig pConfig) {
-    	ApplicationLoadEvent oEventInstance = new ApplicationLoadEvent(pConfig);
+    public static void fire(HasHandlers pSource, IApplication pApplication) {
+    	ApplicationLoadEvent oEventInstance = new ApplicationLoadEvent(pApplication);
         pSource.fireEvent(oEventInstance);
     }
 

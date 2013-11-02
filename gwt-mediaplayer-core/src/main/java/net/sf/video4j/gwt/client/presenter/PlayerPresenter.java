@@ -115,7 +115,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
     	mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
-    	pEvent.getConfig().getPlugins().add(this);
+    	pEvent.getApplication().addPlugin(this);
     }
     
     @Override
