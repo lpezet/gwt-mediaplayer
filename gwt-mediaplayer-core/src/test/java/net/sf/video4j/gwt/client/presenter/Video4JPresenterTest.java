@@ -16,6 +16,7 @@ import net.sf.video4j.gwt.client.model.ApplicationConfig;
 import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.Playlist;
+import net.sf.video4j.gwt.client.util.PlayItemBeanFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,8 @@ public class Video4JPresenterTest {
     private PlayerPresenter mPlayerPresenter;
     @Mock
     private AdPresenter mAdPresenter;
+    @Mock
+    private PlayItemBeanFactory mPlayItemBeanFactory;
     
     @Before
     public void setUp() throws Exception {
@@ -59,7 +62,7 @@ public class Video4JPresenterTest {
     			mControlPresenter,
     			mAdPresenter,
     			mApplicationController,
-    			new PlaylistController(mEventBus));
+    			new PlaylistController(mEventBus, mPlayItemBeanFactory));
     }
 
     @Test
@@ -84,6 +87,7 @@ public class Video4JPresenterTest {
         IApplication oCapturedApplication = oApplicationCaptor.getValue();
         assertThat(oCapturedApplication, is(notNullValue()));
         assertThat(oCapturedApplication.getConfig(), is(notNullValue()));
+        assertThat(oCapturedApplication.getPlugins(), is(notNullValue()));
         assertThat(oCapturedApplication.getPlugins().size(), equalTo(1));
     }
 

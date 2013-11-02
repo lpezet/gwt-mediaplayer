@@ -3,9 +3,10 @@
  */
 package net.sf.video4j.gwt.client.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
-
-import org.apache.naming.factory.BeanFactory;
 
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
@@ -17,16 +18,23 @@ import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
 import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent.PlayerPlayEndedHandler;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
-import net.sf.video4j.gwt.client.model.ApplicationConfig;
-import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
+import net.sf.video4j.gwt.client.model.PlayItemBean;
+import net.sf.video4j.gwt.client.model.PlaylistBean;
+import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.PlayItem;
+import net.sf.video4j.gwt.client.player.Playlist;
 import net.sf.video4j.gwt.client.player.PlaylistNavigator;
+import net.sf.video4j.gwt.client.util.BeanFactory;
+import net.sf.video4j.gwt.client.util.PlayItemBeanFactory;
+import net.sf.video4j.gwt.client.util.PlaylistBeanFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.inject.Inject;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
@@ -42,10 +50,12 @@ public class PlaylistController extends BaseController implements
 	
 	//private PlaylistCon mConfig;
 	private PlaylistNavigator mPlaylistNavigator;
+	private PlayItemBeanFactory mPlayItemBeanFactory;
 
 	@Inject
-	public PlaylistController(EventBus pBus) {
+	public PlaylistController(EventBus pBus, PlayItemBeanFactory pPlayItemBeanFactory) {
 		super(pBus);
+		mPlayItemBeanFactory = pPlayItemBeanFactory;
 		registerHandlers();
 	}
 	
@@ -66,10 +76,23 @@ public class PlaylistController extends BaseController implements
 		mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
 		pEvent.getApplication().addPlugin(this);
 		IApplicationConfig oConfig = pEvent.getApplication().getConfig();
-		//TODO:
-		//mConfig = new BeanFactory(PlaylistConfig.class, new PlaylistConfigBeanFactory()).makeFrom(oConfig.getPlaylist());
-		//mConfig.getPlugins().add(this);
-		//mPlaylistNavigator = new PlaylistNavigator(mConfig.getPlaylist());
+		
+		// TODO: check if that's all good...test!!!!
+		BeanFactory<PlayItemBean, PlayItemBeanFactory> oFactory = new BeanFactory<PlayItemBean, PlayItemBeanFactory>(PlayItemBean.class, mPlayItemBeanFactory);
+		List<AutoBean<PlayItemBean>> oPlayItemBeans = new ArrayList<AutoBean<PlayItemBean>>();
+		for (int i = 0; i < oConfig.getPlaylist().size(); i++) {
+			oPlayItemBeans.add(oFactory.makeABFrom(oConfig.getPlaylist().get(i).isObject()));
+		}
+		Playlist oPlaylist = new Playlist();
+		for (AutoBean<PlayItemBean> oItemAutoBean : oPlayItemBeans) {
+			PlayItemBean oItemBean = oItemAutoBean.as();
+			Media oMedia = new Media();
+			oMedia.setURI(oItemBean.getURL());
+			Map<String, Object> oProps = AutoBeanUtils.getAllProperties(oItemAutoBean);
+			oMedia.setProperties(oProps);
+			oPlaylist.add(oMedia);
+		}
+		mPlaylistNavigator = new PlaylistNavigator(oPlaylist);
 	}
 	
 	@Override
