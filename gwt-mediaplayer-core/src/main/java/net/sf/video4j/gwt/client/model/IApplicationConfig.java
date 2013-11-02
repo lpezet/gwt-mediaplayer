@@ -1,5 +1,6 @@
 package net.sf.video4j.gwt.client.model;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
 /**
@@ -51,7 +52,7 @@ var video4j_ads = {
 public interface IApplicationConfig {
 
 	public JSONObject getCommon();
-	public JSONObject getPlaylist();
+	public JSONArray getPlaylist();
 	public JSONObject getPlugins();
 	
 }
