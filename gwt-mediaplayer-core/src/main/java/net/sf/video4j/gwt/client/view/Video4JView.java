@@ -3,11 +3,15 @@ package net.sf.video4j.gwt.client.view;
 import net.sf.video4j.gwt.client.config.model.jso.JSOApplicationConfig;
 import net.sf.video4j.gwt.client.config.model.jso.JSOMedia;
 import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.Playlist;
 import net.sf.video4j.gwt.client.presenter.Video4JPresenter;
 
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -50,13 +54,20 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
     }
     
     @Override
-    public ApplicationConfig getApplicationConfig() {
+    public IApplicationConfig getApplicationConfig() {
+    	//TODO: fix this!!!
         JSOApplicationConfig oJSOConfig = JSOApplicationConfig.build();
-        ApplicationConfig oConfig = new ApplicationConfig(newPlaylist(oJSOConfig.getPlaylist()));
-        oJSOConfig.isAutoPlay();
-        oJSOConfig.getWidth();
-        oJSOConfig.getHeight();
+        ApplicationConfig oConfig = new ApplicationConfig();
         return oConfig;
+    }
+    
+    private Playlist newPlaylist(JSONArray pPlaylist) {
+        Playlist oPlaylist = new Playlist();
+        for (int i = 0; i < pPlaylist.size(); i++) {
+            JSONValue v = pPlaylist.get(i);
+            oPlaylist.add(newMedia(v));
+        }
+        return oPlaylist;
     }
 
     private Playlist newPlaylist(JsArray<JSOMedia> pJSOPlaylist) {
@@ -66,6 +77,18 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
             oPlaylist.add(newMedia(oJSOMedia));
         }
         return oPlaylist;
+    }
+    
+    private Media newMedia(JSONValue pMedia) {
+        Media m = new Media();
+        JSONObject oObj = pMedia.isObject();
+        if (oObj != null) {
+        	m.setURI(oObj.get("url").isString().stringValue());        	
+        	for (String oKey : oObj.keySet()) {
+        		m.getProperties().put(oKey, oObj.get(oKey));
+        	}
+        }
+        return m;
     }
 
     private Media newMedia(JSOMedia pJSOMedia) {
