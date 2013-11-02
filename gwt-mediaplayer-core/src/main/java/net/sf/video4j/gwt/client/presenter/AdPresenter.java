@@ -48,7 +48,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
     }
     
     @Override
-    public String getPluginName() {
+    public String getPluginId() {
         return this.getClass().getName();
     }
     
