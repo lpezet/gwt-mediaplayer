@@ -83,7 +83,7 @@ public class ControlPresenter extends PresenterWidget<ControlPresenter.CView> im
     }
     
     @Override
-    public String getPluginName() {
+    public String getPluginId() {
     	return "ControlPresenter";
     }
 

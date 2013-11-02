@@ -9,6 +9,6 @@ package net.sf.video4j.gwt.client.model;
  */
 public interface IPlugin {
 
-	public String getPluginName();
+	public String getPluginId();
 	
 }

@@ -72,7 +72,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     }
     
     @Override
-    public String getPluginName() {
+    public String getPluginId() {
     	return this.getClass().getName();
     }
     

@@ -53,7 +53,7 @@ public class PlaylistController extends BaseController implements
 	}
 	
 	@Override
-	public String getPluginName() {
+	public String getPluginId() {
 		return this.getClass().getName();
 	}
 	
