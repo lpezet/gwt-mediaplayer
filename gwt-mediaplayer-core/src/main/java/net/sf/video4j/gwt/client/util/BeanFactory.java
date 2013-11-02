@@ -26,5 +26,27 @@ public class BeanFactory<S, T extends AutoBeanFactory> {
 		AutoBean<S> autoBeanCloneAB = AutoBeanCodex.decode(mObjectFactory, mClass, pObject.toString() );
 		return autoBeanCloneAB.as();
 	}
-
+	/*
+	public List<S> makeFrom(JSONArray pArray) {
+		List<S> oResult = new ArrayList<S>();
+		for (int i = 0; i < pArray.size(); i++) {
+			AutoBean<S> oAutoBean = AutoBeanCodex.decode(mObjectFactory, mClass, pArray.get(i).toString() );
+			oResult.add(oAutoBean.as());
+		}
+		return oResult;
+	}
+	*/
+	public AutoBean<S> makeABFrom(JSONObject pObject) {
+		return AutoBeanCodex.decode(mObjectFactory, mClass, pObject.toString() );
+	}
+	/*
+	public List<AutoBean<S>> makeABFrom(JSONArray pArray) {
+		List<AutoBean<S>> oResult = new ArrayList<AutoBean<S>>();
+		for (int i = 0; i < pArray.size(); i++) {
+			AutoBean<S> oAutoBean = AutoBeanCodex.decode(mObjectFactory, mClass, pArray.get(i).toString() );
+			oResult.add(oAutoBean);
+		}
+		return oResult;
+	}
+	*/
 }
