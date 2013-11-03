@@ -13,11 +13,12 @@ import com.google.gwt.json.client.JSONObject;
 public class ApplicationConfig implements IApplicationConfig {
 	
 	private JSONArray mPlaylist;
+	private JSONObject mCommon;
+	private JSONObject mPlugins;
 
 	@Override
 	public JSONObject getCommon() {
-		// TODO Auto-generated method stub
-		return null;
+		return mCommon;
 	}
 
 	@Override
@@ -27,12 +28,19 @@ public class ApplicationConfig implements IApplicationConfig {
 
 	@Override
 	public JSONObject getPlugins() {
-		// TODO Auto-generated method stub
-		return null;
+		return mPlugins;
 	}
 	
 	public void setPlaylist(JSONArray pJSON) {
 		mPlaylist = pJSON;
+	}
+	
+	public void setCommon(JSONObject pCommon) {
+		mCommon = pCommon;
+	}
+	
+	public void setPlugins(JSONObject pPlugins) {
+		mPlugins = pPlugins;
 	}
 
 }
