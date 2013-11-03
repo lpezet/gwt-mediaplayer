@@ -30,7 +30,7 @@ public class PlaylistNavigator {
 	}
 	
 	public boolean hasNext() {
-		return (!isTail());
+		return (!isTail() && mPlaylist.getHead() != null);
 	}
 	
 	public boolean hasPrevious() {
