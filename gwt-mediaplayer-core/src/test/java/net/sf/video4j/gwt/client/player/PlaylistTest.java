@@ -32,18 +32,21 @@ public class PlaylistTest extends GwtTest {
 		Media oT2 = new Media();
 		Media oT3 = new Media();
 		
-		
+		assertEquals(0, oList.count());
 		oList.add(oT1);
 		assertEquals(oT1, oList.getHead().getMedia());
 		assertEquals(oT1, oList.getTail().getMedia());
+		assertEquals(1, oList.count());
 		
 		oList.add(oT2);
 		assertEquals(oT1, oList.getHead().getMedia());
 		assertEquals(oT2, oList.getTail().getMedia());
+		assertEquals(2, oList.count());
 		
 		oList.add(oT3);
 		assertEquals(oT1, oList.getHead().getMedia());
 		assertEquals(oT3, oList.getTail().getMedia());
+		assertEquals(3, oList.count());
 		
 		assertPlaylistEquals(oList, oT1, oT2, oT3);
 		assertStartEndsEqual(oList, 
