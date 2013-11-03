@@ -70,8 +70,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
         setInSlot(SLOT_CONTROL, mControlPresenter);
         setInSlot(SLOT_AD, mAdPresenter);
         //TODO:
-        //ApplicationConfig oConfig = getView().getApplicationConfig();
-        ApplicationConfig oConfig = new ApplicationConfig();
+        IApplicationConfig oConfig = getView().getApplicationConfig();
         Application oApp = new Application(oConfig);
         mApplicationController.begin(oApp);
     }

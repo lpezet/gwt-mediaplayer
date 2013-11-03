@@ -55,9 +55,11 @@ public class Video4JView extends ViewImpl implements Video4JPresenter.V4JView {
     
     @Override
     public IApplicationConfig getApplicationConfig() {
-    	//TODO: fix this!!!
-        JSOApplicationConfig oJSOConfig = JSOApplicationConfig.build();
+    	JSOApplicationConfig oJSOConfig = JSOApplicationConfig.build();
         ApplicationConfig oConfig = new ApplicationConfig();
+        oConfig.setPlaylist(oJSOConfig.getPlaylist());
+        oConfig.setCommon(oJSOConfig.getCommon());
+        oConfig.setPlugins(oJSOConfig.getPlugins());
         return oConfig;
     }
     
