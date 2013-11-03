@@ -83,6 +83,7 @@ public class PlaylistController extends BaseController implements
 		for (int i = 0; i < oConfig.getPlaylist().size(); i++) {
 			oPlayItemBeans.add(oFactory.makeABFrom(oConfig.getPlaylist().get(i).isObject()));
 		}
+		mLogger.log(Level.INFO, "Found " + oPlayItemBeans.size() + " play items from config.");
 		Playlist oPlaylist = new Playlist();
 		for (AutoBean<PlayItemBean> oItemAutoBean : oPlayItemBeans) {
 			PlayItemBean oItemBean = oItemAutoBean.as();
@@ -92,6 +93,7 @@ public class PlaylistController extends BaseController implements
 			oMedia.setProperties(oProps);
 			oPlaylist.add(oMedia);
 		}
+		mLogger.log(Level.INFO, "Playlist: " + oPlaylist.count() + " items.");
 		mPlaylistNavigator = new PlaylistNavigator(oPlaylist);
 	}
 	
