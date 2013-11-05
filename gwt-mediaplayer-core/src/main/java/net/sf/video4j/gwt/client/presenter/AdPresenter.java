@@ -3,9 +3,11 @@ package net.sf.video4j.gwt.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.video4j.gwt.client.IConfigProvider;
 import net.sf.video4j.gwt.client.dispatch.AsyncCallbackImpl;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
+import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 import net.sf.video4j.gwt.plugin.client.vast.dao.IAdService;
@@ -35,14 +37,16 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
     
     protected Logger mLogger = Logger.getLogger(this.getClass().getName());
     
-    private IAdService    mAdService;
-    private DispatchAsync mDispatcher;
+	private IAdService		mAdService;
+	private DispatchAsync	mDispatcher;
+	private IConfigProvider	mConfigProvider;
     
     @Inject
-    public AdPresenter(EventBus pEventBus, AView pView, IAdService pAdService, DispatchAsync pDispatcher) {
+	public AdPresenter(EventBus pEventBus, AView pView, IAdService pAdService, DispatchAsync pDispatcher, IConfigProvider pConfigProvider) {
         super(pEventBus, pView);
-        mAdService  = pAdService;
-        mDispatcher = pDispatcher;
+		mAdService = pAdService;
+		mDispatcher = pDispatcher;
+		mConfigProvider = pConfigProvider;
         addRegisteredHandler(PlaylistPlayEvent.getType(), this);
         mLogger.log(Level.INFO, "Creating Ad Presenter");
     }
@@ -55,12 +59,8 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
     @Override
     protected void onBind() {
         super.onBind();
-        mLogger.log(Level.INFO, "Before fetching Ads from servlet");
-        // TODO create a servlet that the user must add in its web.xml so we can 
-        // perform ad ws calls to retrieve ad info and get back to this logic
-        fetchAdsFromServlet();
-        mLogger.log(Level.INFO, "After fetching Ads from servlet");
-//        fetchAdsFromAJAX();
+		fetchAdsFromServlet();
+//      fetchAdsFromAJAX();
     }
 
     private void fetchAdsFromAJAX() {
@@ -101,12 +101,20 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements I
     private void fetchAdsFromServlet() {
         mLogger.log(Level.INFO, "Fetching Ads from servlet");
         FetchAdAction oAction = new FetchAdAction();
+
+		IApplicationConfig oConfig = mConfigProvider.getConfig();
+		mLogger.log(Level.INFO, "app config from config provider=" + oConfig);
+//		IAdBeanFactory oAdBeanFactory = GWT.create(IAdBeanFactory.class);
+//		BeanFactory<IAdBean, IAdBeanFactory> oFactory = new BeanFactory<IAdBean, IAdBeanFactory>(IAdBean.class, oAdBeanFactory);
+//		IAdBean oAdBean = oFactory.makeFrom(oConfig.getAd());
+//		mLogger.log(Level.INFO, "oAdBean.getURL()=" + oAdBean.getURL());
+//		oAction.setURL(oAdBean.getURL());
+		oAction.setURL("http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2");
         mDispatcher.execute(oAction, new AsyncCallbackImpl<FetchAdResult>() {
 
             @Override
             public void onSuccess(FetchAdResult pResult) {
                 mLogger.log(Level.INFO, "Got results=" + pResult);
-                // TODO display Ad on playlist event
             }
             
         });

@@ -4,9 +4,6 @@ import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.controller.ApplicationController;
 import net.sf.video4j.gwt.client.controller.PlaylistController;
-import net.sf.video4j.gwt.client.model.Application;
-import net.sf.video4j.gwt.client.model.ApplicationConfig;
-import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.place.NameTokens;
 
 import com.google.inject.Inject;
@@ -31,7 +28,6 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
     }
 
     public interface V4JView extends View {
-        IApplicationConfig getApplicationConfig();
     }
 
     public static final Object SLOT_VIDEO_PLAYER = new Object();
@@ -58,7 +54,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
         super(pEventBus, pView, pProxy, RevealType.Root);
         mPlayerPresenter = pPlayerPresenter;
         mControlPresenter = pControlPresenter;
-//        mAdPresenter = pAdPresenter;
+		mAdPresenter = pAdPresenter;
         mApplicationController = pApplicationController;
         mPlaylistController = pPlaylistController;
     }
@@ -69,10 +65,7 @@ public class Video4JPresenter extends Presenter<Video4JPresenter.V4JView, Video4
         setInSlot(SLOT_VIDEO_PLAYER, mPlayerPresenter);
         setInSlot(SLOT_CONTROL, mControlPresenter);
         setInSlot(SLOT_AD, mAdPresenter);
-        //TODO:
-        IApplicationConfig oConfig = getView().getApplicationConfig();
-        Application oApp = new Application(oConfig);
-        mApplicationController.begin(oApp);
+        mApplicationController.begin();
     }
 
 }

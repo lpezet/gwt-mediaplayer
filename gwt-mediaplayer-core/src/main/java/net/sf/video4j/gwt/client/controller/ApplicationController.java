@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import net.sf.video4j.gwt.client.IConfigProvider;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
 import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent.PluginReadyHandler;
-import net.sf.video4j.gwt.client.model.ApplicationConfig;
+import net.sf.video4j.gwt.client.model.Application;
 import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IPlugin;
 
@@ -33,17 +34,17 @@ public class ApplicationController extends BaseController implements PluginReady
 	
 
 	@Inject
-	public ApplicationController(EventBus pBus) {
+	public ApplicationController(EventBus pBus, IConfigProvider pConfigProvider) {
 		super(pBus);
 		registerHandlers();
+		mApplication = new Application(pConfigProvider.getConfig());
 	}
 	
 	private void registerHandlers() {
 		addRegisteredHandler(PluginReadyEvent.getType(), this);
 	}
 	
-	public void begin(IApplication pApplication) {
-		mApplication = pApplication;
+	public void begin() {
 		mLogger.log(Level.INFO, "Starting application controller...");
 //		Playlist oPlaylist = new Playlist();
 //		Track t = new Track();
