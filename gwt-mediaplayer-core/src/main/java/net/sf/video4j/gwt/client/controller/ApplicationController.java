@@ -88,6 +88,7 @@ public class ApplicationController extends BaseController implements PluginReady
 	@Override
 	public void onPluginReadyEvent(PluginReadyEvent pEvent) {
 		mPluginsReady.put(pEvent.getPlugin().getPluginId(), pEvent.getPlugin());
+		mLogger.log(Level.INFO, "Plugin " + pEvent.getPlugin().getPluginId() + " now ready. Now: " + mPluginsReady.size() + " plugins ready and " + mApplication.getPlugins().size() + " setup.");
 		//mLogger.log(Level.INFO, "Plugin " + pEvent.getPlugin().getPluginName() + " ready. Now: " + mPluginsReady.size() + " plugins ready, " + (mConfig.getPlugins().size() - mPluginsReady.size()) + " more to go.");
 		if (mPluginsReady.size() == mApplication.getPlugins().size()) {
 			/*
