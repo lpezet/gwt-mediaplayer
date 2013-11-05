@@ -21,8 +21,10 @@ var video4j = {
 		{ url: 'http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4' }, 
 		{ url: 'http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4' }
 	],
-	ads: {
-		url: 'http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2'
+	plugins: {
+		"net.sf.video4j.gwt.plugins.ads.liverail": {
+			url: "http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2"
+		}
 	}
 };
 
