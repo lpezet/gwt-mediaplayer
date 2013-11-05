@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
-	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.inject.Inject" />
-	<inherits name="net.sf.video4j.gwt.plugin.VAST"/>
-	<inherits name="fr.hd3d.html5.video.HTML5Video"/>
-	<inherits name="com.kiouri.sliderbar.SliderBarMVP"/>
+	<inherits name="net.sf.video4j.gwt.plugin.VAST" />
+	<inherits name="fr.hd3d.html5.video.HTML5Video" />
+	<inherits name="com.kiouri.sliderbar.SliderBarMVP" />
 	<inherits name="com.gwtplatform.mvp.Mvp" />
-	<inherits name="com.gwtplatform.dispatch.Dispatch"/>
-	
-  	<source path="client" excludes="**/*Test.java" />
-  	<source path="shared" excludes="**/*Test.java" />
+	<inherits name="com.gwtplatform.dispatch.Dispatch" />
+	<inherits name="com.google.web.bindery.autobean.AutoBean" />
+
+	<source path="client" excludes="**/*Test.java" />
+	<source path="shared" excludes="**/*Test.java" />
 </module>

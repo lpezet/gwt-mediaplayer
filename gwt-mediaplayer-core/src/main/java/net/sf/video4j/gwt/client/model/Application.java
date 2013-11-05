@@ -40,6 +40,4 @@ public class Application implements IApplication {
 		mPlugins.put(pPlugin.getPluginId(), pPlugin);
 	}
 
-	
-
 }

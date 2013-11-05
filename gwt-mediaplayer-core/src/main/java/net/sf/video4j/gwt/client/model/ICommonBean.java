@@ -6,7 +6,7 @@ import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
  * @author Gustavo Matias
  *
  */
-public interface ApplicationBean {
+public interface ICommonBean {
 	String getWidth();
 	void setWidth(String pWidth);
 	

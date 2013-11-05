@@ -1,7 +1,6 @@
 package net.sf.video4j.gwt.client.config.model.jso;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 
@@ -27,4 +26,5 @@ public class JSOApplicationConfig extends JavaScriptObject {
     public final native JSONObject getPlugins() /*-{ 
     	return this.plugins;
 	}-*/;
+
 }

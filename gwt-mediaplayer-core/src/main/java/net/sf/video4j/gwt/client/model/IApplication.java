@@ -10,8 +10,6 @@ import java.util.Collection;
  *
  */
 public interface IApplication {
-
-	
 	public IApplicationConfig getConfig();
 	public Collection<IPlugin> getPlugins();
 	public IPlugin getPlugin(String pPluginId);

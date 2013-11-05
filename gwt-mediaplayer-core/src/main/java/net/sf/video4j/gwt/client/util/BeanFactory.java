@@ -3,6 +3,10 @@
  */
 package net.sf.video4j.gwt.client.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -25,7 +29,7 @@ public class BeanFactory<S, T extends AutoBeanFactory> {
 	public S makeFrom(JSONObject pObject) {
 		return makeABFrom(pObject).as();
 	}
-	/*
+
 	public List<S> makeFrom(JSONArray pArray) {
 		List<S> oResult = new ArrayList<S>();
 		for (int i = 0; i < pArray.size(); i++) {
@@ -34,7 +38,7 @@ public class BeanFactory<S, T extends AutoBeanFactory> {
 		}
 		return oResult;
 	}
-	*/
+
 	public AutoBean<S> makeABFrom(JSONObject pObject) {
 		return AutoBeanCodex.decode(mObjectFactory, mClass, pObject.toString() );
 	}

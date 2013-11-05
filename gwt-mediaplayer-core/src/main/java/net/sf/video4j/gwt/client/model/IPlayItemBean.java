@@ -7,7 +7,7 @@ import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
  * @author Gustavo Matias
  *
  */
-public interface PlayItemBean {
+public interface IPlayItemBean {
 	@PropertyName("url")
 	void setURL(String pURL);
 	@PropertyName("url")

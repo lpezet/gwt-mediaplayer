@@ -15,6 +15,7 @@ public class ApplicationConfig implements IApplicationConfig {
 	private JSONArray mPlaylist;
 	private JSONObject mCommon;
 	private JSONObject mPlugins;
+	private JSONObject	mAd;
 
 	@Override
 	public JSONObject getCommon() {
@@ -31,6 +32,11 @@ public class ApplicationConfig implements IApplicationConfig {
 		return mPlugins;
 	}
 	
+	@Override
+	public JSONObject getAd() {
+		return mAd;
+	}
+
 	public void setPlaylist(JSONArray pJSON) {
 		mPlaylist = pJSON;
 	}
@@ -41,6 +47,10 @@ public class ApplicationConfig implements IApplicationConfig {
 	
 	public void setPlugins(JSONObject pPlugins) {
 		mPlugins = pPlugins;
+	}
+
+	public void setAd(JSONObject pAd) {
+		mAd = pAd;
 	}
 
 }
