@@ -12,15 +12,24 @@
 <script type="text/javascript" >
 
 var video4j = {
-	autoPlay: false,
-	width: 500,
-	height: 400,
+	common: {
+		auto_play: false,
+		width: 500,
+		height: 400	
+	},
 	playlist: [
 		{ url: 'http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4' }, 
 		{ url: 'http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4' }
-	]
+	],
+	ads: {
+		url: 'http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2'
+	}
 };
 
+/*
+
+Commented out because it was having issues with video4j var, don't know why.
+ 
 var video4j_ads = {
 	autoPlay: false,
 	width: 500,
@@ -41,7 +50,7 @@ var video4j_ads = {
 			LR_TAGS: 'loc123, f123, featured'
 		}
 	],
-	plugins: {
+	plugins: [
 		net.sf.video4j.gwt.plugins.ads.liverail: {
 			//LR_PUBLISHER_ID: 111111,
 			publisherId: 11111,
@@ -56,7 +65,7 @@ var video4j_ads = {
 			//stop_on_adstart: true   // true for rtmp live-streaming, false for long form or progressive
 			stopOnAdStart: true   // true for rtmp live-streaming, false for long form or progressive
 		}
-	}
+	]
 };
 
 var video4j_complex = {
@@ -88,6 +97,7 @@ var video4j_complex = {
 			{ url: 'http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4' }
 		]
 	};
+*/
 
 </script>
 
