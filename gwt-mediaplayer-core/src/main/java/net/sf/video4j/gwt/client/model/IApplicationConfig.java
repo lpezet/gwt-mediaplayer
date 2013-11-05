@@ -54,6 +54,5 @@ public interface IApplicationConfig {
 	public JSONObject getCommon();
 	public JSONArray getPlaylist();
 	public JSONObject getPlugins();
-	public JSONObject getAd();
 	
 }
