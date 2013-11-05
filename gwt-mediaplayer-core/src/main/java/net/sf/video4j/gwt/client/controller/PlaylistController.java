@@ -101,6 +101,7 @@ public class PlaylistController extends BaseController implements
 			oMedia.setProperties(oProps);
 			oPlaylist.add(oMedia);
 		}
+		pEvent.getApplication().setPlaylist(oPlaylist);
 		mLogger.log(Level.INFO, "Playlist created with " + oPlaylist.count() + " items.");
 		mLogger.log(Level.FINE, "Done with ApplicationLoadEvent.");
 		mPlaylistNavigator = new PlaylistNavigator(oPlaylist);
