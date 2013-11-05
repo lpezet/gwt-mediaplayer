@@ -30,6 +30,7 @@ import net.sf.video4j.gwt.client.util.PlayItemBeanFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
@@ -70,17 +71,27 @@ public class PlaylistController extends BaseController implements
 	
 	@Override
 	public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
-		mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
+		//JSOApplicationConfig oJSOConfig = JSOApplicationConfig.build();
+		//mLogger.log(Level.INFO, "#### JSOConfig = playlist = " + oJSOConfig.getPlaylist() + ", type = " + oJSOConfig.getPlaylist().getClass());		
+		//mLogger.log(Level.INFO, "#### JSOConfig = common = " + oJSOConfig.getCommon() + " type = " + oJSOConfig.getCommon().getClass());
+		//mLogger.log(Level.INFO, "#### JSOConfig = plugins = " + oJSOConfig.getPlugins() + " type = " + oJSOConfig.getPlugins().getClass());
+		
+		mLogger.log(Level.FINE, "Received ApplicationLoadEvent...");
 		pEvent.getApplication().addPlugin(this);
 		IApplicationConfig oConfig = pEvent.getApplication().getConfig();
-		
-		// TODO: check if that's all good...test!!!!
+		if (oConfig.getPlaylist().isNull() != null) {
+			mLogger.log(Level.SEVERE, "No playlist found in configuration.");
+			return;
+		} else {
+			mLogger.log(Level.FINE, "Playlist : " + oConfig.getPlaylist());
+		}
 		BeanFactory<IPlayItemBean, PlayItemBeanFactory> oFactory = new BeanFactory<IPlayItemBean, PlayItemBeanFactory>(IPlayItemBean.class, mPlayItemBeanFactory);
 		List<AutoBean<IPlayItemBean>> oPlayItemBeans = new ArrayList<AutoBean<IPlayItemBean>>();
-		for (int i = 0; i < oConfig.getPlaylist().size(); i++) {
-			oPlayItemBeans.add(oFactory.makeABFrom(oConfig.getPlaylist().get(i).isObject()));
+		JSONArray oPlaylistConfig = oConfig.getPlaylist();
+		mLogger.log(Level.INFO, "Playlist configuration has " + oPlaylistConfig.size() + " items.");
+		for (int i = 0; i < oPlaylistConfig.size(); i++) {
+			oPlayItemBeans.add(oFactory.makeABFrom(oPlaylistConfig.get(i).isObject()));
 		}
-		mLogger.log(Level.INFO, "Found " + oPlayItemBeans.size() + " play items from config.");
 		Playlist oPlaylist = new Playlist();
 		for (AutoBean<IPlayItemBean> oItemAutoBean : oPlayItemBeans) {
 			IPlayItemBean oItemBean = oItemAutoBean.as();
@@ -90,15 +101,16 @@ public class PlaylistController extends BaseController implements
 			oMedia.setProperties(oProps);
 			oPlaylist.add(oMedia);
 		}
-		mLogger.log(Level.INFO, "Playlist: " + oPlaylist.count() + " items.");
+		mLogger.log(Level.INFO, "Playlist created with " + oPlaylist.count() + " items.");
+		mLogger.log(Level.FINE, "Done with ApplicationLoadEvent.");
 		mPlaylistNavigator = new PlaylistNavigator(oPlaylist);
 	}
 	
 	@Override
 	public void onApplicationInitEvent(ApplicationInitEvent pEvent) {
-		mLogger.log(Level.INFO, "Received ApplicationInitEvent.");
+		mLogger.log(Level.FINE, "Received ApplicationInitEvent.");
 		PluginReadyEvent.fire(this, this);
-		mLogger.log(Level.INFO, "PluginReadyEvent fired.");
+		mLogger.log(Level.FINE, "PluginReadyEvent fired.");
 	}
 	
 	@Override
@@ -108,7 +120,7 @@ public class PlaylistController extends BaseController implements
 
 	@Override
 	public void onApplicationReadyEvent(ApplicationReadyEvent pEvent) {
-		mLogger.log(Level.INFO, "Received ApplicationReadyEvent. Starting playlist...");
+		mLogger.log(Level.FINE, "Received ApplicationReadyEvent. Starting playlist...");
 		play();
 	}
 
