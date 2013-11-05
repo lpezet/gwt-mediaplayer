@@ -14,9 +14,9 @@ public class LocalJSConfigProvider implements IConfigProvider {
 	public IApplicationConfig getConfig() {
 		JSOApplicationConfig oJSOApplication = JSOApplicationConfig.build();
 		ApplicationConfig oConfig = new ApplicationConfig();
-		oConfig.setPlaylist(oJSOApplication.getPlaylist());
-		oConfig.setCommon(oJSOApplication.getCommon());
-		oConfig.setPlugins(oJSOApplication.getPlugins());
+		oConfig.setPlaylist(oJSOApplication.getPlaylist().isArray());
+		oConfig.setCommon(oJSOApplication.getCommon().isObject());
+		oConfig.setPlugins(oJSOApplication.getPlugins().isObject());
 		return oConfig;
   }
 
