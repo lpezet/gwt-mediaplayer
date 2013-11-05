@@ -10,7 +10,7 @@ package net.sf.video4j.gwt.client.player;
 public class PlaylistNavigator {
 	
 	private static final PlayItem BEFORE_HEAD = new PlayItem(null);
-	private static final PlayItem AFTER_TAIL = new PlayItem(null);
+	//private static final PlayItem AFTER_TAIL = new PlayItem(null);
 	
 	private PlayItem mCursor;
 	private Playlist mPlaylist;
