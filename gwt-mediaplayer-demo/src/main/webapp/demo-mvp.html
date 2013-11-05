@@ -3,7 +3,6 @@
 	<title>Demo - MVP</title>
 </head>
 <body>
-<script type="text/javascript" src="/gwt_video_player_mvp_demo/gwt_video_player_mvp_demo.nocache.js"></script>
 <!-- <div id="player">
 
 </div> -->
@@ -12,18 +11,26 @@
 <script type="text/javascript" >
 
 var video4j = {
-	common: {
-		auto_play: false,
-		width: 500,
-		height: 400	
+	"common": {
+		"auto_play": false,
+		"width": 500,
+		"height": 400
 	},
-	playlist: [
-		{ url: 'http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4' }, 
-		{ url: 'http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4' }
+	"playlist": [
+		{ "url": 'http://videos.tripfilms.com/360p/4BAE2BA4EE543703AF8BC2DF6550BB73.mp4' }, 
+		{ "url": 'http://videos.tripfilms.com/480p/ECAA41D5E30E4BECC13FC1D3DA823750.mp4' },
+		{ "url": 'http://videos.tripfilms.com/240p/6C67EB4A2611F7DC285A3A0CB96EEB3C.mp4' }
 	],
-	plugins: {
+	"plugins": {
 		"net.sf.video4j.gwt.plugins.ads.liverail": {
-			url: "http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2"
+			"lr_publisher_id": "1331",
+			"lr_video_position" : 0,
+			"lr_ad_unit": "in",
+			"lr_ad_message": "Advertisement. Video will resume in {COUNTDOWN} seconds.",
+			"lr_verticals": "hotel", // e.g. video category
+			"lr_video_id": "123", // e.g. video id
+			"lr_autoplay": "0", // autoplay
+			"lr_tags": "fm_123,featured,partner_ABC,loc_123,loc_456" // e.g. fm = filmmaker, loc = location
 		}
 	}
 };
@@ -103,5 +110,6 @@ var video4j_complex = {
 
 </script>
 
+<script type="text/javascript" src="/gwt_video_player_mvp_demo/gwt_video_player_mvp_demo.nocache.js"></script>
 </body>
 </html>
