@@ -19,16 +19,14 @@ import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent.PlayerPlayEndedHandl
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
+import net.sf.video4j.gwt.client.model.IPlayItemBean;
 import net.sf.video4j.gwt.client.model.IPlugin;
-import net.sf.video4j.gwt.client.model.PlayItemBean;
-import net.sf.video4j.gwt.client.model.PlaylistBean;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.PlayItem;
 import net.sf.video4j.gwt.client.player.Playlist;
 import net.sf.video4j.gwt.client.player.PlaylistNavigator;
 import net.sf.video4j.gwt.client.util.BeanFactory;
 import net.sf.video4j.gwt.client.util.PlayItemBeanFactory;
-import net.sf.video4j.gwt.client.util.PlaylistBeanFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -48,7 +46,6 @@ public class PlaylistController extends BaseController implements
 		PlayerPlayEndedHandler,
 		IPlugin {
 	
-	//private PlaylistCon mConfig;
 	private PlaylistNavigator mPlaylistNavigator;
 	private PlayItemBeanFactory mPlayItemBeanFactory;
 
@@ -78,15 +75,15 @@ public class PlaylistController extends BaseController implements
 		IApplicationConfig oConfig = pEvent.getApplication().getConfig();
 		
 		// TODO: check if that's all good...test!!!!
-		BeanFactory<PlayItemBean, PlayItemBeanFactory> oFactory = new BeanFactory<PlayItemBean, PlayItemBeanFactory>(PlayItemBean.class, mPlayItemBeanFactory);
-		List<AutoBean<PlayItemBean>> oPlayItemBeans = new ArrayList<AutoBean<PlayItemBean>>();
+		BeanFactory<IPlayItemBean, PlayItemBeanFactory> oFactory = new BeanFactory<IPlayItemBean, PlayItemBeanFactory>(IPlayItemBean.class, mPlayItemBeanFactory);
+		List<AutoBean<IPlayItemBean>> oPlayItemBeans = new ArrayList<AutoBean<IPlayItemBean>>();
 		for (int i = 0; i < oConfig.getPlaylist().size(); i++) {
 			oPlayItemBeans.add(oFactory.makeABFrom(oConfig.getPlaylist().get(i).isObject()));
 		}
 		mLogger.log(Level.INFO, "Found " + oPlayItemBeans.size() + " play items from config.");
 		Playlist oPlaylist = new Playlist();
-		for (AutoBean<PlayItemBean> oItemAutoBean : oPlayItemBeans) {
-			PlayItemBean oItemBean = oItemAutoBean.as();
+		for (AutoBean<IPlayItemBean> oItemAutoBean : oPlayItemBeans) {
+			IPlayItemBean oItemBean = oItemAutoBean.as();
 			Media oMedia = new Media();
 			oMedia.setURI(oItemBean.getURL());
 			Map<String, Object> oProps = AutoBeanUtils.getAllProperties(oItemAutoBean);
