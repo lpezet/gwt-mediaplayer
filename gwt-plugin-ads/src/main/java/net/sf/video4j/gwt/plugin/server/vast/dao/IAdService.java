@@ -8,6 +8,6 @@ import net.sf.video4j.gwt.plugin.shared.vast.VAST;
  */
 public interface IAdService {
 
-    VAST fetchAds();
+	VAST fetchAds(String pURL);
 
 }
