@@ -22,13 +22,13 @@ public class FetchAdHandler extends AbstractAction<FetchAdAction, FetchAdResult>
 
     public FetchAdHandler() {
         super(FetchAdAction.class);
-        mAdService = new AdService(); // How to use guice's DI on server side? @Inject didn't work
+		mAdService = new AdService();
     }
 
     @Override
     public FetchAdResult execute(FetchAdAction pAction, ExecutionContext pContext) throws ActionException {
-        mLogger.info("Executing fetchAds");
-        VAST oVAST = mAdService.fetchAds(); // where will the list of Ads URL's come from? can come from frontend OR from servlet itself...
+		mLogger.info("Executing fetchAds pAction=" + pAction);
+		VAST oVAST = mAdService.fetchAds(pAction.getURL());
         mLogger.info("Got VAST=" + oVAST);
         return new FetchAdResult(oVAST);
     }

@@ -8,5 +8,22 @@ import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
  * @author gumatias
  */
 public class FetchAdAction extends UnsecuredActionImpl<FetchAdResult> {
-    public FetchAdAction() {}
+
+  private String mURL;
+
+  public FetchAdAction() {}
+
+  public String getURL() {
+    return mURL;
+  }
+
+  public void setURL(String pURL) {
+    mURL = pURL;
+  }
+
+  @Override
+  public String toString() {
+    return "FetchAdAction [mURL=" + mURL + "]";
+  }
+
 }
