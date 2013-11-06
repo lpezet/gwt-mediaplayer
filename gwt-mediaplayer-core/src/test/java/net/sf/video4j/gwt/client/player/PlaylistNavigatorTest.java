@@ -17,6 +17,17 @@ import org.junit.Test;
 public class PlaylistNavigatorTest {
 	
 	@Test
+	public void peek() {
+		Playlist oList = new Playlist();
+		Media oT1 = new Media();
+		
+		oList.add(oT1);
+		
+		PlaylistNavigator oNavigator = new PlaylistNavigator(oList);
+		assertNotNull(oNavigator.peek());
+	}
+	
+	@Test
 	public void empty() {
 		Playlist oList = new Playlist();
 		PlaylistNavigator oNavigator = new PlaylistNavigator(oList);

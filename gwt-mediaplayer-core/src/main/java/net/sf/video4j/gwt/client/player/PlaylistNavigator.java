@@ -39,13 +39,17 @@ public class PlaylistNavigator {
 	
 	public PlayItem peek() {
 		if (!hasNext()) return null;
-		return mCursor.getNext();
+		return getNext();
 	}
 	
 	public PlayItem next() {
 		if (!hasNext()) return null;
-		mCursor = (mCursor == BEFORE_HEAD) ? mPlaylist.getHead() : mCursor.getNext();
+		mCursor = getNext();
 		return mCursor;
+	}
+
+	private PlayItem getNext() {
+		return (mCursor == BEFORE_HEAD) ? mPlaylist.getHead() : mCursor.getNext();
 	}
 	
 	public PlayItem previous() {
