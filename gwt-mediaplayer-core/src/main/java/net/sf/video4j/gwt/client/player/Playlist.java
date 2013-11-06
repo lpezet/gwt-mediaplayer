@@ -90,16 +90,16 @@ public class Playlist {
 		if (oParentTrackPlayItems == null) throw new RuntimeException("Parent track must exist or have valid id.");
 		if (oParentTrackPlayItems.getItems().isEmpty()) throw new RuntimeException("Invalid state: parent track has no more nodes.");
 		if (pCutOffTime == 0) {
-			//System.out.println("Adding child BEFORE parent...");
+			// pre-roll
 			PlayItem oParentPlayItem = oParentTrackPlayItems.getItems().first();
 			insertBefore(oItem, oParentPlayItem);			
 		} else if (pCutOffTime == -1) {
-			//System.out.println("Adding child AFTER parent...");
+			// post-roll
 			PlayItem oParentPlayItem = oParentTrackPlayItems.getItems().last();
-			//System.out.println("## Parent = " + oParentPlayItem);
 			insertAfter(oItem, oParentPlayItem);
 		} else {
-			// TODO: problem: if duration is not specified for parent track, how do I know to add this play node after the parent?
+			// mid-roll
+			// TODO: problem: if duration is not specified for parent track, how do I know where to add this play node?
 			// TODO: 
 			PlayItem oPivot = null;
 			for (PlayItem oPItem : oParentTrackPlayItems.getItems()) {
