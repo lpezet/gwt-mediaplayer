@@ -449,7 +449,7 @@ public class VAST20Parser {
 			m.setScalable(getAttribute(n, SCALABLE, false));
 			m.setMaintainAspectRatio(getAttribute(n, MAINTAIN_ASPECT_RATIO, false));
 			m.setDelivery(Delivery.parse(getAttribute(n, DELIVERY, PROGRESSIVE)));
-			String oUri = getNodeValue(pNode); // getFirstNodeValue(n);
+			String oUri = getNodeValue(n); // getFirstNodeValue(n);
 			if (oUri != null) {
 				m.setURI(oUri);
 			} else {
@@ -468,7 +468,7 @@ public class VAST20Parser {
 			Node n = oChildren.item(i);
 			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			IdURI oIdURI = new IdURI();
-			String oUri = getNodeValue(pNode); // getFirstNodeValue(n);
+			String oUri = getNodeValue(n); // getFirstNodeValue(n);
 			if (oUri != null) {
 				oIdURI.setURI(oUri);
 			} else {
@@ -579,7 +579,7 @@ public class VAST20Parser {
 			NodeList oChildren = pNode.getChildNodes();
 			for (int i = 0; i < oChildren.getLength(); i++) {
 				Node n = oChildren.item(i);
-				if (n.getNodeType() == Node.TEXT_NODE) {
+				if (n.getNodeType() == Node.TEXT_NODE || n.getNodeType() == Node.CDATA_SECTION_NODE) {
 					String oVal = n.getNodeValue();
 					if (oVal != null) oBuf.append(oVal);
 				} else {
