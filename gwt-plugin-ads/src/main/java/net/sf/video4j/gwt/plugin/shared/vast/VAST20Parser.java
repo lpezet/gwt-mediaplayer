@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gwt.safehtml.shared.SafeUri;
-import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
@@ -176,10 +174,10 @@ public class VAST20Parser {
 				oResult.setDescription(n.getNodeValue());
 			} else if (SURVEY.equalsIgnoreCase(n.getNodeName())) {
 				mLogger.log(Level.FINEST, "Getting survey...");
-				oResult.setSurvey(newURI(n.getNodeValue()));
+				oResult.setSurvey(n.getNodeValue());
 			} else if (ERROR.equalsIgnoreCase(n.getNodeName())) {
 				mLogger.log(Level.FINEST, "Getting error...");
-				oResult.setError(newURI(n.getNodeValue()));
+				oResult.setError(n.getNodeValue());
 			} else if (IMPRESSION.equalsIgnoreCase(n.getNodeName())) {
 				Impression oImp = parseImpression(n);
 				oResult.getImpressions().add(oImp);
@@ -283,7 +281,7 @@ public class VAST20Parser {
 				oResult.setAdParameters(n.getNodeValue());
 			} else if (COMPANION_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
 				mLogger.log(Level.FINEST, "Getting companion click through (companion ad)...");
-				oResult.setClickThrough(newURI(n.getNodeValue()));
+				oResult.setClickThrough(n.getNodeValue());
 			} else if (ALT_TEXT.equalsIgnoreCase(n.getNodeName())) {
 				mLogger.log(Level.FINEST, "Getting alt text (companion ad)...");
 				oResult.setAltText(n.getNodeValue());
@@ -320,7 +318,7 @@ public class VAST20Parser {
 				mLogger.log(Level.FINEST, "Getting ad parameters (non-linear ad)...");
 				oResult.setAdParameters(n.getNodeValue());
 			} else if (NON_LINEAR_CLICK_THROUGH.equalsIgnoreCase(n.getNodeName())) {
-				oResult.setClickThrough(newURI(n.getNodeValue()));
+				oResult.setClickThrough(n.getNodeValue());
 			} else if (STATIC_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
 				oResult.setResource(parseStaticResource(n));
 			} else if (HTML_RESOURCE.equalsIgnoreCase(n.getNodeName())) {
@@ -434,7 +432,7 @@ public class VAST20Parser {
 			m.setDelivery(Delivery.parse(getAttribute(n, DELIVERY, PROGRESSIVE)));
 			String oUri = getFirstNodeValue(n);
 			if (oUri != null) {
-				m.setURI(newURI(oUri));
+				m.setURI(oUri);
 			} else {
 				mLogger.log(Level.WARNING, "Could not get uri for media file.");
 			}
@@ -453,7 +451,7 @@ public class VAST20Parser {
 			IdURI oIdURI = new IdURI();
 			String oUri = getFirstNodeValue(n);
 			if (oUri != null) {
-				oIdURI.setURI(newURI(oUri));
+				oIdURI.setURI(oUri);
 			} else {
 				mLogger.log(Level.WARNING, "Could not get uri for video click.");
 			}
@@ -480,7 +478,7 @@ public class VAST20Parser {
 			if (n.getNodeType() != Node.ELEMENT_NODE) continue;
 			if (TRACKING.equalsIgnoreCase(n.getNodeName())) {
 				Tracking t = new Tracking();
-				t.setURI(newURI(n.getNodeValue()));
+				t.setURI(n.getNodeValue());
 				t.setEvent(TrackingEvent.parse(getAttribute(n, EVENT, CREATIVE_VIEW)));
 				oResult.add(t);
 			} else {
@@ -515,7 +513,7 @@ public class VAST20Parser {
 		oResult.setId(getAttribute(pNode, ID, null));
 		String oUri = getFirstNodeValue(pNode);
 		if (oUri != null) {
-			oResult.setURI(newURI(oUri));
+			oResult.setURI(oUri);
 		} else {
 			mLogger.log(Level.WARNING, "Could not get Uri for impression.");
 		}
@@ -531,10 +529,6 @@ public class VAST20Parser {
 			oResult = n.getNodeValue();
 		}
 		return oResult;
-	}
-
-	private SafeUri newURI(String pValue) {
-		return UriUtils.fromString(pValue);
 	}
 
 	private String getAttribute(Node pNode, String pName, String pDefault) {
