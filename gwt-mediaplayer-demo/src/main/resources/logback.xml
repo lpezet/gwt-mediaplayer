@@ -1,0 +1,28 @@
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">	
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<param name="Pattern" value="%date{yyyy-MM-dd'T'HH:mm:ss.SSS}::%-4relative::%thread::%-5level::%c::%msg%n" />
+			</layout>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>target/gwt-mediaplayer-demo.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>target/gwt-mediaplayer-demo.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS}::%-4relative::%thread::%-5level::%c::%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.apache.commons.digester.Digester" level="ERROR"/>
+	<root level="ERROR">
+		<appender-ref ref="FILE" />
+<!-- 		<appender-ref ref="STDOUT" /> -->
+	</root>
+</configuration>
