@@ -3,8 +3,6 @@ package net.sf.video4j.gwt.plugin.shared.vast;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.safehtml.shared.SafeUri;
-
 /**
  * Second-level element surrounding complete ad data for a single ad
  * 
@@ -23,10 +21,10 @@ public class InLine extends Ad {
     private String           mDescription;
 
     // URL of request to survey vendor
-    private SafeUri          mSurvey;
+    private String          mSurvey;
 
     // URL to request if ad does not play due to error
-    private SafeUri          mError;
+    private String          mError;
 
     private List<Impression> mImpressions = new ArrayList<Impression>();
 
@@ -58,19 +56,19 @@ public class InLine extends Ad {
         mDescription = pDescription;
     }
 
-    public SafeUri getSurvey() {
+    public String getSurvey() {
         return mSurvey;
     }
 
-    public void setSurvey(SafeUri pSurvey) {
+    public void setSurvey(String pSurvey) {
         mSurvey = pSurvey;
     }
 
-    public SafeUri getError() {
+    public String getError() {
         return mError;
     }
 
-    public void setError(SafeUri pError) {
+    public void setError(String pError) {
         mError = pError;
     }
 

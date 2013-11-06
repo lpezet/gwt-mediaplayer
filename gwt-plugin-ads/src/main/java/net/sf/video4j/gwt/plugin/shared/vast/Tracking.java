@@ -3,16 +3,16 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
-import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * @author luc
  * 
  */
-public class Tracking {
+public class Tracking implements IsSerializable {
 
     private TrackingEvent mEvent;
-    private SafeUri       mURI;
+    private String       mURI;
 
     public TrackingEvent getEvent() {
         return mEvent;
@@ -22,11 +22,11 @@ public class Tracking {
         mEvent = pEvent;
     }
 
-    public SafeUri getURI() {
+    public String getURI() {
         return mURI;
     }
 
-    public void setURI(SafeUri pURI) {
+    public void setURI(String pURI) {
         mURI = pURI;
     }
 

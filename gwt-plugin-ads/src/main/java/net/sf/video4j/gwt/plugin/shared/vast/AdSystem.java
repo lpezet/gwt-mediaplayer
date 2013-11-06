@@ -3,13 +3,15 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Indicates source ad server
  * 
  * @author luc
  * 
  */
-public class AdSystem {
+public class AdSystem implements IsSerializable {
 
     private String mName;
     private String mVersion;

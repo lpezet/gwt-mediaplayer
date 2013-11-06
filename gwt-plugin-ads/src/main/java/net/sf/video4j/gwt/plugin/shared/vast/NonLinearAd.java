@@ -3,13 +3,13 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
-import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * @author luc
  * 
  */
-public class NonLinearAd {
+public class NonLinearAd implements IsSerializable {
 
     // Optional identifier
     private String            mId;
@@ -44,7 +44,7 @@ public class NonLinearAd {
 
     // URL to open as destination page when user clicks on the the companion
     // banner ad.
-    private SafeUri           mClickThrough;
+    private String           mClickThrough;
 
     // Data to be passed into the companion ads. The apiFramework defines the
     // method to use for communication (e.g. "FlashVar")
@@ -130,11 +130,11 @@ public class NonLinearAd {
         mResource = pResource;
     }
 
-    public SafeUri getClickThrough() {
+    public String getClickThrough() {
         return mClickThrough;
     }
 
-    public void setClickThrough(SafeUri pClickThrough) {
+    public void setClickThrough(String pClickThrough) {
         mClickThrough = pClickThrough;
     }
 

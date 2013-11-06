@@ -6,13 +6,13 @@ package net.sf.video4j.gwt.plugin.shared.vast;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * @author luc
  * 
  */
-public class CompanionAd {
+public class CompanionAd implements IsSerializable {
 
     // Optional identifier
     private String            mId;
@@ -41,7 +41,7 @@ public class CompanionAd {
 
     // URL to open as destination page when user clicks on the the companion
     // banner ad.
-    private SafeUri           mClickThrough;
+    private String           mClickThrough;
 
     // Alt text to be displayed when companion is rendered in HTML environment.
     private String            mAltText;
@@ -114,11 +114,11 @@ public class CompanionAd {
         mTrackingEvents = pTrackingEvents;
     }
 
-    public SafeUri getClickThrough() {
+    public String getClickThrough() {
         return mClickThrough;
     }
 
-    public void setClickThrough(SafeUri pClickThrough) {
+    public void setClickThrough(String pClickThrough) {
         mClickThrough = pClickThrough;
     }
 

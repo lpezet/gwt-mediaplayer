@@ -3,13 +3,14 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
-import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 
 /**
  * @author luc
  * 
  */
-public class CompanionResource {
+public class CompanionResource implements IsSerializable {
 
     private CompanionResourceType mType;
     private String                mContent;     // HTML

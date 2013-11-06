@@ -3,13 +3,15 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Wraps each creative element within an InLine or Wrapper Ad
  * 
  * @author luc
  * 
  */
-public class Creative {
+public class Creative implements IsSerializable {
 
     private String mId;
 

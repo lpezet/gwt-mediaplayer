@@ -6,11 +6,13 @@ package net.sf.video4j.gwt.plugin.shared.vast;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author luc
  * 
  */
-public class VideoClicks {
+public class VideoClicks implements IsSerializable {
 
     private IdURI       mClickThrough;
     private List<IdURI> mClickTrackings = new ArrayList<IdURI>();

@@ -3,15 +3,15 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
-import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  * @author luc
  * 
  */
-public class MediaFile {
+public class MediaFile implements IsSerializable {
 
-    private SafeUri  mURI;
+    private String  mURI;
 
     // Optional identifier
     private String   mId;
@@ -47,11 +47,11 @@ public class MediaFile {
     // request).
     private String   mApiFramework;
 
-    public SafeUri getURI() {
+    public String getURI() {
         return mURI;
     }
 
-    public void setURI(SafeUri pURI) {
+    public void setURI(String pURI) {
         mURI = pURI;
     }
 
