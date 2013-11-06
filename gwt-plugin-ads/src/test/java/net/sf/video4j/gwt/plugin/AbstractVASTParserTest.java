@@ -18,6 +18,8 @@ import net.sf.video4j.gwt.plugin.shared.vast.CompanionResource;
 import net.sf.video4j.gwt.plugin.shared.vast.CompanionResourceType;
 import net.sf.video4j.gwt.plugin.shared.vast.Creative;
 import net.sf.video4j.gwt.plugin.shared.vast.InLine;
+import net.sf.video4j.gwt.plugin.shared.vast.Linear;
+import net.sf.video4j.gwt.plugin.shared.vast.MediaFile;
 import net.sf.video4j.gwt.plugin.shared.vast.NonLinearAd;
 import net.sf.video4j.gwt.plugin.shared.vast.NonLinearAds;
 import net.sf.video4j.gwt.plugin.shared.vast.VAST;
@@ -151,9 +153,16 @@ public abstract class AbstractVASTParserTest implements IVASTParserTest {
         assertEquals("2.0", oInLine.getAdSystem().getName());
         assertEquals("5748406", oInLine.getAdTitle());
         assertEquals(2, oInLine.getCreatives().size());
+        
+        Linear oLinear = (Linear) oInLine.getCreatives().get(0);
+        assertNotNull(oLinear.getMediaFiles());
+        assertEquals(1, oLinear.getMediaFiles().size());
+        MediaFile oMF = oLinear.getMediaFiles().get(0);
+        assertNotNull(oMF);
+        assertEquals("http://media.scanscout.com/ads/partner1_a1d1fbbc-c4d4-419f-b6c8-e9db63fd4491.flv", oMF.getURI());
     }
     
-    private String getXMLAsString(String pResourcePath) throws IOException {
+    protected String getXMLAsString(String pResourcePath) throws IOException {
         InputStream oIS = this.getClass().getResourceAsStream(pResourcePath);
         StringWriter writer = new StringWriter();
         IOUtils.copy(oIS, writer, "UTF8");
