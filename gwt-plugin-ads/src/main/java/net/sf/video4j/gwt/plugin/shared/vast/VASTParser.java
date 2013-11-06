@@ -3,7 +3,6 @@
  */
 package net.sf.video4j.gwt.plugin.shared.vast;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,12 +13,11 @@ import com.google.gwt.xml.client.XMLParser;
 
 /**
  * @author luc
- * 
  */
 public class VASTParser implements IVASTParser {
-    
-        private Logger mLogger = Logger.getLogger(this.getClass().getName());
-    
+
+	private Logger	mLogger	= Logger.getLogger(this.getClass().getName());
+
 	@Override
 	public VAST parse(String pXML) {
 		VAST oVAST = new VAST();
@@ -42,12 +40,10 @@ public class VASTParser implements IVASTParser {
 			 * messageDom.getElementsByTagName("from").item(0); String from =
 			 * ((Element)fromNode).getAttribute("displayName");
 			 * fromLabel.setText(from);
-			 * 
 			 * // get the subject using Node's getNodeValue() function String
 			 * subject =
 			 * messageDom.getElementsByTagName("subject").item(0).getFirstChild
 			 * ().getNodeValue(); subjectLabel.setText(subject);
-			 * 
 			 * // get the message body by explicitly casting to a Text node Text
 			 * bodyNode =
 			 * (Text)messageDom.getElementsByTagName("body").item(0).getFirstChild
@@ -61,7 +57,7 @@ public class VASTParser implements IVASTParser {
 
 	private VAST parse1x(Node pVASTNode) {
 		// TODO Auto-generated method stub
-	        mLogger.log(Level.SEVERE, "1x parser not yet implemented");
+		mLogger.log(Level.SEVERE, "1x parser not yet implemented");
 		return null;
 	}
 
