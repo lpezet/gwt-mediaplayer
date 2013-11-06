@@ -143,12 +143,14 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onPlaylistPlayEvent(PlaylistPlayEvent pEvent) {
     	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
+    	//TODO: should add all the sources available...so 1 "video" might be multiple Media.
+    	//TODO: need to pass start and end (e.g. for mid-rolls).
     	PlayerParameters oParams = new PlayerParameters()
     		.withAutoPlay(true)
     		.withControls(false) //TODO: this should come from ApplicationConfig (?)
     		.withFileSource(pEvent.getPlayItem().getMedia().getURI())
     		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
-    		.withVideoType(VideoType.MP4)
+    		.withVideoType(VideoType.MP4) //TODO: should be pEvent.getPlayItem().getMedia().getType()
     		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
     	;
     	getView().startPlayer(oParams);
