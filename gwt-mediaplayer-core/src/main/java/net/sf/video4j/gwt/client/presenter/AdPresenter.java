@@ -180,7 +180,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                 	MediaFile oFirstMP4MediaFile = getFirstMP4MediaFile(pResult.getVAST());
                 	if (oFirstMP4MediaFile != null) {
                 		Media oMedia = new Media();
-						oMedia.setURI(oFirstMP4MediaFile.getURI().asString());
+						oMedia.setURI(oFirstMP4MediaFile.getURI());
 						oMedia.setAd(true);
 						oMedia.setType(MediaType.Video);
 						PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
@@ -210,7 +210,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                 						for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
                 							if ("video/mp4".equalsIgnoreCase(oMediaFile.getType())) {
                 								// use the first one as a test right now
-                								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI().asString() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
+                								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
                 								return oMediaFile;
                 							}
                 						}
