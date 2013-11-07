@@ -13,6 +13,7 @@ import net.sf.video4j.gwt.client.event.ApplicationReadyEvent.ApplicationReadyHan
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
+import net.sf.video4j.gwt.client.model.IAdBean;
 import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
@@ -21,6 +22,8 @@ import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.MediaType;
 import net.sf.video4j.gwt.client.player.PlayItem;
 import net.sf.video4j.gwt.client.player.PlaylistNavigator;
+import net.sf.video4j.gwt.client.util.BeanFactory;
+import net.sf.video4j.gwt.client.util.IAdBeanFactory;
 import net.sf.video4j.gwt.plugin.client.vast.dao.IAdService;
 import net.sf.video4j.gwt.plugin.shared.vast.Ad;
 import net.sf.video4j.gwt.plugin.shared.vast.AdRequestCallback;
@@ -32,6 +35,7 @@ import net.sf.video4j.gwt.plugin.shared.vast.VAST;
 import net.sf.video4j.gwt.shared.FetchAdAction;
 import net.sf.video4j.gwt.shared.model.FetchAdResult;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONValue;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -60,13 +64,15 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 	private IAdService		mAdService;
 	private DispatchAsync	mDispatcher;
 	private IApplication 	mApplication;
-	
+	private IAdBeanFactory	mAdBeanFactory;
+	private String			mVASTTag;
     
     @Inject
-	public AdPresenter(EventBus pEventBus, AView pView, IAdService pAdService, DispatchAsync pDispatcher) {
+	public AdPresenter(EventBus pEventBus, AView pView, IAdService pAdService, DispatchAsync pDispatcher, IAdBeanFactory pAdBeanFactory) {
         super(pEventBus, pView);
 		mAdService = pAdService;
 		mDispatcher = pDispatcher;
+		mAdBeanFactory = pAdBeanFactory;
 		registerHandlers();
         mLogger.log(Level.INFO, "Creating Ad Presenter");
     }
@@ -114,7 +120,21 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 			mLogger.log(Level.SEVERE, "Missing plugin \"net.sf.video4j.gwt.plugins.ads.liverail\" from configuration. No ads will be played.");
 			return;
 		}
-		//TODO: get LiveRail config and store them here
+		BeanFactory<IAdBean, IAdBeanFactory> oFactory = new BeanFactory<IAdBean, IAdBeanFactory>(IAdBean.class, mAdBeanFactory);
+		IAdBean oAdConfig = oFactory.makeFrom(oConfig.isObject());
+		
+		StringBuffer oVASTUrl = new StringBuffer("http://ad3.liverail.com/?");
+		if (oAdConfig.getPublisherId() != null) oVASTUrl.append("&LR_PUBLISHER_ID=").append(oAdConfig.getPublisherId());
+		if (oAdConfig.getAutoplay()) oVASTUrl.append("&LR_AUTOPLAY=1");
+		if (oAdConfig.getAdUnit() != null) oVASTUrl.append("&LR_ADUNIT=").append(oAdConfig.getAdUnit());
+		if (oAdConfig.getAdMessage() != null) oVASTUrl.append("&LR_LAYOUT_SKIN_MESSAGE=").append(URL.encodeQueryString(oAdConfig.getAdMessage()));
+		if (oAdConfig.getTags() != null) oVASTUrl.append("&LR_TAGS=").append(URL.encodeQueryString(oAdConfig.getTags()));
+		if (oAdConfig.getVerticals() != null) oVASTUrl.append("&LR_VERTICALS=").append(URL.encodeQueryString(oAdConfig.getVerticals()));
+		if (oAdConfig.getVideoId() != null) oVASTUrl.append("&LR_VIDEO_ID=").append(oAdConfig.getVideoId());
+		if (oAdConfig.getVideoPosition() != null) oVASTUrl.append("&LR_VIDEO_POSITION=").append(oAdConfig.getVideoPosition());
+		
+		mVASTTag = oVASTUrl.toString();
+		mLogger.log(Level.INFO, "VAST Tag: " + mVASTTag);
     }
     
     @Override
@@ -166,7 +186,10 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 //		IAdBean oAdBean = oFactory.makeFrom(oConfig.getAd());
 //		mLogger.log(Level.INFO, "oAdBean.getURL()=" + oAdBean.getURL());
 //		oAction.setURL(oAdBean.getURL());
-		oAction.setURL("http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2");
+        
+        
+        oAction.setURL(mVASTTag);
+		// oAction.setURL("http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2");
         mDispatcher.execute(oAction, new AsyncCallbackImpl<FetchAdResult>() {
 
             @Override
