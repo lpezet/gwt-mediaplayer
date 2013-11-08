@@ -1,5 +1,8 @@
 package net.sf.video4j.gwt.client.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 import net.sf.video4j.gwt.client.presenter.PlayerPresenter;
@@ -28,6 +31,8 @@ import fr.hd3d.html5.video.client.handlers.VideoTimeUpdateHandler;
  * @author gumatias
  */
 public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements PlayerPresenter.PView {
+
+	protected Logger	mLogger	= Logger.getLogger(this.getClass().getName());
 
     public interface Binder extends UiBinder<HTMLPanel, PlayerView> {
     }
@@ -93,6 +98,9 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
 
     @Override
     public void play() {
+		mLogger.log(Level.FINE, "canPlayType(video/ogg)=" + mPlayerWidget.canPlayType("video/ogg"));
+		mLogger.log(Level.FINE, "canPlayType(video/mp4)=" + mPlayerWidget.canPlayType("video/mp4"));
+		mLogger.log(Level.FINE, "canPlayType(video/webm)=" + mPlayerWidget.canPlayType("video/webm"));
         mPlayerWidget.playPause();
     }
 
