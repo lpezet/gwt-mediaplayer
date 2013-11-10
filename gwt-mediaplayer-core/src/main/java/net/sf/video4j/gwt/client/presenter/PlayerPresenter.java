@@ -21,7 +21,11 @@ import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
+import net.sf.video4j.gwt.client.event.PlayerErrorEvent;
+import net.sf.video4j.gwt.client.event.PlayerPauseEvent;
 import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
+import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
+import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
@@ -197,6 +201,9 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     public void onTimeUpdate(double pCurrentTime) {
     	mLogger.info("onTimeUpdate() : " + pCurrentTime);
     	//PlayerPlayingEvent.fire(this, pCurrentTime);
+    	mLogger.log(Level.INFO, "PlayerTimeUpdateEvent: firing...");
+		PlayerTimeUpdateEvent.fire(this, pCurrentTime);
+		mLogger.log(Level.INFO, "PlayerTimeUpdateEvent: fired.");
     }
     
     @Override
@@ -208,22 +215,59 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onEnded() {
     	mLogger.info("onEnded()...");
+    	mLogger.log(Level.INFO, "PlayerPlayEndedEvent: firing...");
     	PlayerPlayEndedEvent.fire(this);
+    	mLogger.log(Level.INFO, "PlayerPlayEndedEvent: firing...");
     }
     
     @Override
     public void onError() {
     	mLogger.info("onError()...");
+    	mLogger.log(Level.INFO, "PlayerErrorEvent: firing...");
+    	PlayerErrorEvent.fire(this);
+    	mLogger.log(Level.INFO, "PlayerErrorEvent: firing...");
     }
     
     @Override
     public void onPause() {
     	mLogger.info("onPause()...");
+    	/*
+    	GWT.runAsync(new RunAsyncCallback() {
+			@Override
+			public void onSuccess() {
+		*/
+				mLogger.log(Level.INFO, "PlayerPauseEvent: firing...");
+				PlayerPauseEvent.fire(PlayerPresenter.this);
+				mLogger.log(Level.INFO, "PlayerPauseEvent: fired.");
+		/*
+			}			
+			@Override
+			public void onFailure(Throwable pReason) {
+				Window.alert("Error firing PlayerPauseEvent! Reason = " + pReason.getMessage());
+			}
+		});
+		*/
     }
     
     @Override
     public void onPlaying() {
     	mLogger.info("onPlaying()...");
+    	/*
+    	GWT.runAsync(new RunAsyncCallback() {
+			@Override
+			public void onSuccess() {
+		*/
+				mLogger.log(Level.INFO, "PlayerPlayingEvent: firing...");
+				PlayerPlayingEvent.fire(PlayerPresenter.this, mPlaying);
+				mLogger.log(Level.INFO, "PlayerPlayingEvent: fired.");
+		/*
+			}			
+			@Override
+			public void onFailure(Throwable pReason) {
+				Window.alert("Error firing PlayerPlayingEvent! Reason = " + pReason.getMessage());
+			}
+		});
+		*/
     }
 
 }
