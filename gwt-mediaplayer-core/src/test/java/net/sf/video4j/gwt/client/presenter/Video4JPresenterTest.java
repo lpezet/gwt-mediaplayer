@@ -6,6 +6,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import net.sf.video4j.gwt.client.controller.ApplicationController;
+import net.sf.video4j.gwt.client.controller.BandwidthController;
 import net.sf.video4j.gwt.client.controller.PlaylistController;
 import net.sf.video4j.gwt.client.util.PlayItemBeanFactory;
 
@@ -52,7 +53,8 @@ public class Video4JPresenterTest {
     			mControlPresenter,
     			mAdPresenter,
     			mApplicationController,
-    			new PlaylistController(mEventBus, mPlayItemBeanFactory));
+    			new PlaylistController(mEventBus, mPlayItemBeanFactory),
+    			new BandwidthController(mEventBus));
     }
 
     @Test

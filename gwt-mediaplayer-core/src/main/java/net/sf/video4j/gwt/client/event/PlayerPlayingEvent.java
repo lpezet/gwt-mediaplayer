@@ -4,6 +4,7 @@
 package net.sf.video4j.gwt.client.event;
 
 import net.sf.video4j.gwt.client.event.PlayerPlayEvent.PlayHandler;
+import net.sf.video4j.gwt.client.player.PlayItem;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -16,18 +17,18 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  */
 public class PlayerPlayingEvent extends GwtEvent<PlayerPlayingEvent.PlayerPlayingHandler> {
     
-	private double mCurrentTime;
+	private PlayItem mPlayItem;
 	
-    public PlayerPlayingEvent(double pCurrentTime) {
-    	mCurrentTime = pCurrentTime;
+    public PlayerPlayingEvent(PlayItem pPlayItem) {
+    	mPlayItem = pPlayItem;
     }
     
-    public double getCurrentTime() {
-		return mCurrentTime;
+    public PlayItem getPlayItem() {
+		return mPlayItem;
 	}
 
-    public static void fire(HasHandlers pSource, double pCurrentTime) {
-    	PlayerPlayingEvent oEventInstance = new PlayerPlayingEvent(pCurrentTime);
+    public static void fire(HasHandlers pSource, PlayItem pPlayItem) {
+    	PlayerPlayingEvent oEventInstance = new PlayerPlayingEvent(pPlayItem);
         pSource.fireEvent(oEventInstance);
     }
 
@@ -36,7 +37,7 @@ public class PlayerPlayingEvent extends GwtEvent<PlayerPlayingEvent.PlayerPlayin
     //}
 
     public interface PlayerPlayingHandlers extends HasHandlers {
-        HandlerRegistration addPlayerPlayingHandler(PlayHandler pHandler);
+        HandlerRegistration addPlayerPlayingHandler(PlayerPlayingHandler pHandler);
     }
 
     public interface PlayerPlayingHandler extends EventHandler {

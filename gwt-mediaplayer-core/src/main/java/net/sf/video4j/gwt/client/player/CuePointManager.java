@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.sf.video4j.gwt.client.event.CuePointEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent.PlayerPlayingHandler;
+import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent;
+import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent.PlayerTimeUpdateHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -22,7 +22,7 @@ import com.gwtplatform.mvp.client.HandlerContainerImpl;
  */
 public class CuePointManager extends HandlerContainerImpl implements 
 	HasHandlers, 
-	PlayerPlayingHandler {
+	PlayerTimeUpdateHandler {
 
 	private static final int MAX_LINEAR_SEARCH = 50;
 	private List<CuePoint> mCuePoints = new LinkedList<CuePoint>();
@@ -36,7 +36,7 @@ public class CuePointManager extends HandlerContainerImpl implements
 	}
 	
 	private void setupHandlers() {
-		addRegisteredHandler(PlayerPlayingEvent.getType(), this);
+		addRegisteredHandler(PlayerTimeUpdateEvent.getType(), this);
 	}
 	
 	@Override
@@ -198,7 +198,7 @@ public class CuePointManager extends HandlerContainerImpl implements
 	//	play((int) (pEvent.getCurrentTime() * 1000)); // currentTime is in seconds like 1.6403322...
 	//}
 	@Override
-	public void onPlayerPlayingEvent(PlayerPlayingEvent pEvent) {
+	public void onPlayerTimeUpdateEvent(PlayerTimeUpdateEvent pEvent) {
 		play( (int) (pEvent.getCurrentTime() * 1000) );
 	}
 }

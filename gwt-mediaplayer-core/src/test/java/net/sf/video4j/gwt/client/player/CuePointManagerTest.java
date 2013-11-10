@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 
 import net.sf.video4j.gwt.client.event.CuePointEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
+import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent;
 
 import org.junit.Test;
 
@@ -60,22 +60,22 @@ public class CuePointManagerTest {
         assertEquals(2, oActualList.size());
         assertEquals("B", oActualList.get(1).getName());
         
-        oBus.fireEvent(new PlayerPlayingEvent(0));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(0));
         assertEquals(0, oBus.getFiredCount(CuePointEvent.getType()));
         
-        oBus.fireEvent(new PlayerPlayingEvent(0.997));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(0.997));
         assertEquals(0, oBus.getFiredCount(CuePointEvent.getType()));
         
-        oBus.fireEvent(new PlayerPlayingEvent(1.002));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(1.002));
         assertEquals(1, oBus.getFiredCount(CuePointEvent.getType()));
         
-        oBus.fireEvent(new PlayerPlayingEvent(1.997));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(1.997));
         assertEquals(1, oBus.getFiredCount(CuePointEvent.getType()));
         
-        oBus.fireEvent(new PlayerPlayingEvent(1.999));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(1.999));
         assertEquals(2, oBus.getFiredCount(CuePointEvent.getType()));
         
-        oBus.fireEvent(new PlayerPlayingEvent(19.999));
+        oBus.fireEvent(new PlayerTimeUpdateEvent(19.999));
         assertEquals(2, oBus.getFiredCount(CuePointEvent.getType()));
         
     }
