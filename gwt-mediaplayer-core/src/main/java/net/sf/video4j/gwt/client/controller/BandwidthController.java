@@ -170,6 +170,7 @@ public class BandwidthController  extends BaseController implements
 	@Override
 	public void onApplicationReadyEvent(ApplicationReadyEvent pEvent) {
 		mLogger.log(Level.FINE, "Received ApplicationReadyEvent.");
+		checkBandwidth();
 	}
 
 	@Override
