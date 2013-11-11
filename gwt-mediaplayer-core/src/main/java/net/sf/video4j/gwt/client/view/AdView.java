@@ -35,5 +35,10 @@ public class AdView extends ViewImpl implements AdPresenter.AView {
         mPlayerWidget.setSrc(pParams.getFileSource());
         mPlayerWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
     }
+
+	@Override
+	public String canPlayType(String pMediaType) {
+		return mPlayerWidget.canPlayType(pMediaType).toString();
+	}
     
 }

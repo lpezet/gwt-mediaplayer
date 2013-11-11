@@ -3,8 +3,12 @@
  */
 package net.sf.video4j.gwt.client.player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import net.sf.video4j.gwt.client.model.Source;
 
 
 /**
@@ -21,6 +25,7 @@ public class Media {
 	private Map<String, Object> mProperties = new HashMap<String, Object>();
 	private boolean mAd = false;
 	private MediaType mType;
+	private List<Source> mSources = new ArrayList<Source>();
 	
 	public String getTitle() {
 		return mTitle;
@@ -74,6 +79,14 @@ public class Media {
 	}
 	public void setType(MediaType pType) {
 		mType = pType;
+	}
+
+	public List<Source> getSources() {
+		return mSources;
+	}
+
+	public void setSources(List<Source> pSources) {
+		mSources = pSources;
 	}
 	
 }

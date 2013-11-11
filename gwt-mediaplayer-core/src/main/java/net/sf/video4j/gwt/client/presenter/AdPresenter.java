@@ -18,6 +18,7 @@ import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
+import net.sf.video4j.gwt.client.model.Source;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.MediaType;
 import net.sf.video4j.gwt.client.player.PlayItem;
@@ -56,7 +57,8 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 	ApplicationReadyHandler {
 
     public interface AView extends View {
-        void startPlayer(PlayerParameters pParams);
+		void startPlayer(PlayerParameters pParams);
+		String canPlayType(String pMediaType);
     }
     
     protected Logger mLogger = Logger.getLogger(this.getClass().getName());
@@ -199,25 +201,36 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                 	mLogger.log(Level.INFO, "Got no Ads.");
                 } else {
                 	mLogger.log(Level.INFO, "Got " + pResult.getVAST().getAds().size() + " Ads.");
-                	
-                	MediaFile oFirstMP4MediaFile = getFirstMP4MediaFile(pResult.getVAST());
-                	if (oFirstMP4MediaFile != null) {
-                		Media oMedia = new Media();
-						oMedia.setURI(oFirstMP4MediaFile.getURI());
-						oMedia.setAd(true);
-						oMedia.setType(MediaType.Video);
-						PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
-						// Doing pre-roll:
-						PlayItem oFirstPlayItem = oNav.peek();
-						Media oParent = oFirstPlayItem.getMedia();
-						mApplication.getPlaylist().addChild(oMedia, oParent, 0);
-                	}
-	                
+					Media oMedia = new Media();
+					oMedia.setAd(true);
+					oMedia.setType(MediaType.Video);
+					MediaFile oFirstMP4MediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/mp4");
+					if (oFirstMP4MediaFile != null)
+						oMedia.getSources().add(newSource("video/mp4", oFirstMP4MediaFile));
+					MediaFile oFirstOGGMediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/ogg");
+					if (oFirstOGGMediaFile != null)
+						oMedia.getSources().add(newSource("video/ogg", oFirstOGGMediaFile));
+					MediaFile oFirstWEBMMediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/webm");
+					if (oFirstWEBMMediaFile != null)
+						oMedia.getSources().add(newSource("video/webm", oFirstWEBMMediaFile));
+					PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
+					// Doing pre-roll:
+					PlayItem oFirstPlayItem = oNav.peek();
+					Media oParent = oFirstPlayItem.getMedia();
+					mApplication.getPlaylist().addChild(oMedia, oParent, 0);
                 }
                 PluginReadyEvent.fire(AdPresenter.this, AdPresenter.this);
             }
+
+			private Source newSource(String pType, MediaFile pMediaFile) {
+				Source s = new Source();
+				s.setType(pType);
+				s.setURI(pMediaFile.getURI());
+				s.setBitrate(pMediaFile.getBitrate());
+				return s;
+			}
             
-            private MediaFile getFirstMP4MediaFile(VAST pVAST) {
+			private MediaFile getFirstMediaFileByType(VAST pVAST, String pMediaType) {
             	for (Ad oAd : pVAST.getAds()) {
                 	if (oAd instanceof InLine) {
                 		InLine oInLine = (InLine) oAd;
@@ -231,7 +244,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                 						mLogger.log(Level.SEVERE, "Got no media files from Linear Ad. Something wrong?");
                 					} else {
                 						for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
-                							if ("video/mp4".equalsIgnoreCase(oMediaFile.getType())) {
+											if (pMediaType.equalsIgnoreCase(oMediaFile.getType())) {
                 								// use the first one as a test right now
                 								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
                 								return oMediaFile;
@@ -251,6 +264,21 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
     @Override
     public void onPlaylistPlayEvent(final PlaylistPlayEvent pEvent) {
         mLogger.log(Level.INFO, "Received PlaylistPlayEvent.");
+		// luc: when AdPresenter gets the event to play an ad, it can then use the canPlayType()
+		// from its view (or the view itself can do that), to figure out what to set in VideoWidget <source>.
+		// pass all possible source/video types in Media from AdController (or whatever it's name is going to be) 
+		// into the Playlist, and then when AdPresenter will received a PlayEvent it will either pass the list to its
+		// View or check itself each video whether they are playable or not and filter accordingy.
+		for (Source s : pEvent.getPlayItem().getMedia().getSources()) {
+			String oCanPlayType = getView().canPlayType(s.getType());
+			if ("NO".equals(oCanPlayType)) {
+				// do nothing?
+			} else if ("MAYBE".equals(oCanPlayType)) {
+				// do nothing or is it safe to play?
+			} else if ("PROBABLY".equals(oCanPlayType)) {
+				// play
+			}
+		}
     }
     
 }
