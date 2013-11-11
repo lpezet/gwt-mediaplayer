@@ -201,30 +201,52 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                 	mLogger.log(Level.INFO, "Got no Ads.");
                 } else {
                 	mLogger.log(Level.INFO, "Got " + pResult.getVAST().getAds().size() + " Ads.");
-					Media oMedia = new Media();
-					oMedia.setAd(true);
-					oMedia.setType(MediaType.Video);
-					MediaFile oFirstMP4MediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/mp4");
-					if (oFirstMP4MediaFile != null)
-						oMedia.getSources().add(newSource("video/mp4", oFirstMP4MediaFile));
-					MediaFile oFirstOGGMediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/ogg");
-					if (oFirstOGGMediaFile != null)
-						oMedia.getSources().add(newSource("video/ogg", oFirstOGGMediaFile));
-					MediaFile oFirstWEBMMediaFile = getFirstMediaFileByType(pResult.getVAST(), "video/webm");
-					if (oFirstWEBMMediaFile != null)
-						oMedia.getSources().add(newSource("video/webm", oFirstWEBMMediaFile));
-					PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
-					// Doing pre-roll:
-					PlayItem oFirstPlayItem = oNav.peek();
-					Media oParent = oFirstPlayItem.getMedia();
-					mApplication.getPlaylist().addChild(oMedia, oParent, 0);
+                	for (Ad oAd : pResult.getVAST().getAds()) {
+                		if (oAd instanceof InLine) {
+                			InLine oInLine = (InLine) oAd;
+                    		if (oInLine.getCreatives() == null || oInLine.getCreatives().isEmpty()) {
+                    			mLogger.log(Level.SEVERE, "Got no creatives. Something wrong?");
+                    		} else {
+                    			Media oMedia = new Media();
+        						oMedia.setAd(true);
+        						oMedia.setType(MediaType.Video);
+                    			for (Creative c : oInLine.getCreatives()) {
+                    				if (c instanceof Linear) {
+                    					Linear oLinearAd = (Linear) c;
+                    					if (oLinearAd.getMediaFiles() == null || oLinearAd.getMediaFiles().isEmpty()) {
+                    						mLogger.log(Level.SEVERE, "Got no media files from Linear Ad. Something wrong?");
+                    					} else {
+                    						for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
+                    							Source oSource = newSource(oMediaFile);
+                    							oMedia.getSources().add(oSource);
+                    							/*
+    											if (pMediaType.equalsIgnoreCase(oMediaFile.getType())) {
+                    								// use the first one as a test right now
+                    								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
+                    								return oMediaFile;
+                    							}
+                    							*/
+                    						}
+                    						break;
+                    					}
+                    				}
+                    			}
+                    			PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
+            					// Doing pre-roll:
+            					PlayItem oFirstPlayItem = oNav.peek();
+            					Media oParent = oFirstPlayItem.getMedia();
+            					mApplication.getPlaylist().addChild(oMedia, oParent, 0);
+            					break;
+                    		}
+                		}
+                	}
                 }
                 PluginReadyEvent.fire(AdPresenter.this, AdPresenter.this);
             }
 
-			private Source newSource(String pType, MediaFile pMediaFile) {
+			private Source newSource(MediaFile pMediaFile) {
 				Source s = new Source();
-				s.setType(pType);
+				s.setType(pMediaFile.getType());
 				s.setURI(pMediaFile.getURI());
 				s.setBitrate(pMediaFile.getBitrate());
 				return s;
