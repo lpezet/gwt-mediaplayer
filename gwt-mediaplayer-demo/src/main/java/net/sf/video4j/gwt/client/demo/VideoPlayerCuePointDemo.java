@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.event.CuePointEvent;
 import net.sf.video4j.gwt.client.event.CuePointEvent.CuePointHandler;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
+import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent;
 import net.sf.video4j.gwt.client.player.CuePointManager;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -78,7 +78,7 @@ public class VideoPlayerCuePointDemo implements EntryPoint {
 		videoPlayer.addTimeUpdateHandler(new VideoTimeUpdateHandler() {
 			@Override
 			public void onTimeUpdated(VideoTimeUpdateEvent pEvent) {
-				oBus.fireEvent(new PlayerPlayingEvent(pEvent.getCurrentTime()));
+				oBus.fireEvent(new PlayerTimeUpdateEvent(pEvent.getCurrentTime()));
 			}
 		});
         
