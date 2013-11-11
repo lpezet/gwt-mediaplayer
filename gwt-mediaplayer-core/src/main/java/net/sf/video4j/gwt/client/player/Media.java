@@ -19,11 +19,11 @@ public class Media {
 
 	private int mId;
 	private String mTitle;
-	private String mURI;
 	private int mDurationInSeconds = -1;
 	private Map<String, Object> mMetaData = new HashMap<String, Object>(); // TODO: Should metadata and URL be part of a separate class: Resource??
 	private Map<String, Object> mProperties = new HashMap<String, Object>();
 	private boolean mAd = false;
+	
 	private MediaType mType;
 	private List<Source> mSources = new ArrayList<Source>();
 	
@@ -32,12 +32,6 @@ public class Media {
 	}
 	public void setTitle(String pTitle) {
 		mTitle = pTitle;
-	}
-	public String getURI() {
-		return mURI;
-	}
-	public void setURI(String pURI) {
-		mURI = pURI;
 	}
 	public int getDurationInSeconds() {
 		return mDurationInSeconds;
@@ -60,7 +54,7 @@ public class Media {
 	
 	@Override
 	public String toString() {
-		return "Track #" + mId;
+		return "Media #" + mId;
 	}
 	public Map<String, Object> getProperties() {
 		return mProperties;
