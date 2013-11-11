@@ -5,11 +5,10 @@ package net.sf.video4j.gwt.client.model;
  */
 public class Source {
 
-	private String	mURI;
-
-	private String	mType;
-
-	private int		mBitrate;
+	private String		mURI;
+	private String		mType;
+	private int			mBitrate;
+	private Delivery	mDelivery;
 
 	public String getURI() {
 		return mURI;
@@ -33,6 +32,14 @@ public class Source {
 
 	public void setBitrate(int pBitrate) {
 		mBitrate = pBitrate;
+	}
+
+	public Delivery getDelivery() {
+		return mDelivery;
+	}
+
+	public void setDelivery(Delivery pDelivery) {
+		mDelivery = pDelivery;
 	}
 
 }
