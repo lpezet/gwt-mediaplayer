@@ -44,8 +44,6 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
-import fr.hd3d.html5.video.client.VideoSource.VideoType;
-
 /**
  * @author gumatias
  */
@@ -165,7 +163,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
                     .withControls(false) //TODO: this should come from ApplicationConfig (?)
 //                      .withFileSource(pEvent.getPlayItem().getMedia().getURI()) // coming from ad service?
                     .withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
-                    .withVideoType(VideoType.MP4)
+                    //.withVideoType(VideoType.MP4)
                     .withWidthInPixels(640); //TODO: this should come from the ApplicationConfig
 //                    getView().startPlayer(oParams);
 //                    mPlaying = pEvent.getPlayItem();

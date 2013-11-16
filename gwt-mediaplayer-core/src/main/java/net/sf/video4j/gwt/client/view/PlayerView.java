@@ -90,7 +90,11 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     public void startPlayer(PlayerParameters pParams) {
         mPlayerWidget.setControls(pParams.hasControls());
         mPlayerWidget.setAutoPlay(pParams.isAutoPlay());
-        mPlayerWidget.setSrc(pParams.getFileSource());
+        if (pParams.getSources().size() == 1) {
+        	mPlayerWidget.setSrc(pParams.getSources().get(0).getSrc());
+        } else {
+        	//TODO: detect what's playable
+        }
         // mMainPlayer.addSource(new VideoSource(pParams.getFileSource(),
         // pParams.getVideoType()));
         mPlayerWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());

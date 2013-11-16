@@ -32,6 +32,7 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
+import net.sf.video4j.gwt.client.model.Source;
 import net.sf.video4j.gwt.client.player.PlayItem;
 
 import com.google.inject.Inject;
@@ -40,7 +41,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
-import fr.hd3d.html5.video.client.VideoSource.VideoType;
+import fr.hd3d.html5.video.client.VideoSource;
 
 /**
  * @author gumatias
@@ -150,13 +151,17 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     	//TODO: should add all the sources available...so 1 "video" might be multiple Media.
     	//TODO: need to pass start and end (e.g. for mid-rolls).
     	PlayerParameters oParams = new PlayerParameters()
-    		.withAutoPlay(true)
+    		.withAutoPlay(pEvent.getPlayItem().isAutoPlay())
     		.withControls(false) //TODO: this should come from ApplicationConfig (?)
-    		.withFileSource(pEvent.getPlayItem().getMedia().getURI())
     		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
-    		.withVideoType(VideoType.MP4) //TODO: should be pEvent.getPlayItem().getMedia().getType()
     		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
     	;
+    	for (Source s : pEvent.getPlayItem().getMedia().getSources()) {
+    		VideoSource oSource = new VideoSource(s.getURI());
+    		// TODO: handle video type
+    		oParams.withSource(oSource);
+    	}
+    	
     	getView().startPlayer(oParams);
     	mPlaying = pEvent.getPlayItem();
     	mLogger.log(Level.INFO, "Item now playing (or loading...)");

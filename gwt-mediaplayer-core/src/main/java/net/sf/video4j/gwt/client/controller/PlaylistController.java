@@ -21,6 +21,7 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlayItemBean;
 import net.sf.video4j.gwt.client.model.IPlugin;
+import net.sf.video4j.gwt.client.model.Source;
 import net.sf.video4j.gwt.client.player.Media;
 import net.sf.video4j.gwt.client.player.PlayItem;
 import net.sf.video4j.gwt.client.player.Playlist;
@@ -96,7 +97,15 @@ public class PlaylistController extends BaseController implements
 		for (AutoBean<IPlayItemBean> oItemAutoBean : oPlayItemBeans) {
 			IPlayItemBean oItemBean = oItemAutoBean.as();
 			Media oMedia = new Media();
-			oMedia.setURI(oItemBean.getURL());
+			//oMedia.setURI(oItemBean.getURL());
+			if (oItemBean.getURL() != null) {
+				// Simple Media
+				Source oSource = new Source();
+				oSource.setURI(oItemBean.getURL());
+				oMedia.getSources().add(oSource);
+			} else {
+				//TODO: Handle bitrates/multiple types
+			}
 			Map<String, Object> oProps = AutoBeanUtils.getAllProperties(oItemAutoBean);
 			oMedia.setProperties(oProps);
 			oPlaylist.add(oMedia);

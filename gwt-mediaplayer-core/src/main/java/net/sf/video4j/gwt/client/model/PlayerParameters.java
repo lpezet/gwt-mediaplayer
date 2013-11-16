@@ -1,15 +1,16 @@
 package net.sf.video4j.gwt.client.model;
 
-import fr.hd3d.html5.video.client.VideoSource.VideoType;
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.hd3d.html5.video.client.VideoSource;
 
 /**
  * @author gumatias
  */
 public class PlayerParameters {
 
-    private String mFileSource;
-    
-    private VideoType mVideoType;
+    private List<VideoSource> mSources = new ArrayList<VideoSource>();
     
     private int mWidthInPixels;
     
@@ -18,25 +19,16 @@ public class PlayerParameters {
     private boolean mAutoPlay;
     
     private boolean mControls;
+    
+    public List<VideoSource> getSources() {
+		return mSources;
+	}
 
-    public String getFileSource() {
-        return mFileSource;
-    }
-
-    public PlayerParameters withFileSource(String pFileSource) {
-        mFileSource = pFileSource;
+    public PlayerParameters withSource(VideoSource pSource) {
+        mSources.add(pSource);
         return this;
     }
-
-    public VideoType getVideoType() {
-        return mVideoType;
-    }
-
-    public PlayerParameters withVideoType(VideoType pVideoType) {
-        mVideoType = pVideoType;
-        return this;
-    }
-
+    
     public int getWidthInPixels() {
         return mWidthInPixels;
     }

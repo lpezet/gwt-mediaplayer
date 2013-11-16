@@ -32,7 +32,11 @@ public class AdView extends ViewImpl implements AdPresenter.AView {
     public void startPlayer(PlayerParameters pParams) {
         mPlayerWidget.setControls(pParams.hasControls());
         mPlayerWidget.setAutoPlay(pParams.isAutoPlay());
-        mPlayerWidget.setSrc(pParams.getFileSource());
+        if (pParams.getSources().size() == 1) {
+        	mPlayerWidget.setSrc(pParams.getSources().get(0).getSrc());
+        } else {
+        	//TODO: handle type
+        }
         mPlayerWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
     }
 
