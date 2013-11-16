@@ -5,6 +5,9 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.util.Random;
+
 import net.sf.video4j.gwt.client.controller.ApplicationController;
 import net.sf.video4j.gwt.client.controller.BandwidthController;
 import net.sf.video4j.gwt.client.controller.PlaylistController;
@@ -45,6 +48,7 @@ public class Video4JPresenterTest {
     @Before
     public void setUp() throws Exception {
     	mEventBus = new CountingEventBus();
+    	Random oRandom = new Random();
     	mPresenter = new Video4JPresenter(
     			mEventBus, 
     			mView,
@@ -54,7 +58,7 @@ public class Video4JPresenterTest {
     			mAdPresenter,
     			mApplicationController,
     			new PlaylistController(mEventBus, mPlayItemBeanFactory),
-    			new BandwidthController(mEventBus));
+    			new BandwidthController(mEventBus, oRandom));
     }
 
     @Test

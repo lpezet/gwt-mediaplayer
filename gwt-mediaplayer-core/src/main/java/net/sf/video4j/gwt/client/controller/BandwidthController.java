@@ -5,6 +5,7 @@ package net.sf.video4j.gwt.client.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
@@ -24,13 +25,11 @@ import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.IPlugin;
 
 import com.google.gwt.core.client.Duration;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -81,10 +80,10 @@ public class BandwidthController  extends BaseController implements
 	private Random mRandom;
 
 	@Inject
-	public BandwidthController(EventBus pEventBus) {
+	public BandwidthController(EventBus pEventBus, Random pRandom) {
 		super(pEventBus);
 		registerHandlers();
-		mRandom = GWT.create(Random.class);
+		mRandom = pRandom;
 	}
 	
 	private void registerHandlers() {
@@ -122,6 +121,7 @@ public class BandwidthController  extends BaseController implements
 			mChecking = true;
 			mCurrentSample = IMAGES.get(0); //TODO: randomize it
 			final Image i = new Image(mCurrentSample.getUrl() + "?rnd=" + mRandom.nextInt(10000));
+			i.setVisible(false);
 			i.addLoadHandler(new LoadHandler() {
 				@Override
 				public void onLoad(LoadEvent pEvent) {
