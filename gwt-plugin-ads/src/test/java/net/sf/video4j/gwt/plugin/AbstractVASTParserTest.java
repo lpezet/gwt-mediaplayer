@@ -23,6 +23,7 @@ import net.sf.video4j.gwt.plugin.shared.vast.MediaFile;
 import net.sf.video4j.gwt.plugin.shared.vast.NonLinearAd;
 import net.sf.video4j.gwt.plugin.shared.vast.NonLinearAds;
 import net.sf.video4j.gwt.plugin.shared.vast.VAST;
+import net.sf.video4j.gwt.plugin.shared.vast.Wrapper;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -32,6 +33,25 @@ import org.junit.Test;
  *
  */
 public abstract class AbstractVASTParserTest implements IVASTParserTest {
+	
+	@Override
+	@Test
+	public void wrapperAd() throws Exception {
+		String oXML = getXMLAsString("/vast2_wrapper.xml");
+		VAST oVAST = parse(oXML);
+
+        assertNotNull(oVAST);
+        assertNotNull(oVAST.getAds());
+        assertEquals(1, oVAST.getAds().size());
+        Ad oAd = oVAST.getAds().get(0);
+        assertTrue(oAd instanceof Wrapper);
+        Wrapper oWrapper = (Wrapper) oAd;
+        assertEquals("Acudeo Compatible", oWrapper.getAdSystem().getName());
+        assertEquals("http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml", oWrapper.getVASTAdTagURI());
+        assertEquals(1, oWrapper.getImpressions().size());
+        assertEquals("http://myTrackingURL/wrapper/impression", oWrapper.getImpressions().get(0).getURI());
+        assertEquals(3, oWrapper.getCreatives().size());
+	}
 	
 	/* (non-Javadoc)
 	 * @see net.sf.video4j.gwt.plugin.IVASTParserTest#companionAds()

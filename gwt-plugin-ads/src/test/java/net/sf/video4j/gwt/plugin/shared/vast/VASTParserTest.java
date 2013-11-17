@@ -106,6 +106,12 @@ public class VASTParserTest extends GwtTest implements IVASTParserTest {
 	
 	@Override
 	@Test
+	public void wrapperAd() throws Exception {
+		mImpl.wrapperAd();
+	}
+	
+	@Override
+	@Test
 	public void overlays() throws Exception {
 		mImpl.overlays();
 	}

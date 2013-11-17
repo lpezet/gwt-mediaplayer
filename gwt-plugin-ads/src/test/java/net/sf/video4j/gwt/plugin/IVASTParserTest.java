@@ -15,5 +15,9 @@ public interface IVASTParserTest {
 
 	@Test
 	public void regularLinear() throws Exception;
+	
+	@Test
+	public void wrapperAd() throws Exception;
+	
 
 }
