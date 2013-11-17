@@ -28,6 +28,9 @@ public class Wrapper extends Ad {
 	private List<Creative>		mCreatives		= new ArrayList<Creative>();
 
 	private List<Extension>		mExtensions		= new ArrayList<Extension>();
+	
+	// When resolving VASTAdTagURI
+	private VAST mVAST;
 
 	public AdSystem getAdSystem() {
 		return mAdSystem;
@@ -75,5 +78,13 @@ public class Wrapper extends Ad {
 
 	public void setExtensions(List<Extension> pExtensions) {
 		mExtensions = pExtensions;
+	}
+
+	public VAST getVAST() {
+		return mVAST;
+	}
+
+	public void setVAST(VAST pVAST) {
+		mVAST = pVAST;
 	}
 }
