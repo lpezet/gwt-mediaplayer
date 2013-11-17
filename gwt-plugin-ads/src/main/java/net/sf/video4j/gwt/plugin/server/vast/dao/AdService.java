@@ -5,7 +5,9 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.sf.video4j.gwt.plugin.shared.vast.Ad;
 import net.sf.video4j.gwt.plugin.shared.vast.VAST;
+import net.sf.video4j.gwt.plugin.shared.vast.Wrapper;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -17,34 +19,59 @@ import org.slf4j.LoggerFactory;
 public class AdService implements IAdService {
 	
 	private final Logger	mLogger	= LoggerFactory.getLogger(this.getClass());
+	private static final int MAX_DEPTH_WRAPPER = 3;
+	private int mMaxDepthWrapper = MAX_DEPTH_WRAPPER;
+	private VASTParser mVASTParser = new VASTParser();
+	private IContentFetcher mContentFetcher = new ContentFetcher();
 
 	@Override
 	public VAST fetchAds(String pURL) {
+		return fetchAds(pURL, 0);
+	}
+	
+	protected VAST fetchAds(String pURL, int pDepth) {
+		VAST oVAST = new VAST();
 		try {
-			String oXML = getContent(pURL);
-			//mLogger.info("xml node=" + oDoc.getFirstChild().getNodeName());
-			VASTParser oParser = new VASTParser();
-			return oParser.parse(oXML);
+			String oXML = getContent(pURL);			
+			oVAST = mVASTParser.parse(oXML);
+			processWrapper(oVAST, pDepth);
 		}  catch (Throwable t) {
 			mLogger.error("Error getting VAST.", t);
 		}
-		return new VAST();
+		return oVAST;
 	}
 
-	private String getContent(String pURL) {
-		try {
-			URL oURL = new URL(pURL);
-			HttpURLConnection pConnection = (HttpURLConnection) oURL.openConnection();
-			pConnection.setRequestMethod("GET");
-			pConnection.setRequestProperty("Accept", "application/xml");
-			InputStream oStream = pConnection.getInputStream();
-			StringWriter oSW = new StringWriter();
-			IOUtils.copy(oStream, oSW);
-			return oSW.toString();
-		} catch (Exception e) {
-			mLogger.error("Error while fetching ad xml document", e);
+	private void processWrapper(VAST pVAST, int pDepth) {
+		if (pDepth >= mMaxDepthWrapper) return;
+		for (Ad oAd : pVAST.getAds()) {
+			if (oAd instanceof Wrapper) {
+				Wrapper oWrapper = (Wrapper) oAd;
+				if (oWrapper.getVASTAdTagURI() != null) {
+					VAST oWrapped = fetchAds(oWrapper.getVASTAdTagURI(), pDepth+1);
+					oWrapper.setVAST(oWrapped);
+				}
+			}
 		}
-		return null;
+	}
+
+	private String getContent(String pUrl) {
+		return mContentFetcher.getContent(pUrl);
+	}
+
+	public int getMaxDepthWrapper() {
+		return mMaxDepthWrapper;
+	}
+
+	public void setMaxDepthWrapper(int pMaxDepthWrapper) {
+		mMaxDepthWrapper = pMaxDepthWrapper;
+	}
+
+	public IContentFetcher getContentFetcher() {
+		return mContentFetcher;
+	}
+
+	public void setContentFetcher(IContentFetcher pContentFetcher) {
+		mContentFetcher = pContentFetcher;
 	}
 
 }
