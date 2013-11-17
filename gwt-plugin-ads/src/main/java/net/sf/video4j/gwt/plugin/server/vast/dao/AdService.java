@@ -22,7 +22,7 @@ public class AdService implements IAdService {
 	private static final int MAX_DEPTH_WRAPPER = 3;
 	private int mMaxDepthWrapper = MAX_DEPTH_WRAPPER;
 	private VASTParser mVASTParser = new VASTParser();
-	private IContentFetcher mContentFetcher = new ContentFetcher();
+	private IUrlFetcher mContentFetcher = new UrlFetcher();
 
 	@Override
 	public VAST fetchAds(String pURL) {
@@ -66,11 +66,11 @@ public class AdService implements IAdService {
 		mMaxDepthWrapper = pMaxDepthWrapper;
 	}
 
-	public IContentFetcher getContentFetcher() {
+	public IUrlFetcher getContentFetcher() {
 		return mContentFetcher;
 	}
 
-	public void setContentFetcher(IContentFetcher pContentFetcher) {
+	public void setContentFetcher(IUrlFetcher pContentFetcher) {
 		mContentFetcher = pContentFetcher;
 	}
 

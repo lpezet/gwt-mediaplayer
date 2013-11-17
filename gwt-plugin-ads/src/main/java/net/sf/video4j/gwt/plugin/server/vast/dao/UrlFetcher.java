@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author luc
  *
  */
-public class ContentFetcher implements IContentFetcher {
+public class UrlFetcher implements IUrlFetcher {
 	
 	private final Logger	mLogger	= LoggerFactory.getLogger(this.getClass());
 	
