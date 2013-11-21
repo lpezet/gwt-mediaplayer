@@ -102,12 +102,12 @@
 	</distributionManagement>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>https://tripfilms.ci.cloudbees.com/</url>
+		<url>https://gwt-mediaplayer.ci.cloudbees.com/</url>
 	</ciManagement>
 	<repositories>
 		<repository>
 			<id>net.sf.video4j.gwt.release</id>
-			<url>https://repository-tripfilms.forge.cloudbees.com/release</url>
+			<url>https://repository-gwt-mediaplayer.forge.cloudbees.com/release/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -117,7 +117,7 @@
 		</repository>
 		<repository>
 			<id>net.sf.video4j.gwt.snapshot</id>
-			<url>https://repository-tripfilms.forge.cloudbees.com/snapshot</url>
+			<url>https://repository-gwt-mediaplayer.forge.cloudbees.com/snapshot</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
