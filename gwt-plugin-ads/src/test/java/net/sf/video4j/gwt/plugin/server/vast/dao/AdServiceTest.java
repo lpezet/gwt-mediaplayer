@@ -43,7 +43,7 @@ public class AdServiceTest {
 	@Test
 	public void fetchVASTForWrapper() throws Exception {
 		AdService oAdService = new AdService();
-		IContentFetcher oFetcher = mock(IContentFetcher.class);
+		IUrlFetcher oFetcher = mock(IUrlFetcher.class);
 		oAdService.setContentFetcher(oFetcher);
 		when(oFetcher.getContent(anyString())).thenReturn(mVASTWrapper);
 		
