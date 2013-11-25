@@ -3,6 +3,8 @@ package net.sf.video4j.gwt.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.video4j.gwt.client.IPlaylistHelper;
+import net.sf.video4j.gwt.client.PlaylistHelper;
 import net.sf.video4j.gwt.client.dispatch.AsyncCallbackImpl;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
@@ -19,19 +21,12 @@ import net.sf.video4j.gwt.client.model.IApplicationConfig;
 import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 import net.sf.video4j.gwt.client.model.Source;
-import net.sf.video4j.gwt.client.player.Media;
-import net.sf.video4j.gwt.client.player.MediaType;
-import net.sf.video4j.gwt.client.player.PlayItem;
-import net.sf.video4j.gwt.client.player.PlaylistNavigator;
 import net.sf.video4j.gwt.client.util.BeanFactory;
 import net.sf.video4j.gwt.client.util.IAdBeanFactory;
 import net.sf.video4j.gwt.plugin.client.vast.dao.IAdService;
 import net.sf.video4j.gwt.plugin.shared.vast.Ad;
 import net.sf.video4j.gwt.plugin.shared.vast.AdRequestCallback;
-import net.sf.video4j.gwt.plugin.shared.vast.Creative;
 import net.sf.video4j.gwt.plugin.shared.vast.InLine;
-import net.sf.video4j.gwt.plugin.shared.vast.Linear;
-import net.sf.video4j.gwt.plugin.shared.vast.MediaFile;
 import net.sf.video4j.gwt.plugin.shared.vast.VAST;
 import net.sf.video4j.gwt.shared.FetchAdAction;
 import net.sf.video4j.gwt.shared.model.FetchAdResult;
@@ -63,8 +58,9 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
     
 	private IAdService		mAdService;
 	private DispatchAsync	mDispatcher;
-	private IApplication 	mApplication;
+	private IApplication	mApplication;
 	private IAdBeanFactory	mAdBeanFactory;
+	private IPlaylistHelper	mPlaylistHelper;
 	private String			mVASTTag;
     
     @Inject
@@ -107,6 +103,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
     	mLogger.log(Level.FINE, "Received ApplicationLoadEvent...");
     	mApplication = pEvent.getApplication();
+		mPlaylistHelper = new PlaylistHelper(mApplication.getPlaylist());
 		pEvent.getApplication().addPlugin(this);
 		IApplicationConfig oAppConfig = pEvent.getApplication().getConfig();
 		if (oAppConfig.getPlugins().isNull() != null) {
@@ -194,89 +191,8 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 
             @Override
             public void onSuccess(FetchAdResult pResult) {
-                
-                if (pResult == null || pResult.getVAST().getAds() == null || pResult.getVAST().getAds().isEmpty()) {
-                	mLogger.log(Level.INFO, "Got no Ads.");
-                } else {
-                	mLogger.log(Level.INFO, "Got " + pResult.getVAST().getAds().size() + " Ads.");
-                	for (Ad oAd : pResult.getVAST().getAds()) {
-                		if (oAd instanceof InLine) {
-                			InLine oInLine = (InLine) oAd;
-                    		if (oInLine.getCreatives() == null || oInLine.getCreatives().isEmpty()) {
-                    			mLogger.log(Level.SEVERE, "Got no creatives. Something wrong?");
-                    		} else {
-                    			Media oMedia = new Media();
-        						oMedia.setAd(true);
-        						oMedia.setType(MediaType.Video);
-                    			for (Creative c : oInLine.getCreatives()) {
-                    				if (c instanceof Linear) {
-                    					Linear oLinearAd = (Linear) c;
-                    					if (oLinearAd.getMediaFiles() == null || oLinearAd.getMediaFiles().isEmpty()) {
-                    						mLogger.log(Level.SEVERE, "Got no media files from Linear Ad. Something wrong?");
-                    					} else {
-                    						for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
-                    							Source oSource = newSource(oMediaFile);
-                    							oMedia.getSources().add(oSource);
-                    							/*
-    											if (pMediaType.equalsIgnoreCase(oMediaFile.getType())) {
-                    								// use the first one as a test right now
-                    								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
-                    								return oMediaFile;
-                    							}
-                    							*/
-                    						}
-                    						break;
-                    					}
-                    				}
-                    			}
-                    			PlaylistNavigator oNav = new PlaylistNavigator(mApplication.getPlaylist());
-            					// Doing pre-roll:
-            					PlayItem oFirstPlayItem = oNav.peek();
-            					Media oParent = oFirstPlayItem.getMedia();
-            					mApplication.getPlaylist().addChild(oMedia, oParent, 0);
-            					break;
-                    		}
-                		}
-                	}
-                }
+				mPlaylistHelper.putAdsInPlaylist(pResult);
                 PluginReadyEvent.fire(AdPresenter.this, AdPresenter.this);
-            }
-
-			private Source newSource(MediaFile pMediaFile) {
-				Source s = new Source();
-				s.setType(pMediaFile.getType());
-				s.setURI(pMediaFile.getURI());
-				s.setBitrate(pMediaFile.getBitrate());
-				return s;
-			}
-            
-			private MediaFile getFirstMediaFileByType(VAST pVAST, String pMediaType) {
-            	for (Ad oAd : pVAST.getAds()) {
-                	if (oAd instanceof InLine) {
-                		InLine oInLine = (InLine) oAd;
-                		if (oInLine.getCreatives() == null || oInLine.getCreatives().isEmpty()) {
-                			mLogger.log(Level.SEVERE, "Got no creatives. Something wrong?");
-                		} else {
-                			for (Creative c : oInLine.getCreatives()) {
-                				if (c instanceof Linear) {
-                					Linear oLinearAd = (Linear) c;
-                					if (oLinearAd.getMediaFiles() == null || oLinearAd.getMediaFiles().isEmpty()) {
-                						mLogger.log(Level.SEVERE, "Got no media files from Linear Ad. Something wrong?");
-                					} else {
-                						for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
-											if (pMediaType.equalsIgnoreCase(oMediaFile.getType())) {
-                								// use the first one as a test right now
-                								mLogger.log(Level.INFO, "Using media file: type=" + oMediaFile.getType() + ", uri=" + oMediaFile.getURI() + ", bitrate=" + oMediaFile.getBitrate() + ", width=" + oMediaFile.getWidth() + ", height=" + oMediaFile.getHeight());
-                								return oMediaFile;
-                							}
-                						}
-                					}
-                				}
-                			}
-                		}
-                	}
-                }
-            	return null;
             }
         });
     }
