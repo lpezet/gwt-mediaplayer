@@ -65,10 +65,11 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         void seek(double pValue);
         void hide();
         void show();
+        String canPlayType(String pMediaType);
     }
     
     protected Logger mLogger = Logger.getLogger(this.getClass().getName());
-    private PlayItem mPlaying;
+	private PlayItem	mPlaying;
 	
     @Inject
     public PlayerPresenter(EventBus pEventBus, PView pView) {
@@ -148,6 +149,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     @Override
     public void onPlaylistPlayEvent(PlaylistPlayEvent pEvent) {
     	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
+
     	//TODO: should add all the sources available...so 1 "video" might be multiple Media.
     	//TODO: need to pass start and end (e.g. for mid-rolls).
     	PlayerParameters oParams = new PlayerParameters()

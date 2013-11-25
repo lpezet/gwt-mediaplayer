@@ -1,6 +1,5 @@
 package net.sf.video4j.gwt.client.view;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
@@ -13,6 +12,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
+import fr.hd3d.html5.video.client.VideoSource;
 import fr.hd3d.html5.video.client.VideoWidget;
 import fr.hd3d.html5.video.client.events.VideoDurationChangeEvent;
 import fr.hd3d.html5.video.client.events.VideoEndedEvent;
@@ -90,21 +90,23 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     public void startPlayer(PlayerParameters pParams) {
         mPlayerWidget.setControls(pParams.hasControls());
         mPlayerWidget.setAutoPlay(pParams.isAutoPlay());
-        if (pParams.getSources().size() == 1) {
-        	mPlayerWidget.setSrc(pParams.getSources().get(0).getSrc());
-        } else {
-        	//TODO: detect what's playable
-        }
-        // mMainPlayer.addSource(new VideoSource(pParams.getFileSource(),
-        // pParams.getVideoType()));
+        
+		// XXX: Isn't this enough? then the browser will figure out by itself what it can/should play
+        for (VideoSource s : pParams.getSources())
+			mPlayerWidget.addSource(s);
+        
+//        if (pParams.getSources().size() == 1) {
+//        	mPlayerWidget.setSrc(pParams.getSources().get(0).getSrc());
+//        } else {
+//        	//TODO: detect what's playable
+//        }
+        
+		// mMainPlayer.addSource(new VideoSource(pParams.getFileSource(), pParams.getVideoType()));
         mPlayerWidget.setPixelSize(pParams.getWidthInPixels(), pParams.getHeightInPixels());
     }
 
     @Override
     public void play() {
-		mLogger.log(Level.FINE, "canPlayType(video/ogg)=" + mPlayerWidget.canPlayType("video/ogg"));
-		mLogger.log(Level.FINE, "canPlayType(video/mp4)=" + mPlayerWidget.canPlayType("video/mp4"));
-		mLogger.log(Level.FINE, "canPlayType(video/webm)=" + mPlayerWidget.canPlayType("video/webm"));
         mPlayerWidget.playPause();
     }
 
@@ -147,5 +149,10 @@ public class PlayerView extends ViewWithUiHandlers<PlayerUiHandlers> implements 
     public void show() {
         mPlayerWidget.setVisible(true);
     }
+
+	@Override
+	public String canPlayType(String pMediaType) {
+		return mPlayerWidget.canPlayType(pMediaType).toString();
+	}
 
 }
