@@ -4,14 +4,14 @@
 	<artifactId>gwt-mediaplayer-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	
+
 	<parent>
 		<groupId>net.sf.video4j.gwt</groupId>
-		<artifactId>gwt-parent</artifactId>	
+		<artifactId>gwt-parent</artifactId>
 		<version>0.0.1</version>
 	</parent>
 
-	<properties>		
+	<properties>
 		<gwt-mediaplayer-core.version>0.0.1-SNAPSHOT</gwt-mediaplayer-core.version>
 		<spring-webmvc.version>3.2.3.RELEASE</spring-webmvc.version>
 	</properties>
@@ -30,14 +30,8 @@
 						</goals>
 						<configuration>
 							<rules>
-								<!-- 
-								<requireMavenVersion>
-									<version>2.0.6</version>
-								</requireMavenVersion>
-								<requireOS>
-									<family>unix</family>
-								</requireOS>
-								-->
+								<!-- <requireMavenVersion> <version>2.0.6</version> </requireMavenVersion> 
+									<requireOS> <family>unix</family> </requireOS> -->
 								<requireJavaVersion>
 									<version>1.6</version>
 								</requireJavaVersion>
@@ -46,22 +40,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>UTF-8</encoding>
-					<showDeprecation>true</showDeprecation>
-					<fork>false</fork>
-					<showWarnings>${java.compiler.showWarnings}</showWarnings>
-					<debug>${java.compiler.debug}</debug>
-					<optimize>${java.compiler.optimize}</optimize>
-				</configuration>
-			</plugin>
-			-->
+			<!-- <plugin> <artifactId>maven-compiler-plugin</artifactId> <version>2.1</version> 
+				<configuration> <source>1.6</source> <target>1.6</target> <encoding>UTF-8</encoding> 
+				<showDeprecation>true</showDeprecation> <fork>false</fork> <showWarnings>${java.compiler.showWarnings}</showWarnings> 
+				<debug>${java.compiler.debug}</debug> <optimize>${java.compiler.optimize}</optimize> 
+				</configuration> </plugin> -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -200,6 +183,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring-webmvc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
 		</dependency>
 	</dependencies>
 
