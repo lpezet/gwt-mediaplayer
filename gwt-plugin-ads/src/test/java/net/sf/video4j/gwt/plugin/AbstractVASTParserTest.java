@@ -51,6 +51,7 @@ public abstract class AbstractVASTParserTest implements IVASTParserTest {
         assertEquals(1, oWrapper.getImpressions().size());
         assertEquals("http://myTrackingURL/wrapper/impression", oWrapper.getImpressions().get(0).getURI());
         assertEquals(3, oWrapper.getCreatives().size());
+		assertEquals(11, ((Linear) oWrapper.getCreatives().get(0)).getTrackingEvents().size());
 	}
 	
 	/* (non-Javadoc)
