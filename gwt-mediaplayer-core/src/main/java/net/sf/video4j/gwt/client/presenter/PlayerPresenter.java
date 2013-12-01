@@ -157,12 +157,7 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     		.withControls(false) //TODO: this should come from ApplicationConfig (?)
     		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
     		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
-    	;
-    	for (Source s : pEvent.getPlayItem().getMedia().getSources()) {
-    		VideoSource oSource = new VideoSource(s.getURI());
-    		// TODO: handle video type
-    		oParams.withSource(oSource);
-    	}
+    		.withMedia(pEvent.getPlayItem().getMedia());
     	
     	getView().startPlayer(oParams);
     	mPlaying = pEvent.getPlayItem();

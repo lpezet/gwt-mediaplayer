@@ -1,6 +1,9 @@
 package net.sf.video4j.gwt.client.view;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import net.sf.video4j.gwt.client.model.PlayerParameters;
 import net.sf.video4j.gwt.client.presenter.AdPresenter;
 
@@ -17,6 +20,8 @@ import fr.hd3d.html5.video.client.VideoWidget;
  */
 public class AdView extends ViewImpl implements AdPresenter.AView {
     
+	protected Logger	mLogger	= Logger.getLogger(this.getClass().getName());
+
     public interface Binder extends UiBinder<HTMLPanel, AdView> {
     }
 
@@ -30,10 +35,11 @@ public class AdView extends ViewImpl implements AdPresenter.AView {
     
     @Override
     public void startPlayer(PlayerParameters pParams) {
+		mLogger.log(Level.INFO, "Starting player");
         mPlayerWidget.setControls(pParams.hasControls());
         mPlayerWidget.setAutoPlay(pParams.isAutoPlay());
-        if (pParams.getSources().size() == 1) {
-        	mPlayerWidget.setSrc(pParams.getSources().get(0).getSrc());
+		if (pParams.getMedia().getSources().size() == 1) {
+			mPlayerWidget.setSrc(pParams.getMedia().getSources().get(0).getURI());
         } else {
         	//TODO: handle type
         }
