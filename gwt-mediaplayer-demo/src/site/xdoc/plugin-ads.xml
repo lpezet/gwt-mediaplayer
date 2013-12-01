@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document 
+	xmlns="http://maven.apache.org/XDOC/2.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>Page Title</title>
+		<author email="user@company.com">John Doe</author>
+	</properties>
+
+	<!-- Optional HEAD element, which is copied as is into the XHTML <head> 
+		element -->
+	<!-- <head> </head> -->
+	<body>
+
+		<!-- The body of the document contains a number of sections -->
+		<section name="Overview">
+
+			<!-- Within sections, any XHTML can be used -->
+			<p>The Ads Plugin provide VAST capabilities to GWT MediaPlayer.</p>
+			<p>It consists of the following components:</p>
+			<ul>
+				<li><b>AdModule</b></li>
+				<li><b>AdPresenter</b></li>
+				<li><b>AdView</b></li>
+				<li><b>AdService</b></li>
+				<li><b>gwt-plugin-ads</b> project dependency</li>
+			</ul>
+			
+			<!-- in addition to XHTML, any number of subsections can be within a section -->
+			<subsection name="AdModule">
+				<p>The AdModule configured the entire plugin. It binds the <b>AdService</b>, the <b>VASTParser</b>, as well as the <b>AdPresenter</b> and its view the <b>AdView</b>.</p>
+				<p>This class is expected to either be extended or replaced with a user-defined one to further customize the setup of this plugin.</p>
+			</subsection>
+			
+			<subsection name="AdPresenter">
+				<p>The AdPresenter will control the view and respond to application events to play videos, using the AdView.</p>
+			</subsection>
+			
+			<subsection name="AdView">
+				<p>The AdView uses a VideoWidget to play and interact with ads. The VideoWidget is a enriched wrapper around HTML5 video tag.</p>
+			</subsection>
+			
+			<subsection name="AdService">
+				<p>The AdService is a server-side component fetching ads. When initializing the plugin, it will fetch ads, parse them and return the results to the client side.</p>
+			</subsection>
+
+		</section>
+
+		<section name="other section">
+
+			<!-- You can also include preformatted source blocks in the document -->
+			<source>
+				code line 1
+				code line 2
+			</source>
+
+		</section>
+
+	</body>
+
+</document>
