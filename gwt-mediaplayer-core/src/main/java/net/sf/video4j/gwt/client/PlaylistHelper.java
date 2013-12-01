@@ -39,6 +39,7 @@ public class PlaylistHelper implements IPlaylistHelper {
 			mLogger.log(Level.INFO, "Got " + pResult.getVAST().getAds().size() + " Ads.");
 			for (Ad oAd : pResult.getVAST().getAds()) {
 				if (oAd instanceof InLine) {
+					mLogger.log(Level.INFO, "Got InLine Ad");
 					InLine oInLine = (InLine) oAd;
 					if (oInLine.getCreatives() == null || oInLine.getCreatives().isEmpty()) {
 						mLogger.log(Level.SEVERE, "Got no creatives. Something wrong?");
@@ -48,10 +49,12 @@ public class PlaylistHelper implements IPlaylistHelper {
 						oMedia.setType(MediaType.Video);
 						for (Creative c : oInLine.getCreatives()) {
 							if (c instanceof Linear) {
+								mLogger.log(Level.INFO, "Got InLine Linear Ad");
 								Linear oLinearAd = (Linear) c;
 								if (oLinearAd.getMediaFiles() == null || oLinearAd.getMediaFiles().isEmpty()) {
 									mLogger.log(Level.SEVERE, "Got no media files from Linear Ad. Something wrong?");
 								} else {
+									mLogger.log(Level.INFO, "Got " + oLinearAd.getMediaFiles().size() + " media files");
 									for (MediaFile oMediaFile : oLinearAd.getMediaFiles()) {
 										Source oSource = newSource(oMediaFile);
 										oMedia.getSources().add(oSource);
