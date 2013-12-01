@@ -3,7 +3,6 @@ package net.sf.video4j.gwt.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.video4j.gwt.client.IPlaylistHelper;
 import net.sf.video4j.gwt.client.PlaylistHelper;
 import net.sf.video4j.gwt.client.dispatch.AsyncCallbackImpl;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
@@ -60,7 +59,6 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 	private DispatchAsync	mDispatcher;
 	private IApplication	mApplication;
 	private IAdBeanFactory	mAdBeanFactory;
-	private IPlaylistHelper	mPlaylistHelper;
 	private String			mVASTTag;
     
     @Inject
@@ -103,7 +101,6 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
     	mLogger.log(Level.FINE, "Received ApplicationLoadEvent...");
     	mApplication = pEvent.getApplication();
-		mPlaylistHelper = new PlaylistHelper(mApplication.getPlaylist());
 		pEvent.getApplication().addPlugin(this);
 		IApplicationConfig oAppConfig = pEvent.getApplication().getConfig();
 		if (oAppConfig.getPlugins().isNull() != null) {
@@ -191,7 +188,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 
             @Override
             public void onSuccess(FetchAdResult pResult) {
-				mPlaylistHelper.putAdsInPlaylist(pResult);
+				new PlaylistHelper(mApplication.getPlaylist()).putAdsInPlaylist(pResult);
                 PluginReadyEvent.fire(AdPresenter.this, AdPresenter.this);
             }
         });
@@ -200,11 +197,6 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
     @Override
     public void onPlaylistPlayEvent(final PlaylistPlayEvent pEvent) {
         mLogger.log(Level.INFO, "Received PlaylistPlayEvent.");
-		// luc: when AdPresenter gets the event to play an ad, it can then use the canPlayType()
-		// from its view (or the view itself can do that), to figure out what to set in VideoWidget <source>.
-		// pass all possible source/video types in Media from AdController (or whatever it's name is going to be) 
-		// into the Playlist, and then when AdPresenter will received a PlayEvent it will either pass the list to its
-		// View or check itself each video whether they are playable or not and filter accordingy.
 		for (Source s : pEvent.getPlayItem().getMedia().getSources()) {
 			String oCanPlayType = getView().canPlayType(s.getType());
 			if ("NO".equals(oCanPlayType)) {
