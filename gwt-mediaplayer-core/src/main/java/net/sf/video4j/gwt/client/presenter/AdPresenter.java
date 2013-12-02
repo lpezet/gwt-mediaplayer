@@ -11,9 +11,24 @@ import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
 import net.sf.video4j.gwt.client.event.ApplicationLoadEvent.ApplicationLoadHandler;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent.ApplicationReadyHandler;
+import net.sf.video4j.gwt.client.event.ControlFullScreenEvent;
+import net.sf.video4j.gwt.client.event.ControlFullScreenEvent.ControlFullScreenHandler;
+import net.sf.video4j.gwt.client.event.ControlMuteEvent;
+import net.sf.video4j.gwt.client.event.ControlMuteEvent.ControlMuteHandler;
+import net.sf.video4j.gwt.client.event.ControlPauseEvent;
+import net.sf.video4j.gwt.client.event.ControlPauseEvent.ControlPauseHandler;
+import net.sf.video4j.gwt.client.event.ControlPlayEvent;
+import net.sf.video4j.gwt.client.event.ControlPlayEvent.ControlPlayHandler;
+import net.sf.video4j.gwt.client.event.ControlSeekedEvent;
+import net.sf.video4j.gwt.client.event.ControlSeekedEvent.ControlSeekedHandler;
+import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
+import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
+import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
+import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
+import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.IAdBean;
 import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
@@ -41,12 +56,11 @@ import com.gwtplatform.mvp.client.View;
 /**
  * @author gumatias
  */
-public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements 
-	IPlugin, 
-	PlaylistPlayHandler,
-	ApplicationLoadHandler,
-	ApplicationInitHandler, 
-	ApplicationReadyHandler {
+public class AdPresenter extends PresenterWidget<AdPresenter.AView>
+		implements IPlugin, PlaylistPlayHandler, ApplicationLoadHandler, ApplicationInitHandler,
+		ApplicationReadyHandler, PlayerUiHandlers, ControlPlayHandler, ControlPauseHandler,
+		ControlMuteHandler, ControlUnmuteHandler, ControlSeekedHandler, ControlFullScreenHandler,
+		ControlVolumeChangeHandler {
 
     public interface AView extends View {
 		void startPlayer(PlayerParameters pParams);
@@ -208,5 +222,57 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView> implements
 			}
 		}
     }
+
+	@Override
+	public void onControlVolumeChangeEvent(ControlVolumeChangeEvent pEvent) {
+	}
+
+	@Override
+	public void onControlFullScreenEvent(ControlFullScreenEvent pEvent) {
+	}
+
+	@Override
+	public void onControlSeekedEvent(ControlSeekedEvent pEvent) {
+	}
+
+	@Override
+	public void onControlUnmuteEvent(ControlUnmuteEvent pEvent) {
+	}
+
+	@Override
+	public void onControlMuteEvent(ControlMuteEvent pEvent) {
+	}
+
+	@Override
+	public void onControlPauseEvent(ControlPauseEvent pEvent) {
+	}
+
+	@Override
+	public void onControlPlayEvent(ControlPlayEvent pEvent) {
+	}
+
+	@Override
+	public void onTimeUpdate(double pCurrentTime) {
+	}
+
+	@Override
+	public void onError() {
+	}
+
+	@Override
+	public void onPlaying() {
+	}
+
+	@Override
+	public void onPause() {
+	}
+
+	@Override
+	public void onEnded() {
+	}
+
+	@Override
+	public void onDurationChanged(double pNewDuration) {
+	}
     
 }
