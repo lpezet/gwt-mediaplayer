@@ -3,56 +3,27 @@ package net.sf.video4j.gwt.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
-import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
-import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
-import net.sf.video4j.gwt.client.event.ApplicationLoadEvent.ApplicationLoadHandler;
 import net.sf.video4j.gwt.client.event.ControlFullScreenEvent;
-import net.sf.video4j.gwt.client.event.ControlFullScreenEvent.ControlFullScreenHandler;
 import net.sf.video4j.gwt.client.event.ControlMuteEvent;
-import net.sf.video4j.gwt.client.event.ControlMuteEvent.ControlMuteHandler;
 import net.sf.video4j.gwt.client.event.ControlPauseEvent;
-import net.sf.video4j.gwt.client.event.ControlPauseEvent.ControlPauseHandler;
 import net.sf.video4j.gwt.client.event.ControlPlayEvent;
-import net.sf.video4j.gwt.client.event.ControlPlayEvent.ControlPlayHandler;
 import net.sf.video4j.gwt.client.event.ControlSeekedEvent;
-import net.sf.video4j.gwt.client.event.ControlSeekedEvent.ControlSeekedHandler;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
-import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
-import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
-import net.sf.video4j.gwt.client.event.PlayerErrorEvent;
-import net.sf.video4j.gwt.client.event.PlayerPauseEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
-import net.sf.video4j.gwt.client.event.PlayerPlayingEvent;
-import net.sf.video4j.gwt.client.event.PlayerTimeUpdateEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
-import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
-import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
-import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.client.model.Source;
 import net.sf.video4j.gwt.client.player.PlayItem;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-
-import fr.hd3d.html5.video.client.VideoSource;
 
 /**
  * @author gumatias
  */
-public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView> 
-    implements PlayerUiHandlers, ControlPlayHandler, ControlPauseHandler, ControlMuteHandler, ControlUnmuteHandler, 
-                ControlSeekedHandler, ControlFullScreenHandler, ControlVolumeChangeHandler,
-                ApplicationLoadHandler,
-                ApplicationInitHandler,
-                PlaylistPlayHandler,
-                IPlugin {
+public class PlayerPresenter extends BasePlayerPresenterWidget<PlayerPresenter.PView> {
 	
     public interface PView extends View, HasUiHandlers<PlayerUiHandlers> {
         void startPlayer(PlayerParameters pParams);
@@ -65,10 +36,10 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         void seek(double pValue);
         void hide();
         void show();
-        String canPlayType(String pMediaType);
     }
     
     protected Logger mLogger = Logger.getLogger(this.getClass().getName());
+
 	private PlayItem	mPlaying;
 	
     @Inject
@@ -76,35 +47,6 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         super(pEventBus, pView);
         getView().setUiHandlers(this);
     }
-    
-    @Override
-    public String getPluginId() {
-    	return this.getClass().getName();
-    }
-    
-    @Override
-    protected void onBind() {
-        super.onBind();
-        //getView().startPlayer(getPlayerParameters());
-        addRegisteredHandlers();
-    }
-
-    private void addRegisteredHandlers() {
-        addRegisteredHandler(ControlPlayEvent.getType(), this);
-        addRegisteredHandler(ControlPauseEvent.getType(), this);
-        addRegisteredHandler(ControlMuteEvent.getType(), this);
-        addRegisteredHandler(ControlUnmuteEvent.getType(), this);
-        addRegisteredHandler(ControlSeekedEvent.getType(), this);
-        addRegisteredHandler(ControlFullScreenEvent.getType(), this);
-        addRegisteredHandler(ControlVolumeChangeEvent.getType(), this);
-        addRegisteredHandler(ApplicationLoadEvent.getType(), this);
-        addRegisteredHandler(ApplicationInitEvent.getType(), this);
-        addRegisteredHandler(PlaylistPlayEvent.getType(), this);
-    }
-    
-    public PlayItem getPlaying() {
-		return mPlaying;
-	}
     
     /*
     private PlayerParameters getPlayerParameters() {
@@ -119,49 +61,23 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
     */
     
     @Override
-    public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
-    	mLogger.log(Level.INFO, "Received ApplicationLoadEvent.");
-    	pEvent.getApplication().addPlugin(this);
-    }
-    
-    @Override
-    public void onApplicationInitEvent(ApplicationInitEvent pEvent) {
-    	mLogger.log(Level.INFO, "Received ApplicationInitEvent.");
-    	PluginReadyEvent.fire(this, this);
-    	mLogger.log(Level.INFO, "PluginReadyEvent fired.");
-    	/*
-    	GWT.runAsync(new RunAsyncCallback() {
-			
-			@Override
-			public void onSuccess() {
-				mLogger.log(Level.INFO, "Firing plugin ready event...");
-				PluginReadyEvent.fire(PlayerPresenter.this, PlayerPresenter.this);
-			}
-			
-			@Override
-			public void onFailure(Throwable pReason) {
-				Window.alert("Error firing plugin ready event for " + PlayerPresenter.this.getPluginName() + " plugin. Reason = " + pReason.getMessage());
-			}
-		});
-		*/
-    }
-    
-    @Override
     public void onPlaylistPlayEvent(PlaylistPlayEvent pEvent) {
-    	mLogger.log(Level.INFO, "Received PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
+		mLogger.log(Level.INFO, "Received media in PlaylistPlayEvent.");
+		if (pEvent.getPlayItem().getMedia().isAd()) return;
 
-    	//TODO: should add all the sources available...so 1 "video" might be multiple Media.
-    	//TODO: need to pass start and end (e.g. for mid-rolls).
-    	PlayerParameters oParams = new PlayerParameters()
-    		.withAutoPlay(pEvent.getPlayItem().isAutoPlay())
-    		.withControls(false) //TODO: this should come from ApplicationConfig (?)
-    		.withHeightInPixels(360) //TODO: this should come from the ApplicationConfig
-    		.withWidthInPixels(640) //TODO: this should come from the ApplicationConfig
-    		.withMedia(pEvent.getPlayItem().getMedia());
-    	
-    	getView().startPlayer(oParams);
-    	mPlaying = pEvent.getPlayItem();
-    	mLogger.log(Level.INFO, "Item now playing (or loading...)");
+		mLogger.log(Level.INFO, "Received non-ad media in PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
+
+		// TODO: should add all the sources available...so 1 "video" might be multiple Media.
+		// TODO: need to pass start and end (e.g. for mid-rolls).
+		PlayerParameters oParams = new PlayerParameters()
+				.withAutoPlay(pEvent.getPlayItem().isAutoPlay())
+				.withControls(false) // TODO: this should come from ApplicationConfig (?)
+				.withHeightInPixels(360) // TODO: this should come from the ApplicationConfig
+				.withWidthInPixels(640) // TODO: this should come from the ApplicationConfig
+				.withMedia(pEvent.getPlayItem().getMedia());
+		getView().startPlayer(oParams);
+		mPlaying = pEvent.getPlayItem();
+		mLogger.log(Level.INFO, "Item now playing (or loading...)");
     }
 
     @Override
@@ -199,77 +115,14 @@ public class PlayerPresenter extends PresenterWidget<PlayerPresenter.PView>
         getView().mute();
     }
     
-    @Override
-    public void onTimeUpdate(double pCurrentTime) {
-    	mLogger.info("onTimeUpdate() : " + pCurrentTime);
-    	//PlayerPlayingEvent.fire(this, pCurrentTime);
-    	mLogger.log(Level.INFO, "PlayerTimeUpdateEvent: firing...");
-		PlayerTimeUpdateEvent.fire(this, pCurrentTime);
-		mLogger.log(Level.INFO, "PlayerTimeUpdateEvent: fired.");
-    }
-    
-    @Override
-    public void onDurationChanged(double pNewDuration) {
-    	mLogger.info("onDurationChanged() : " + pNewDuration);
-    	//if (mPlaying != null) mPlaying.getTrack().set
-    }
-    
-    @Override
-    public void onEnded() {
-    	mLogger.info("onEnded()...");
-    	mLogger.log(Level.INFO, "PlayerPlayEndedEvent: firing...");
-    	PlayerPlayEndedEvent.fire(this);
-    	mLogger.log(Level.INFO, "PlayerPlayEndedEvent: firing...");
-    }
-    
-    @Override
-    public void onError() {
-    	mLogger.info("onError()...");
-    	mLogger.log(Level.INFO, "PlayerErrorEvent: firing...");
-    	PlayerErrorEvent.fire(this);
-    	mLogger.log(Level.INFO, "PlayerErrorEvent: firing...");
-    }
-    
-    @Override
-    public void onPause() {
-    	mLogger.info("onPause()...");
-    	/*
-    	GWT.runAsync(new RunAsyncCallback() {
-			@Override
-			public void onSuccess() {
-		*/
-				mLogger.log(Level.INFO, "PlayerPauseEvent: firing...");
-				PlayerPauseEvent.fire(PlayerPresenter.this);
-				mLogger.log(Level.INFO, "PlayerPauseEvent: fired.");
-		/*
-			}			
-			@Override
-			public void onFailure(Throwable pReason) {
-				Window.alert("Error firing PlayerPauseEvent! Reason = " + pReason.getMessage());
-			}
-		});
-		*/
-    }
-    
-    @Override
-    public void onPlaying() {
-    	mLogger.info("onPlaying()...");
-    	/*
-    	GWT.runAsync(new RunAsyncCallback() {
-			@Override
-			public void onSuccess() {
-		*/
-				mLogger.log(Level.INFO, "PlayerPlayingEvent: firing...");
-				PlayerPlayingEvent.fire(PlayerPresenter.this, mPlaying);
-				mLogger.log(Level.INFO, "PlayerPlayingEvent: fired.");
-		/*
-			}			
-			@Override
-			public void onFailure(Throwable pReason) {
-				Window.alert("Error firing PlayerPlayingEvent! Reason = " + pReason.getMessage());
-			}
-		});
-		*/
-    }
+	@Override
+	public String getPluginId() {
+		return this.getClass().getName();
+	}
 
+	@Override
+	protected PlayItem getPlayingItem() {
+		return mPlaying;
+	}
+    
 }

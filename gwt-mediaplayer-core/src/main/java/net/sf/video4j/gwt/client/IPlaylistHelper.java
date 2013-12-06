@@ -1,6 +1,8 @@
 package net.sf.video4j.gwt.client;
 
-import net.sf.video4j.gwt.shared.model.FetchAdResult;
+import java.util.List;
+
+import net.sf.video4j.gwt.plugin.shared.vast.Ad;
 
 /**
  * @author Gustavo Matias
@@ -8,6 +10,6 @@ import net.sf.video4j.gwt.shared.model.FetchAdResult;
  */
 public interface IPlaylistHelper {
 
-	void putAdsInPlaylist(FetchAdResult pResult);
+	void addAds(List<Ad> pAds);
 
 }

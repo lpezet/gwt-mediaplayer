@@ -1,11 +1,12 @@
 package net.sf.video4j.gwt.client.presenter;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import net.sf.video4j.gwt.client.event.ControlFullScreenEvent;
 import net.sf.video4j.gwt.client.event.ControlMuteEvent;
 import net.sf.video4j.gwt.client.event.ControlPauseEvent;
@@ -13,13 +14,15 @@ import net.sf.video4j.gwt.client.event.ControlPlayEvent;
 import net.sf.video4j.gwt.client.event.ControlSeekedEvent;
 import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
 import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
+import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
+import net.sf.video4j.gwt.client.player.Media;
+import net.sf.video4j.gwt.client.player.PlayItem;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -43,16 +46,24 @@ public class PlayerPresenterTest {
         mPresenter = new PlayerPresenter(mEventBus, mView);
     }
     
-    @Ignore
+	@Ignore
     @Test
-    public void whenOnBind_shouldStartPlayerWithValidParameters() {
-        mPresenter.onBind();
-        ArgumentCaptor<PlayerParameters> oArgument = ArgumentCaptor.forClass(PlayerParameters.class);
-        verify(mView).startPlayer(oArgument.capture());
-        assertThat(oArgument.getValue(), is(notNullValue()));
-    }
-    
-    @Test
+	public void whenOnBind_shouldRegisterHandlers() {
+		mPresenter.onBind();
+
+		verify(mEventBus).addHandler(eq(ControlPlayEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlPauseEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlMuteEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlUnmuteEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlSeekedEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlFullScreenEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ControlVolumeChangeEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ApplicationLoadEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(ApplicationInitEvent.getType()), eq(mPresenter));
+//		verify(mEventBus).addHandler(eq(PlaylistPlayEvent.getType()), eq(mPresenter));
+	}
+
+	@Test
     public void whenOnControlPlayEvent_shouldPlayInView() {
         ControlPlayEvent oEvent = mock(ControlPlayEvent.class);
         mPresenter.onControlPlayEvent(oEvent);
@@ -101,4 +112,30 @@ public class PlayerPresenterTest {
         verify(mView).mute();
     }
     
+	@Test
+	public void givenAdMedia_shouldNotPlay() {
+		PlaylistPlayEvent oEvent = mock(PlaylistPlayEvent.class);
+
+		Media oMedia = new Media();
+		oMedia.setAd(true);
+		when(oEvent.getPlayItem()).thenReturn(new PlayItem(oMedia));
+
+		mPresenter.onPlaylistPlayEvent(oEvent);
+
+		verify(mView, never()).startPlayer(any(PlayerParameters.class));
+	}
+
+	@Test
+	public void givenNonAdMedia_shouldPlay() {
+		PlaylistPlayEvent oEvent = mock(PlaylistPlayEvent.class);
+
+		Media oMedia = new Media();
+		oMedia.setAd(false);
+		when(oEvent.getPlayItem()).thenReturn(new PlayItem(oMedia));
+
+		mPresenter.onPlaylistPlayEvent(oEvent);
+
+		verify(mView).startPlayer(any(PlayerParameters.class));
+	}
+
 }

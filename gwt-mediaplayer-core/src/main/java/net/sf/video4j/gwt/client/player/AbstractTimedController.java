@@ -6,12 +6,13 @@ package net.sf.video4j.gwt.client.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.video4j.gwt.client.event.TimeCompleteEvent;
+import net.sf.video4j.gwt.client.event.TimeCompleteEvent.TimeCompleteHandler;
+import net.sf.video4j.gwt.client.event.TimeUpdateEvent;
+import net.sf.video4j.gwt.client.event.TimeUpdateEvent.TimeUpdateHandler;
+
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import net.sf.video4j.gwt.client.event.TimeCompleteEvent;
-import net.sf.video4j.gwt.client.event.TimeUpdateEvent;
-import net.sf.video4j.gwt.client.event.TimeCompleteEvent.TimeCompleteHandler;
-import net.sf.video4j.gwt.client.event.TimeUpdateEvent.TimeUpdateHandler;
 import fr.hd3d.html5.video.client.VideoWidget;
 import fr.hd3d.html5.video.client.events.VideoEndedEvent;
 import fr.hd3d.html5.video.client.events.VideoErrorEvent;

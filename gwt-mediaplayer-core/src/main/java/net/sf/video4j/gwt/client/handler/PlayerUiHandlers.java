@@ -6,7 +6,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
  * @author gumatias
  */
 public interface PlayerUiHandlers extends UiHandlers {
-
 	void onTimeUpdate(double pCurrentTime);
 	void onError();
 	void onPlaying();

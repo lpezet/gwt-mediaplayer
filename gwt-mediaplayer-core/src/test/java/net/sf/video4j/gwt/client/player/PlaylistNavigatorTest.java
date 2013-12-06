@@ -178,4 +178,26 @@ public class PlaylistNavigatorTest {
 		assertEquals(oT3, oActual.getMedia());
 	}
 
+	@Test
+	public void givenThreeMedias_whenRequestForCurrentItem_shouldReturnCorrect() {
+		Playlist oList = new Playlist();
+
+		Media oT1 = new Media();
+		Media oT2 = new Media();
+		Media oT3 = new Media();
+
+		oList.add(oT1);
+		oList.add(oT2);
+		oList.add(oT3);
+
+		PlaylistNavigator oNavigator = new PlaylistNavigator(oList);
+		assertTrue(oNavigator.hasNext());
+		PlayItem oNext = oNavigator.next();
+		assertEquals(oNext, oNavigator.getCurrentItem());
+		oNext = oNavigator.next();
+		assertEquals(oNext, oNavigator.getCurrentItem());
+		oNext = oNavigator.next();
+		assertEquals(oNext, oNavigator.getCurrentItem());
+	}
+
 }

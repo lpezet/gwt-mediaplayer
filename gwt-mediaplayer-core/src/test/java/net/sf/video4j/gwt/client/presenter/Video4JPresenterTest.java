@@ -68,6 +68,7 @@ public class Video4JPresenterTest {
         verify(mView, times(3)).setInSlot(anyObject(), any(IsWidget.class));
         verify(mView).setInSlot(anyObject(), isA(PlayerPresenter.class));
         verify(mView).setInSlot(anyObject(), isA(ControlPresenter.class));
+		verify(mView).setInSlot(anyObject(), isA(AdPresenter.class));
     }
     
 }

@@ -20,9 +20,8 @@ public class Video4JModule extends AbstractPresenterModule {
     	install(new ControlModule());
     	install(new PlaylistModule());
     	install(new AdModule());
-    	install(new BandwidthModule());
+		install(new BandwidthModule());
     	install(new ApplicationModule());
-		
 
 		bind(IConfigProvider.class).to(LocalJSConfigProvider.class).in(Singleton.class);
 

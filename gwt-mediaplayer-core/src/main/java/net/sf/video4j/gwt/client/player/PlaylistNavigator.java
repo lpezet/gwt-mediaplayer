@@ -62,4 +62,8 @@ public class PlaylistNavigator {
 		mCursor = BEFORE_HEAD;
 	}
 
+	public PlayItem getCurrentItem() {
+		return mCursor;
+	}
+
 }

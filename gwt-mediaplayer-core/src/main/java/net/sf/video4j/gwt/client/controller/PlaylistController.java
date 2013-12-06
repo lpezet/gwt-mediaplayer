@@ -16,6 +16,7 @@ import net.sf.video4j.gwt.client.event.ApplicationReadyEvent;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent.ApplicationReadyHandler;
 import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent;
 import net.sf.video4j.gwt.client.event.PlayerPlayEndedEvent.PlayerPlayEndedHandler;
+import net.sf.video4j.gwt.client.event.PlaylistPlayEndedEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
@@ -125,6 +126,9 @@ public class PlaylistController extends BaseController implements
 	
 	@Override
 	public void onPlayerPlayEndedEvent(PlayerPlayEndedEvent pEvent) {
+		mLogger.log(Level.FINE, "Received PlayerPlayEndedEvent.");
+		PlaylistPlayEndedEvent.fire(this, mPlaylistNavigator.getCurrentItem());
+		mLogger.log(Level.FINE, "PlaylistPlayEndedEvent fired.");
 		play();
 	}
 

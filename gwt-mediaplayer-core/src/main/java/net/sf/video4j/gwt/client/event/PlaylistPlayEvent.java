@@ -31,10 +31,6 @@ public class PlaylistPlayEvent extends GwtEvent<PlaylistPlayEvent.PlaylistPlayHa
         pSource.fireEvent(oEventInstance);
     }
 
-    //public static void fire(HasHandlers pSource, ApplicationInitEvent pEventInstance) {
-    //    pSource.fireEvent(pEventInstance);
-    //}
-
     public interface PlaylistPlayHandlers extends HasHandlers {
         HandlerRegistration addPlaylistPlayHandler(PlaylistPlayHandler pHandler);
     }

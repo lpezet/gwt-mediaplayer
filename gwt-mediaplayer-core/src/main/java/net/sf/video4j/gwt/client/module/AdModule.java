@@ -19,12 +19,8 @@ public class AdModule extends AbstractPresenterModule {
     @Override
     protected void configure() {
         install(new DispatchAsyncModule());
-
         bind(IAdService.class).to(AdService.class).in(Singleton.class);
         bind(IVASTParser.class).to(VASTParser.class).in(Singleton.class);
-
-        // bind(net.sf.video4j.gwt.plugin.server.vast.dao.IAdService.class).to(net.sf.video4j.gwt.plugin.server.vast.dao.AdService.class).in(Singleton.class);
-
         bindPresenterWidget(AdPresenter.class, AdPresenter.AView.class, AdView.class);
     }
 

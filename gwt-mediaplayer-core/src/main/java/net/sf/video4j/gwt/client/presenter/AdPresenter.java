@@ -1,40 +1,21 @@
 package net.sf.video4j.gwt.client.presenter;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.PlaylistHelper;
 import net.sf.video4j.gwt.client.dispatch.AsyncCallbackImpl;
 import net.sf.video4j.gwt.client.event.ApplicationInitEvent;
-import net.sf.video4j.gwt.client.event.ApplicationInitEvent.ApplicationInitHandler;
 import net.sf.video4j.gwt.client.event.ApplicationLoadEvent;
-import net.sf.video4j.gwt.client.event.ApplicationLoadEvent.ApplicationLoadHandler;
 import net.sf.video4j.gwt.client.event.ApplicationReadyEvent;
-import net.sf.video4j.gwt.client.event.ApplicationReadyEvent.ApplicationReadyHandler;
-import net.sf.video4j.gwt.client.event.ControlFullScreenEvent;
-import net.sf.video4j.gwt.client.event.ControlFullScreenEvent.ControlFullScreenHandler;
-import net.sf.video4j.gwt.client.event.ControlMuteEvent;
-import net.sf.video4j.gwt.client.event.ControlMuteEvent.ControlMuteHandler;
-import net.sf.video4j.gwt.client.event.ControlPauseEvent;
-import net.sf.video4j.gwt.client.event.ControlPauseEvent.ControlPauseHandler;
-import net.sf.video4j.gwt.client.event.ControlPlayEvent;
-import net.sf.video4j.gwt.client.event.ControlPlayEvent.ControlPlayHandler;
-import net.sf.video4j.gwt.client.event.ControlSeekedEvent;
-import net.sf.video4j.gwt.client.event.ControlSeekedEvent.ControlSeekedHandler;
-import net.sf.video4j.gwt.client.event.ControlUnmuteEvent;
-import net.sf.video4j.gwt.client.event.ControlUnmuteEvent.ControlUnmuteHandler;
-import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent;
-import net.sf.video4j.gwt.client.event.ControlVolumeChangeEvent.ControlVolumeChangeHandler;
+import net.sf.video4j.gwt.client.event.PlaylistPlayEndedEvent;
 import net.sf.video4j.gwt.client.event.PlaylistPlayEvent;
-import net.sf.video4j.gwt.client.event.PlaylistPlayEvent.PlaylistPlayHandler;
 import net.sf.video4j.gwt.client.event.PluginReadyEvent;
 import net.sf.video4j.gwt.client.handler.PlayerUiHandlers;
 import net.sf.video4j.gwt.client.model.IAdBean;
 import net.sf.video4j.gwt.client.model.IApplication;
 import net.sf.video4j.gwt.client.model.IApplicationConfig;
-import net.sf.video4j.gwt.client.model.IPlugin;
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.client.model.Source;
+import net.sf.video4j.gwt.client.player.PlayItem;
 import net.sf.video4j.gwt.client.util.BeanFactory;
 import net.sf.video4j.gwt.client.util.IAdBeanFactory;
 import net.sf.video4j.gwt.plugin.client.vast.dao.IAdService;
@@ -50,30 +31,25 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.View;
 
 /**
  * @author gumatias
  */
-public class AdPresenter extends PresenterWidget<AdPresenter.AView>
-		implements IPlugin, PlaylistPlayHandler, ApplicationLoadHandler, ApplicationInitHandler,
-		ApplicationReadyHandler, PlayerUiHandlers, ControlPlayHandler, ControlPauseHandler,
-		ControlMuteHandler, ControlUnmuteHandler, ControlSeekedHandler, ControlFullScreenHandler,
-		ControlVolumeChangeHandler {
+public class AdPresenter extends BasePlayerPresenterWidget<AdPresenter.AView> {
 
-    public interface AView extends View {
+	public interface AView extends View, HasUiHandlers<PlayerUiHandlers> {
 		void startPlayer(PlayerParameters pParams);
-		String canPlayType(String pMediaType);
+		void hidePlayer();
     }
-    
-    protected Logger mLogger = Logger.getLogger(this.getClass().getName());
     
 	private IAdService		mAdService;
 	private DispatchAsync	mDispatcher;
 	private IApplication	mApplication;
 	private IAdBeanFactory	mAdBeanFactory;
 	private String			mVASTTag;
+	private PlayItem		mPlaying;
     
     @Inject
 	public AdPresenter(EventBus pEventBus, AView pView, IAdService pAdService, DispatchAsync pDispatcher, IAdBeanFactory pAdBeanFactory) {
@@ -81,27 +57,7 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView>
 		mAdService = pAdService;
 		mDispatcher = pDispatcher;
 		mAdBeanFactory = pAdBeanFactory;
-		registerHandlers();
-        mLogger.log(Level.INFO, "Creating Ad Presenter");
-    }
-    
-    private void registerHandlers() {
-		addRegisteredHandler(ApplicationLoadEvent.getType(), this);
-		addRegisteredHandler(ApplicationReadyEvent.getType(), this);
-		addRegisteredHandler(ApplicationInitEvent.getType(), this);
-		addRegisteredHandler(PlaylistPlayEvent.getType(), this);
-	}
-    
-    @Override
-    public String getPluginId() {
-        return this.getClass().getName();
-    }
-    
-    @Override
-    protected void onBind() {
-        super.onBind();
-		// fetchAdsFromServlet();
-        // fetchAdsFromAJAX();
+		getView().setUiHandlers(this);
     }
     
     @Override
@@ -113,9 +69,9 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView>
     
     @Override
     public void onApplicationLoadEvent(ApplicationLoadEvent pEvent) {
+		super.onApplicationLoadEvent(pEvent);
     	mLogger.log(Level.FINE, "Received ApplicationLoadEvent...");
     	mApplication = pEvent.getApplication();
-		pEvent.getApplication().addPlugin(this);
 		IApplicationConfig oAppConfig = pEvent.getApplication().getConfig();
 		if (oAppConfig.getPlugins().isNull() != null) {
 			mLogger.log(Level.SEVERE, "No plugins found in configuration.");
@@ -145,11 +101,10 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView>
 		mLogger.log(Level.INFO, "VAST Tag: " + mVASTTag);
     }
     
-    @Override
-    public void onApplicationReadyEvent(ApplicationReadyEvent pEvent) {
-    	// TODO Auto-generated method stub
-    	
-    }
+	@Override
+	public void onApplicationReadyEvent(ApplicationReadyEvent pEvent) {
+		// TODO Auto-generated method stub
+	}
 
     private void fetchAdsFromAJAX() {
         // is not allowed by Access-Control-Allow-Origin
@@ -195,84 +150,53 @@ public class AdPresenter extends PresenterWidget<AdPresenter.AView>
 //		mLogger.log(Level.INFO, "oAdBean.getURL()=" + oAdBean.getURL());
 //		oAction.setURL(oAdBean.getURL());
         
-        
         oAction.setURL(mVASTTag);
 		// oAction.setURL("http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2");
         mDispatcher.execute(oAction, new AsyncCallbackImpl<FetchAdResult>() {
 
             @Override
             public void onSuccess(FetchAdResult pResult) {
-				new PlaylistHelper(mApplication.getPlaylist()).putAdsInPlaylist(pResult);
+				new PlaylistHelper(mApplication.getPlaylist()).addAds(pResult.getVAST().getAds());
                 PluginReadyEvent.fire(AdPresenter.this, AdPresenter.this);
             }
+
         });
     }
 
     @Override
     public void onPlaylistPlayEvent(final PlaylistPlayEvent pEvent) {
-        mLogger.log(Level.INFO, "Received PlaylistPlayEvent.");
-		for (Source s : pEvent.getPlayItem().getMedia().getSources()) {
-			String oCanPlayType = getView().canPlayType(s.getType());
-			if ("NO".equals(oCanPlayType)) {
-				// do nothing?
-			} else if ("MAYBE".equals(oCanPlayType)) {
-				// do nothing or is it safe to play?
-			} else if ("PROBABLY".equals(oCanPlayType)) {
-				// play
-			}
-		}
+		mLogger.log(Level.INFO, "Received Ad media in PlaylistPlayEvent.");
+		if (!pEvent.getPlayItem().getMedia().isAd()) return;
+		mLogger.log(Level.INFO, "Received Ad media in PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
+		// TODO: need to pass start and end (e.g. for mid-rolls).
+		PlayerParameters oParams = new PlayerParameters()
+				// .withAutoPlay(pEvent.getPlayItem().isAutoPlay())
+				.withAutoPlay(true)
+				.withControls(false) // TODO: this should come from ApplicationConfig (?)
+				.withHeightInPixels(360) // TODO: this should come from the ApplicationConfig
+				.withWidthInPixels(640) // TODO: this should come from the ApplicationConfig
+				.withMedia(pEvent.getPlayItem().getMedia());
+		getView().startPlayer(oParams);
+		mPlaying = pEvent.getPlayItem();
+		mLogger.log(Level.INFO, "Item now playing (or loading...)");
     }
 
 	@Override
-	public void onControlVolumeChangeEvent(ControlVolumeChangeEvent pEvent) {
+	public void onPlaylistPlayEndedEvent(PlaylistPlayEndedEvent pEvent) {
+		if (pEvent.getPlayItem().getMedia().isAd()) {
+			mLogger.log(Level.INFO, "Ad media finished playing");
+			getView().hidePlayer();
+		}
 	}
 
 	@Override
-	public void onControlFullScreenEvent(ControlFullScreenEvent pEvent) {
+	public String getPluginId() {
+		return this.getClass().getName();
 	}
 
 	@Override
-	public void onControlSeekedEvent(ControlSeekedEvent pEvent) {
+	protected PlayItem getPlayingItem() {
+		return mPlaying;
 	}
 
-	@Override
-	public void onControlUnmuteEvent(ControlUnmuteEvent pEvent) {
-	}
-
-	@Override
-	public void onControlMuteEvent(ControlMuteEvent pEvent) {
-	}
-
-	@Override
-	public void onControlPauseEvent(ControlPauseEvent pEvent) {
-	}
-
-	@Override
-	public void onControlPlayEvent(ControlPlayEvent pEvent) {
-	}
-
-	@Override
-	public void onTimeUpdate(double pCurrentTime) {
-	}
-
-	@Override
-	public void onError() {
-	}
-
-	@Override
-	public void onPlaying() {
-	}
-
-	@Override
-	public void onPause() {
-	}
-
-	@Override
-	public void onEnded() {
-	}
-
-	@Override
-	public void onDurationChanged(double pNewDuration) {
-	}
-    
 }
