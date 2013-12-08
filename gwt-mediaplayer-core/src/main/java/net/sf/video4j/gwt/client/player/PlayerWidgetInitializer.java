@@ -10,18 +10,17 @@ import net.sf.video4j.gwt.client.model.Source;
 import fr.hd3d.html5.video.client.VideoSource;
 import fr.hd3d.html5.video.client.VideoSource.VideoType;
 import fr.hd3d.html5.video.client.VideoWidget;
-import fr.hd3d.html5.video.client.VideoWidget.TypeSupport;
 
 /**
  * @author Gustavo Matias
  */
-public class PlayerWidgetInitializer implements IPlayerWidgetInitializer {
-
-	private VideoWidget			mPlayerWidget;
-
-	private PlayerParameters	mPlayerParameters;
+public abstract class PlayerWidgetInitializer implements IPlayerWidgetInitializer {
 
 	protected Logger			mLogger	= Logger.getLogger(this.getClass().getName());
+
+	protected VideoWidget		mPlayerWidget;
+
+	protected PlayerParameters	mPlayerParameters;
 
 	public PlayerWidgetInitializer(VideoWidget pPlayerWidget, PlayerParameters pPlayerParameters) {
 		mPlayerWidget = pPlayerWidget;
@@ -38,7 +37,7 @@ public class PlayerWidgetInitializer implements IPlayerWidgetInitializer {
 	private void addSources() {
 		List<VideoType> oSupportedVideoTypes = new ArrayList<VideoType>();
 		for (Source s : mPlayerParameters.getMedia().getSources()) {
-			if (isNotAdMedia() || (isVideoTypeSupported(s) && isVideoTypeNotAlreadyAdded(oSupportedVideoTypes, s))) {
+			if (isVideoSourceSupported(s) && isVideoTypeNotAlreadyAdded(oSupportedVideoTypes, s)) {
 				oSupportedVideoTypes.add(VideoType.getByType(s.getType()));
 				mPlayerWidget.addSource(new VideoSource(s.getURI(), VideoType.getByType(s.getType())));
 				mLogger.log(Level.INFO, "Added new source do player=[" + mPlayerWidget + "]");
@@ -46,16 +45,10 @@ public class PlayerWidgetInitializer implements IPlayerWidgetInitializer {
 		}
 	}
 
-	private boolean isNotAdMedia() {
-		return !mPlayerParameters.getMedia().isAd();
-	}
+	protected abstract boolean isVideoSourceSupported(Source pSource);
 
 	private boolean isVideoTypeNotAlreadyAdded(List<VideoType> pSupportedVideoTypes, Source pSource) {
 		return !pSupportedVideoTypes.contains(VideoType.getByType(pSource.getType()));
-	}
-
-	private boolean isVideoTypeSupported(Source s) {
-		return TypeSupport.MAYBE.name().equals(mPlayerWidget.canPlayType(s.getType()).name());
 	}
 
 }

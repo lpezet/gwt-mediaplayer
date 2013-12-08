@@ -2,10 +2,8 @@ package net.sf.video4j.gwt.client.player;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,12 +25,11 @@ import fr.hd3d.html5.video.client.VideoWidget.TypeSupport;
 
 /**
  * @author Gustavo Matias
- *
  */
 @GwtModule("net.sf.video4j.gwt.client.player.Player")
 public class PlayerWidgetInitializerTest extends GwtTest {
 
-	private PlayerWidgetInitializer	mInitializer;
+	private IPlayerWidgetInitializer	mInitializer;
 
 	@Test
 	public void givenMediaWithMP4SourceType_shouldAddSource() throws Exception {
@@ -45,7 +42,7 @@ public class PlayerWidgetInitializerTest extends GwtTest {
 		oSource.setURI(oURI);
 		oMedia.setSources(Arrays.asList(oSource));
 		oParams.withMedia(oMedia);
-		mInitializer = new PlayerWidgetInitializer(oVideoWidget, oParams);
+		mInitializer = new DummyPlayerWidgetInitializer(oVideoWidget, oParams);
 
 		when(oVideoWidget.canPlayType(anyString())).thenReturn(TypeSupport.MAYBE);
 
@@ -57,40 +54,17 @@ public class PlayerWidgetInitializerTest extends GwtTest {
 		assertThat(oVideoSourceArg.getValue().getVideoType(), equalTo(VideoType.MP4));
 	}
 
-	@Test
-	public void givenAdMediaWithNullSourceType_shouldNotAddSource() throws Exception {
-		VideoWidget oVideoWidget = mock(VideoWidget.class);
-		PlayerParameters oParams = new PlayerParameters();
-		Media oMedia = new Media();
-		oMedia.setAd(true);
-		Source oSource = new Source();
-		oMedia.setSources(Arrays.asList(oSource));
-		oParams.withMedia(oMedia);
-		mInitializer = new PlayerWidgetInitializer(oVideoWidget, oParams);
+	class DummyPlayerWidgetInitializer extends PlayerWidgetInitializer {
 
-		when(oVideoWidget.canPlayType(anyString())).thenReturn(TypeSupport.NO);
+		public DummyPlayerWidgetInitializer(VideoWidget pPlayerWidget, PlayerParameters pPlayerParameters) {
+			super(pPlayerWidget, pPlayerParameters);
+		}
 
-		mInitializer.start();
+		@Override
+		protected boolean isVideoSourceSupported(Source pSource) {
+			return true;
+		}
 
-		verify(oVideoWidget, never()).addSource(any(VideoSource.class));
-	}
-
-	@Test
-	public void givenNonAdMediaWithNullSourceType_shouldAddSource() throws Exception {
-		VideoWidget oVideoWidget = mock(VideoWidget.class);
-		PlayerParameters oParams = new PlayerParameters();
-		Media oMedia = new Media();
-		oMedia.setAd(false);
-		Source oSource = new Source();
-		oMedia.setSources(Arrays.asList(oSource));
-		oParams.withMedia(oMedia);
-		mInitializer = new PlayerWidgetInitializer(oVideoWidget, oParams);
-
-		when(oVideoWidget.canPlayType(anyString())).thenReturn(TypeSupport.NO);
-
-		mInitializer.start();
-
-		verify(oVideoWidget).addSource(any(VideoSource.class));
 	}
 
 }

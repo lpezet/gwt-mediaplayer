@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.client.player.PlayerWidgetInitializer;
+import net.sf.video4j.gwt.client.player.AdPlayerWidgetInitializer;
 import net.sf.video4j.gwt.client.presenter.PlayerPresenter;
 
 import com.google.gwt.uibinder.client.UiBinder;
@@ -36,7 +36,7 @@ public class PlayerView extends BasePlayerView implements PlayerPresenter.PView 
 	@Override
 	public void startPlayer(PlayerParameters pParams) {
 		mLogger.log(Level.INFO, "Starting player");
-		new PlayerWidgetInitializer(mPlayerWidget, pParams).start();
+		new AdPlayerWidgetInitializer(mPlayerWidget, pParams).start();
 		mLogger.log(Level.INFO, "Player started =" + mPlayerWidget);
 	}
 

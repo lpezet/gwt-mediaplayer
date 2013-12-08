@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.video4j.gwt.client.model.PlayerParameters;
-import net.sf.video4j.gwt.client.player.PlayerWidgetInitializer;
+import net.sf.video4j.gwt.client.player.DefaultPlayerWidgetInitializer;
 import net.sf.video4j.gwt.client.presenter.AdPresenter;
 
 import com.google.gwt.uibinder.client.UiBinder;
@@ -36,7 +36,7 @@ public class AdView extends BasePlayerView implements AdPresenter.AView {
 	@Override
 	public void startPlayer(PlayerParameters pParams) {
 		mLogger.log(Level.INFO, "Starting ad player");
-		new PlayerWidgetInitializer(mPlayerWidget, pParams).start();
+		new DefaultPlayerWidgetInitializer(mPlayerWidget, pParams).start();
 		mLogger.log(Level.INFO, "Ad Player started =" + mPlayerWidget);
 	}
 
