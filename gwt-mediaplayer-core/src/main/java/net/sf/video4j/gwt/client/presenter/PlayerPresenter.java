@@ -23,7 +23,7 @@ import com.gwtplatform.mvp.client.View;
 /**
  * @author gumatias
  */
-public class PlayerPresenter extends BasePlayerPresenterWidget<PlayerPresenter.PView> {
+public class PlayerPresenter extends BasePlayerPresenter<PlayerPresenter.PView> {
 	
     public interface PView extends View, HasUiHandlers<PlayerUiHandlers> {
         void startPlayer(PlayerParameters pParams);

@@ -37,7 +37,7 @@ import com.gwtplatform.mvp.client.View;
 /**
  * @author gumatias
  */
-public class AdPresenter extends BasePlayerPresenterWidget<AdPresenter.AView> {
+public class AdPresenter extends BasePlayerPresenter<AdPresenter.AView> {
 
 	public interface AView extends View, HasUiHandlers<PlayerUiHandlers> {
 		void startPlayer(PlayerParameters pParams);
@@ -170,8 +170,7 @@ public class AdPresenter extends BasePlayerPresenterWidget<AdPresenter.AView> {
 		mLogger.log(Level.INFO, "Received Ad media in PlaylistPlayEvent. Playing item track #" + pEvent.getPlayItem().getMedia().getId() + "...");
 		// TODO: need to pass start and end (e.g. for mid-rolls).
 		PlayerParameters oParams = new PlayerParameters()
-				// .withAutoPlay(pEvent.getPlayItem().isAutoPlay())
-				.withAutoPlay(true)
+				.withAutoPlay(pEvent.getPlayItem().isAutoPlay())
 				.withControls(false) // TODO: this should come from ApplicationConfig (?)
 				.withHeightInPixels(360) // TODO: this should come from the ApplicationConfig
 				.withWidthInPixels(640) // TODO: this should come from the ApplicationConfig

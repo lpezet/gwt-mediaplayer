@@ -44,13 +44,13 @@ import com.gwtplatform.mvp.client.View;
 /**
  * @author Gustavo Matias
  */
-public abstract class BasePlayerPresenterWidget<T extends View> extends PresenterWidget<T>
+public abstract class BasePlayerPresenter<T extends View> extends PresenterWidget<T>
 		implements IPlugin, ApplicationLoadHandler, ApplicationInitHandler, ApplicationReadyHandler,
 		PlaylistPlayEndedHandler, PlaylistPlayHandler, ControlPlayHandler, ControlPauseHandler,
 		ControlMuteHandler, ControlUnmuteHandler, ControlSeekedHandler, ControlFullScreenHandler,
 		ControlVolumeChangeHandler, PlayerUiHandlers {
 
-	public BasePlayerPresenterWidget(EventBus pEventBus, T pView) {
+	public BasePlayerPresenter(EventBus pEventBus, T pView) {
 		super(pEventBus, pView);
 	}
 

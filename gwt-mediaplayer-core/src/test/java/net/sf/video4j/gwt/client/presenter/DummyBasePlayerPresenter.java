@@ -10,7 +10,7 @@ import com.gwtplatform.mvp.client.View;
 /**
  * @author Gustavo Matias
  */
-public class DummyBasePlayerPresenter extends BasePlayerPresenterWidget<DummyBasePlayerPresenter.DView> {
+public class DummyBasePlayerPresenter extends BasePlayerPresenter<DummyBasePlayerPresenter.DView> {
 
 	public interface DView extends View, HasUiHandlers<PlayerUiHandlers> {
 	}
