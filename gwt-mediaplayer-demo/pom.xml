@@ -2,17 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>gwt-mediaplayer-demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-REFACTORING-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<parent>
 		<groupId>net.sf.video4j.gwt</groupId>
 		<artifactId>gwt-parent</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-REFACTORING</version>
 	</parent>
 
 	<properties>
-		<gwt-mediaplayer-core.version>0.0.1-SNAPSHOT</gwt-mediaplayer-core.version>
+<!-- 		<gwt-mediaplayer-core.version>0.0.1-SNAPSHOT</gwt-mediaplayer-core.version> -->
 		<spring-webmvc.version>3.2.3.RELEASE</spring-webmvc.version>
 	</properties>
 
@@ -57,7 +57,7 @@
 					<localWorkers>4</localWorkers>
 					<compileSourcesArtifacts>
 						<compileSourcesArtifact>net.sf.video4j.gwt:gwt-mediaplayer-core</compileSourcesArtifact>
-						<compileSourcesArtifact>net.sf.video4j.gwt.plugin:gwt-plugin-ads</compileSourcesArtifact>
+						<compileSourcesArtifact>net.sf.video4j.gwt.plugin.ads.ads:gwt-plugin-ads</compileSourcesArtifact>
 						<compileSourcesArtifact>fr.hd3d.html5:hd3d-html5-video</compileSourcesArtifact>
 						<compileSourcesArtifact>com.kiouri:kiouri-slidebar</compileSourcesArtifact>
 					</compileSourcesArtifacts>
