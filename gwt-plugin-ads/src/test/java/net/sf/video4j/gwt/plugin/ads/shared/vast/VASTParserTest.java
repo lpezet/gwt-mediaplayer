@@ -23,7 +23,7 @@ import com.googlecode.gwt.test.GwtTest;
 /**
  * @author luc
  */
-@GwtModule("net.sf.video4j.gwt.plugin.VAST")
+@GwtModule("net.sf.video4j.gwt.plugin.ads.VAST")
 public class VASTParserTest extends GwtTest implements IVASTParserTest {
 	
 	private static class VASTParserTestImpl extends AbstractVASTParserTest {
