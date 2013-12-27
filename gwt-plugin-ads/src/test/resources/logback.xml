@@ -23,6 +23,6 @@
 	<logger name="org.apache.commons.digester.Digester" level="ERROR"/>
 	<root level="DEBUG">
 <!-- 		<appender-ref ref="FILE" /> -->
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
 	</root>
 </configuration>
