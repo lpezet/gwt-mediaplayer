@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.hd3d.html5</groupId>
 	<artifactId>hd3d-html5-video</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-REFACTORING-SNAPSHOT</version>
 	
 	<parent>
 		<groupId>net.sf.video4j.gwt</groupId>
 		<artifactId>gwt-parent</artifactId>	
-		<version>0.0.1</version>
+		<version>0.0.1-REFACTORING</version>
 	</parent>
 
 	<properties>
