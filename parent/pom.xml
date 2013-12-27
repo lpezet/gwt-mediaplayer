@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.video4j.gwt</groupId>
 	<artifactId>gwt-parent</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-REFACTORING</version>
 	<packaging>pom</packaging>
 	<scm>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/video4j/code/trunk/</developerConnection>
+		<developerConnection>scm:svn:https://svn.code.sf.net/p/video4j/code/branches/refactoring-1.0</developerConnection>
 	</scm>
 
 	<properties>
