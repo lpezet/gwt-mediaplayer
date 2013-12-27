@@ -2,17 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>gwt-mediaplayer-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-REFACTORING-SNAPSHOT</version>
 	<parent>
 		<groupId>net.sf.video4j.gwt</groupId>
 		<artifactId>gwt-parent</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-REFACTORING</version>
 	</parent>
 
 	<properties>
-		<gwt-plugin-ads.version>0.0.1-SNAPSHOT</gwt-plugin-ads.version>
-		<hd3d-html5-video.version>0.0.1-SNAPSHOT</hd3d-html5-video.version>
-		<kiouri-slidebar.version>0.0.1-SNAPSHOT</kiouri-slidebar.version>
+<!-- 		<gwt-plugin-ads.version>0.0.1-REFACTORING-SNAPSHOT</gwt-plugin-ads.version> -->
+<!-- 		<hd3d-html5-video.version>0.0.1-SNAPSHOT</hd3d-html5-video.version> -->
+<!-- 		<kiouri-slidebar.version>0.0.1-SNAPSHOT</kiouri-slidebar.version> -->
 		
 		<guice-servlet-integration.version>1.0</guice-servlet-integration.version>
 		<guice-servlet-extensions.version>3.0</guice-servlet-extensions.version>
@@ -65,7 +65,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.sf.video4j.gwt.plugin</groupId>
+			<groupId>net.sf.video4j.gwt.plugin.ads</groupId>
 			<artifactId>gwt-plugin-ads</artifactId>
 			<version>${gwt-plugin-ads.version}</version>
 		</dependency>
